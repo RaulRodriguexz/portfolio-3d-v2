@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- RNF-07: SEO e preview em redes sociais. Troque a URL quando publicar. -->
+    <title>Raul Rodrigues — AI &amp; Automation Developer</title>
+    <meta
+      name="description"
+      content="Raul Rodrigues builds AI automations and agents that take repetitive work off people’s calendars. Python, LLM APIs, n8n. Moving to Dublin in October 2026, open to roles and freelance."
+    />
+    <meta name="author" content="Raul Rodrigues" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Raul Rodrigues — AI &amp; Automation Developer" />
+    <meta
+      property="og:description"
+      content="Raul Rodrigues builds AI automations and agents that take repetitive work off people’s calendars. Python, LLM APIs, n8n. Moving to Dublin in October 2026, open to roles and freelance."
+    />
+    <meta property="og:url" content="https://raulrodrigues.dev" />
+    <meta property="og:image" content="https://raulrodrigues.dev/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+
+    <!-- RNF-07: JSON-LD schema.org/Person. É o que dá ao Google nome, cargo,
+         cidade e perfis externos como uma entidade, não só texto solto. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Raul Rodrigues",
+        "url": "https://raulrodrigues.dev",
+        "image": "https://raulrodrigues.dev/og.png",
+        "jobTitle": "AI & Automation Developer",
+        "email": "mailto:raulrodrigues.mldev@gmail.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Dublin",
+          "addressCountry": "IE"
+        },
+        "knowsLanguage": ["pt-BR", "en"],
+        "knowsAbout": [
+          "AI Automation",
+          "Python",
+          "n8n",
+          "LLM APIs",
+          "RAG",
+          "Machine Learning",
+          "React"
+        ],
+        "sameAs": [
+          "https://www.linkedin.com/in/raulrodriguexz",
+          "https://github.com/RaulRodriguexz"
+        ]
+      }
+    </script>
+
+    <meta name="theme-color" content="#fbfbfe" />
+
+    <!-- Tipografia. Para self-hospedar depois, veja public/fonts/README.md -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

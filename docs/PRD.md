@@ -1,0 +1,463 @@
+# PRD — Portfólio de Raul Rodrigues
+
+| | |
+|---|---|
+| **Versão** | 2.4 |
+| **Última revisão** | 03/09/2026 |
+| **Responsável** | Raul Rodrigues ([@RaulRodriguexz](https://github.com/RaulRodriguexz)) |
+| **Status** | Aprovado — em execução (Passos 1, 2 e 4 concluídos) |
+| **Prazo de publicação** | 10/10/2026 (embarque para Dublin: 26/10/2026) |
+| **Repositório** | `portfolio-3d-v2` |
+
+> **Como ler este documento.** As seções 5 e 6 são o contrato: o que entra e o
+> que não entra. A seção 14 é o log de decisões — nada muda sem passar por lá.
+> Todo pedido de código feito ao Claude Code deve citar um `RF-xx` ou `RNF-xx`
+> daqui. Se um pedido não encontra respaldo neste documento, o pedido está
+> errado ou o documento está desatualizado; resolva isso antes de escrever
+> código.
+
+---
+
+## Changelog
+
+| Versão | Data | O que mudou |
+|---|---|---|
+| 2.4 | 03/09/2026 | M-18 a M-20 (inércia, cortina de entrada, tilt). Passo 8 auditado e aprovado. CV corrigido e rodapé refeito. |
+| 2.3 | 03/09/2026 | Movimento M-12 a M-16. SEO, JSON-LD, robots, sitemap, favicon e og.png prontos. Auditoria do CV (D-20). |
+| 2.2 | 03/09/2026 | Seção Location com globo 3D (D-19). Movimento M-6 a M-11 entregue. Passos 5 e 6 concluídos. |
+| 2.1 | 03/09/2026 | Adicionada a seção 5.2.1 (linguagem de movimento) com o inventário M-1 a M-6. RF-08 reescrito para apontar para ela. |
+| 2.0 | 03/09/2026 | Revisão completa. Resolvidas 4 contradições internas (analytics, PT/EN, seção Serviços, fallback). Adicionadas: calendário com datas reais, definição de pronto para publicar, requisitos de idioma e privacidade, matriz de suporte, licenças, log de decisões. |
+| 1.3 | 03/09/2026 | Hero definido como Memoji dentro de cena R3F; `.glb` volta a ser proibido. |
+| 1.2 | 03/09/2026 | Hero migrado para modelo `.glb` (revertido em 1.3). |
+| 1.1 | 03/09/2026 | Passo 1 executado: tema claro, paleta roxa, tipografia Sansation. |
+| 1.0 | 03/09/2026 | Documento inicial. |
+
+---
+
+## 1. Por que este documento existe
+
+A primeira tentativa do site 3D falhou. O motivo não foi falta de capacidade
+técnica — foi falta de fronteira. Sem escopo escrito, cada sessão de código
+adicionava um efeito novo, o projeto nunca chegava a um estado "pronto", e o
+custo de manter o que já existia cresceu até travar.
+
+Este PRD responde três perguntas antes de qualquer linha de código:
+
+1. O que este site precisa fazer para ser considerado um sucesso?
+2. O que ele explicitamente **não** vai fazer na v1?
+3. Como eu sei que terminei?
+
+**Regra do projeto:** nada entra no código se não estiver aqui. Ideia nova vai
+para `docs/BACKLOG.md`, não para a branch atual.
+
+---
+
+## 2. Objetivo de negócio
+
+O site não é uma peça de arte. É um **instrumento de conversão de carreira**.
+
+**Objetivo primário.** Fazer com que um recrutador, fundador ou cliente B2B na
+Europa — foco em Dublin — entre em contato em até 90 segundos de visita, mesmo
+sem o Raul ter diploma concluído.
+
+**Objetivos secundários.**
+
+- Provar competência técnica sem credencial formal: o próprio site é a evidência.
+- Posicionar o Raul como **AI + negócio**, não como "mais um dev front-end". O
+  3D chama atenção; o conteúdo tem que falar de receita, custo e automação.
+- Servir de vitrine para os projetos-âncora que virão (revenue-leak detector,
+  agente em Python puro), além dos já entregues.
+- Estar online e estável antes de 26/10/2026.
+
+**Não-objetivos.** Virar referência de WebGL. Ganhar prêmio de Awwwards. Ser um
+showcase técnico de Three.js. Impressionar outros desenvolvedores.
+
+---
+
+## 3. Público-alvo
+
+| Persona | Quem é | O que procura em 30 s | O que a faz sair |
+|---|---|---|---|
+| **Recrutador tech (Dublin / UE)** | Recruiter ou hiring manager de startup ou consultoria | Stack, provas de entrega, se dá para contratar sem diploma, disponibilidade e situação de visto | Site lento, sem CV, sem contato claro, inglês ruim |
+| **Fundador / cliente B2B** | Dono de empresa média (jurídico, odontologia, transporte, marketing) | "Esse cara resolve o meu problema? Já fez isso para alguém como eu?" | Jargão técnico sem resultado de negócio |
+| **Par técnico / comunidade** | Devs, mentores, gente de hackathon e de programas como o EEML | GitHub, qualidade de código, se o projeto é real | Projeto que não abre, repositório vazio |
+
+**Regra de desempate:** quando impressionar visualmente conflitar com converter o
+recrutador, **o recrutador ganha**.
+
+---
+
+## 4. Princípios do produto
+
+1. **Conteúdo primeiro, 3D depois.** O site tem que fazer sentido com o WebGL
+   desligado.
+2. **Uma cena 3D, bem feita.** Não várias medianas.
+3. **Toda seção responde a uma pergunta do visitante.** Se não responde, é
+   decoração — corta.
+4. **Performance é requisito, não otimização futura.** O recrutador abre no
+   celular, no 4G, entre duas reuniões.
+5. **Terminar vale mais que perfeito.** V1 no ar vale mais que v2 na cabeça.
+
+---
+
+## 5. Escopo da v1
+
+### 5.1 Arquitetura de informação
+
+Uma página, sete blocos, nesta ordem:
+
+| # | Bloco | Pergunta que responde | Conteúdo obrigatório | Passo |
+|---|---|---|---|---|
+| 1 | **Hero** | "Quem é?" | Nome, função em uma linha, localização, cena 3D com o Memoji. **Nada mais** (D-17) | 3, 4 |
+| 1b | **Statement** | "O que ele resolve?" | A frase de posicionamento em tipografia grande, o parágrafo de contexto, os dois CTAs e a disponibilidade — revelados no scroll | 3 |
+| 2 | **Sobre** | "Por que confiar nele?" | 3 a 4 frases: autodidata, freelance para empresas reais desde 2025, foco AI + negócio, mudança para Dublin | 2 |
+| 3 | **Projetos** | "O que ele já entregou?" | 3 a 5 cards: problema de negócio → o que construiu → impacto → stack → links | 5 |
+| 4 | **Stack** | "Ele sabe o que eu preciso?" | Agrupado por uso: AI & Agentes, Automação, Dados, Web. Sem barra de proficiência | 6 |
+| 4b | **Location** | "Onde ele está?" | Globo 3D que gira e aproxima Dublin no scroll, coordenadas e relógio local ao vivo (D-19) | extra |
+| 5 | **Contato** | "Como falo com ele?" | E-mail, LinkedIn, GitHub, download do CV. Sem formulário | 7 |
+| 6 | **Rodapé** | "Como falo com ele, se rolei até aqui?" | Nome, função, disponibilidade, os quatro caminhos de contato (e-mail, LinkedIn, GitHub, CV), copyright e link do repositório | ✅ |
+
+A seção **Serviços** foi cortada da v1 (ver 6 e log de decisões D-07).
+
+### 5.2 A cena 3D do hero
+
+**Decisão:** o Memoji do Raul como elemento central, dentro de uma cena
+React Three Fiber real. Sem modelo `.glb`.
+
+**Fundamento.** O Memoji só existe como imagem — a Apple não exporta modelo 3D.
+Mas uma imagem dentro de uma cena WebGL continua sendo 3D: tem profundidade,
+sombra, iluminação, reage ao mouse e ao scroll. Custa ~100 KB em vez de 3 MB, e é
+a única rota que entrega "o Raul aparece no hero" dentro do prazo.
+
+**Especificação.**
+
+- Uma cena única, ocupando a metade direita da primeira dobra no desktop.
+- O Memoji entra como textura em um plano dentro da cena (billboard), com sombra
+  projetada e leve inclinação — não é um adesivo colado sobre a página.
+- Em volta dele, geometria real na paleta roxa: anel, partículas ou placas
+  flutuantes, com profundidade de verdade.
+- Parallax suave seguindo o mouse; leve afastamento ao rolar a página.
+- Textura trocável: se um dia houver um Memoji em vídeo ou uma captura de tela
+  dos projetos, troca-se a textura e a cena continua a mesma.
+
+**Restrições duras.**
+
+| | |
+|---|---|
+| Asset | `public/images/memoji.png` — 694 × 781, 102 KB, fundo transparente. Versão `.webp` de 30 KB para o fallback. **Pronto.** |
+| Carregamento | A cena inteira entra por `React.lazy`. Nada de `three` no bundle inicial |
+| Ordem de renderização | O texto do hero aparece e é utilizável **antes** de a cena carregar |
+| Degradação | Sem WebGL, sem suporte, ou com `prefers-reduced-motion`: o mesmo PNG aparece como `<img>` comum, e o site continua 100% funcional |
+| Timebox | Duas sessões. Depois disso, congela do jeito que estiver |
+
+### 5.2.1 Linguagem de movimento
+
+*Adicionado em 03/09/2026. O que se aproveita da referência
+eric-cole.framer.website não é a aparência — é a técnica.*
+
+**Três princípios, nesta ordem de prioridade:**
+
+1. **Tipografia grande com muito vazio em volta.** Custa zero: é espaçamento.
+   Responde por metade da sensação de "site caro".
+2. **Movimento amarrado ao scroll e ao mouse**, não animação que roda sozinha.
+   O elemento reage à pessoa — é isso que prende.
+3. **Contenção.** Uma ideia visual, repetida. Site amador tem cinco efeitos
+   brigando entre si.
+
+**Inventário de movimento da v1** — tudo com `transform` e `opacity` apenas,
+que é o que a GPU compõe de graça. Nenhuma biblioteca nova.
+
+| # | Animação | Onde | Passo | Estado |
+|---|---|---|---|---|
+| M-1 | Entrada das seções em cascata ao rolar | todas as seções | — | ✅ pronto (`useReveal`) |
+| M-2 | Headline aparecendo palavra por palavra | Hero | 3 | ✅ pronto (`WordReveal`) |
+| M-3 | Memoji com parallax no mouse | Hero | 4 | ✅ pronto (`HeroScene` → `Rig`) |
+| M-4 | Memoji se afastando levemente no scroll | Hero | 4 | ✅ pronto (`useScrollProgress`) |
+| M-5 | Anel / partículas girando devagar em volta do Memoji | Hero | 4 | ✅ pronto (`Backdrop`) |
+| M-6 | Brilho seguindo o cursor dentro dos cards, e hover nas tags | Projetos, Stack | 5, 6 | ✅ pronto |
+| M-7 | Frase de posicionamento palavra por palavra ao entrar na tela | Statement | 3 | ✅ pronto |
+| M-8 | Globo girando e aproximando Dublin conforme o scroll | Location | extra | ✅ pronto |
+| M-9 | Fita de tecnologias rolando em loop sem emenda | Stack | 6 | ✅ pronto |
+| M-10 | Tom do fundo da página mudando de forma quase imperceptível ao rolar | global | extra | ✅ pronto |
+| M-11 | Relógio de Dublin ao vivo | Location | extra | ✅ pronto |
+| M-12 | Header que esconde ao descer e volta ao subir | global | extra | ✅ pronto |
+| M-13 | Item do menu marcando a seção que está sendo lida | global | extra | ✅ pronto |
+| M-14 | Barra fina de progresso de leitura | global | extra | ✅ pronto |
+| M-15 | Parágrafos do Sobre entrando em cascata | About | extra | ✅ pronto |
+| M-16 | Botão de e-mail com feedback de "copiado" | Contato | 7 | ✅ pronto |
+| M-17 | Setas do rodapé avançando no hover | Rodapé | 7 | ✅ pronto |
+| M-18 | Rolagem com inércia (Lenis, 6 KB) | global | extra | ✅ pronto |
+| M-19 | Cortina de entrada da página | global | extra | ✅ pronto |
+| M-20 | Cards inclinando 3,5° com o mouse | Projetos | extra | ✅ pronto |
+| M-21 | Cursor piscando dentro do ícone de laptop do header | global | extra | ✅ pronto |
+
+**Regras duras do movimento.**
+
+- Só `transform` e `opacity`. Animar `width`, `height`, `top` ou `left` obriga o
+  navegador a recalcular layout a cada quadro e derruba o desempenho no celular.
+- Toda animação respeita `prefers-reduced-motion` (RF-08, RNF-06).
+- Nada de animação que bloqueie a leitura: o texto do hero tem que estar legível
+  mesmo se o JavaScript falhar.
+- **Se um efeito não está nesta tabela, ele não entra na v1.** Ideia nova de
+  animação vai para `docs/BACKLOG.md`.
+
+### 5.3 Requisitos funcionais
+
+| ID | Requisito | Verificação |
+|---|---|---|
+| **RF-01** | Página única com navegação por âncora e scroll suave | Clicar em cada item do menu leva à seção certa, sem cortar o título sob o header |
+| **RF-02** | Header fixo com versão mobile funcional | Abre e fecha em 360 px; fecha ao clicar num item |
+| **RF-03** | Todo conteúdo vem de `src/data/`, nunca escrito no JSX | `grep` por texto visível nos componentes não retorna nada |
+| **RF-04** | Cada card de projeto abre repositório e demo em nova aba | `target="_blank"` + `rel="noreferrer"` em todos |
+| **RF-05** | Download do CV em PDF | `public/cv.pdf` existe e o botão baixa |
+| **RF-06** | Cena 3D do hero conforme 5.2 | Ver restrições duras acima |
+| **RF-07** | Tema claro como padrão, sem alternância | Um tema só na v1 |
+| **RF-08** | Movimento conforme o inventário da seção 5.2.1 (M-1 a M-6) | Só `transform`/`opacity`; todos respeitam `prefers-reduced-motion` |
+| **RF-09** | Medição de audiência sem cookies | Vercel Analytics ativo em produção (ver D-05) |
+
+### 5.4 Requisitos não-funcionais
+
+| ID | Requisito | Meta | Como medir |
+|---|---|---|---|
+| **RNF-01** | Lighthouse em produção, mobile | Performance ≥ 80 · Acessibilidade ≥ 90 · Best Practices ≥ 90 · SEO ≥ 90 | pagespeed.web.dev |
+| **RNF-02** | Bundle JS inicial | ≤ 150 KB gzip, com `three` em chunk próprio carregado sob demanda | Saída do `npm run build` |
+| **RNF-03** | Primeiro conteúdo visível | Texto do hero renderizado antes de qualquer JS de 3D | DevTools → Network, throttle 4G |
+| **RNF-04** | Degradação sem WebGL | Site 100% utilizável; o Memoji aparece como imagem estática | Desligar WebGL no navegador |
+| **RNF-05** | Responsivo | Sem scroll horizontal e sem texto cortado em 360, 768, 1024 e 1440 px | DevTools responsivo |
+| **RNF-06** | Acessibilidade | Navegável só com Tab; contraste AA (4.5:1 em texto normal); canvas com `aria-hidden`; foco sempre visível | WAVE + navegação por teclado |
+| **RNF-07** | SEO e preview social | `<title>`, meta description, Open Graph com imagem 1200×630, `robots.txt`, `sitemap.xml` | opengraph.xyz |
+| **RNF-08** | Deploy | Push na `main` publica sozinho, em menos de 2 minutos | Painel da Vercel |
+| **RNF-09** | Qualidade do inglês | Zero erro de gramática ou naturalidade no texto visível | Revisão por ferramenta **e** por uma pessoa fluente |
+| **RNF-10** | Privacidade | Sem cookies, sem rastreador de terceiros, sem formulário — logo, sem banner de consentimento | Aba Application → Cookies vazia |
+| **RNF-11** | Console limpo | Zero erro e zero warning em produção | DevTools → Console |
+
+### 5.5 Suporte
+
+| | |
+|---|---|
+| Navegadores | Chrome, Edge, Firefox e Safari — duas últimas versões |
+| Sistemas | Windows, macOS, iOS, Android |
+| Telas | 360 px a 1440 px |
+| Sem WebGL | Suportado por degradação (RNF-04) |
+| Internet Explorer | Não suportado |
+
+---
+
+## 6. Fora de escopo da v1
+
+Isto **não** será construído agora. Não abra exceção; anote em `docs/BACKLOG.md`.
+
+**3D**
+
+- Mundo navegável, sala virtual, câmera controlada pelo scroll.
+- Qualquer modelo `.glb` — nem notebook, nem avatar.
+- Física, pós-processamento (bloom, DOF), shaders customizados.
+- Memoji em vídeo ou avatar animado.
+
+**Produto**
+
+- Seção Serviços (D-07).
+- Alternância de idioma PT/EN (D-06) e alternância claro/escuro.
+- Página própria por projeto / estudo de caso.
+- Blog, CMS, painel administrativo.
+- Formulário de contato com backend, newsletter.
+- Autenticação, área logada, banco de dados.
+
+**Enfeite**
+
+- Cursor customizado, preloader elaborado, transições entre páginas.
+
+**Engenharia**
+
+- Testes automatizados. O projeto não tem lógica de negócio que os justifique;
+  a verificação é o `npm run build` mais a checagem visual de cada passo.
+
+---
+
+## 7. Inventário de conteúdo
+
+O site vazio é um site morto. Nada disto é opcional para o lançamento.
+
+| Item | Onde vive | Status |
+|---|---|---|
+| Frase de posicionamento (inglês, 1 linha) | `src/data/profile.ts` | ✅ pronto |
+| Subtítulo do hero | `src/data/profile.ts` | ✅ pronto |
+| Texto do Sobre (3–4 frases, inglês) | `src/data/profile.ts` | ✅ pronto |
+| 3 projetos com impacto declarado | `src/data/projects.ts` | ✅ pronto |
+| Stack agrupada por uso | `src/data/stack.ts` | ✅ pronto |
+| Chamada final de contato | `src/data/profile.ts` | ✅ pronto |
+| URL do LinkedIn | `src/data/profile.ts` | ✅ pronto |
+| CV em PDF, em inglês | `public/cv.pdf` | ✅ pronto — versão corrigida (D-20) |
+| Memoji recortado | `public/images/memoji.png` | ✅ pronto |
+| Imagem Open Graph 1200×630 | `public/og.png` | ✅ pronto — gerada com o Memoji, 59 KB |
+| Favicon próprio | `public/favicon.svg` | ✅ pronto — “R” na cor da marca |
+| Capas dos projetos (opcional na v1) | `public/images/projects/` | ⬜ opcional |
+
+**Projetos candidatos.** Cover Letter API (front estático + Cloudflare Worker +
+OpenAI); automações B2B para clientes, descritas por setor sem quebrar sigilo;
+Titanic no Kaggle (~0.78); e este próprio site.
+
+**Regra do card de projeto.** Se você não consegue escrever o campo `impact`, o
+projeto ainda não está pronto para entrar no site. "Usei React e Tailwind" não é
+impacto. "Transforma uma tarefa de 30 minutos em menos de um minuto" é.
+
+---
+
+## 8. Métricas de sucesso
+
+**Métrica de saída — a única que importa de verdade:** pelo menos **3 contatos
+qualificados** (recrutador, fundador ou convite) originados do site nos três
+primeiros meses no ar.
+
+**Métricas de processo**
+
+| Métrica | Meta | Fonte |
+|---|---|---|
+| Site publicado e estável | até 10/10/2026 | Vercel |
+| Lighthouse performance (mobile) | ≥ 80 | pagespeed.web.dev |
+| Visitantes que rolam até a seção Projetos | ≥ 60% | Vercel Analytics |
+| Cliques no CTA de contato | ≥ 5% das visitas | Vercel Analytics |
+| Erros no console em produção | 0 | DevTools |
+
+---
+
+## 9. Calendário
+
+Cinco semanas até a publicação, com 16 dias de folga antes do embarque. Um passo
+por sessão; uma a duas sessões por semana já cumprem o cronograma.
+
+| Semana | Datas | Passos | Entregável verificável |
+|---|---|---|---|
+| — | 03/09 | ~~Passo 1 — Identidade visual~~ | ✅ Paleta e tipografia aplicadas nos tokens |
+| **1** | 04–10/09 | Passo 2 — Conteúdo do perfil | Nenhum placeholder na tela; texto em inglês |
+| **2** | 11–17/09 | Passos 3 e 4 — Hero e cena 3D | Memoji na cena, reagindo ao mouse, com fallback |
+| **3** | 18–24/09 | Passos 5 e 6 — Projetos e Stack | 3+ cards com impacto real; stack agrupada |
+| **4** | 25/09–01/10 | Passos 7 e 8 — Contato/CV e acessibilidade | CV baixa; site navegável só por teclado |
+| **5** | 02–08/10 | Passos 9 e 10 — SEO e deploy | Link publicado, card bonito no WhatsApp |
+| **Folga** | 09–10/10 | Revisão de inglês e feedback | Enviado a 5 pessoas; correções aplicadas |
+| — | 26/10 | Embarque para Dublin | — |
+
+**Semanas inegociáveis:** 1 e 3. São as de conteúdo. Um site sem cena 3D
+converte; um site sem projetos, não.
+
+---
+
+## 10. Definição de pronto para publicar
+
+O site só é divulgado quando **todas** estas linhas estiverem marcadas. Sem
+exceção, sem "depois eu arrumo".
+
+**Conteúdo**
+
+- [ ] Nenhum placeholder, nenhum "TODO", nenhum `EmptyState` visível
+- [ ] Todos os itens da seção 7 marcados como prontos
+- [ ] Todo card de projeto tem `impact` preenchido com resultado, não com feature
+- [ ] Texto em inglês revisado por ferramenta **e** por uma pessoa fluente (RNF-09)
+
+**Técnico**
+
+- [ ] `npm run build` passa sem erro e sem warning
+- [ ] Zero erro no console em produção (RNF-11)
+- [ ] Lighthouse mobile ≥ 80 / 90 / 90 / 90 (RNF-01)
+- [ ] Testado em 360, 768, 1024 e 1440 px sem scroll horizontal (RNF-05)
+- [ ] Site inteiro navegável só com Tab, com foco visível (RNF-06)
+- [ ] Testado com o WebGL desligado (RNF-04)
+- [ ] Nenhum cookie criado (RNF-10)
+
+**Publicação**
+
+- [ ] Todos os links externos abrem e apontam para o lugar certo
+- [ ] `og.png`, `favicon`, `robots.txt` e `sitemap.xml` no lugar (RNF-07)
+- [ ] Preview do link conferido no WhatsApp e no LinkedIn
+- [ ] Domínio apontado e HTTPS ativo
+- [ ] Link enviado para 5 pessoas e feedback aplicado antes da divulgação ampla
+
+---
+
+## 11. Riscos
+
+| Risco | Probabilidade | Por que acontece | Mitigação |
+|---|---|---|---|
+| **Escopo escorregando** | Alta | Foi o que matou a v1 | A seção 6 é lei. Ideia nova vai para `BACKLOG.md` na mesma hora |
+| **Site bonito e vazio** | Alta | Escrever é mais difícil que codar | A seção 7 é bloqueante. Semanas 1 e 3 são inegociáveis |
+| **Perfeccionismo na cena 3D** | Alta | Luz e posição nunca ficam "boas o bastante" | Timebox de 2 sessões no Passo 4. Depois, congela |
+| **Inglês com erro no hero** | Média | Não é a língua nativa e o hero é a primeira coisa que o recrutador lê | RNF-09: revisão dupla, uma delas humana |
+| **Retrabalho por prompt vago** | Média | Causa principal da falha da v1 | Prompts prontos no `WORKFLOW.md`, cada um citando RF/RNF |
+| **Performance no mobile** | Média | Three.js é pesado por natureza | RNF-02 e RNF-03 conferidos a cada passo, não no fim |
+| **Prazo da viagem** | Baixa | 26/10 é data fixa | Meta interna 10/10, com 16 dias de folga |
+| **Perder o trabalho** | Baixa | Branch quebrada, arquivo sobrescrito | Um commit por passo; `main` só recebe merge do que buildou |
+
+---
+
+## 12. Decisões técnicas travadas
+
+Mudar qualquer item exige uma razão escrita no log da seção 14 — não um impulso.
+
+| Área | Decisão |
+|---|---|
+| **Stack** | Vite 8 · React 19 · TypeScript · React Three Fiber · drei · Tailwind CSS v4 |
+| **Tema** | O tema mora em `src/index.css`, dentro de `@theme`. **Não existe `tailwind.config.js`** |
+| **Paleta** | Fundo `#fbfbfe` · superfície `#ffffff` · texto `#000000` · secundário `#4a4a5a` · borda `#e7e4ef` · roxo suave `#8c62ac` (decorativo) · roxo forte `oklch(0.438 0.218 303.724)` = `#6e11b0` (links, botões, todo texto colorido) |
+| **Tipografia** | Sansation via Google Fonts — pesos 300, 400 e 700 apenas. Mono do sistema para detalhes técnicos. **Nunca usar `font-medium` ou `font-semibold`**: a fonte não tem esses pesos e o navegador sintetiza um resultado feio |
+| **Idioma** | Inglês. Sem versão em português na v1 |
+| **Hero** | Memoji como textura em cena R3F, sem `.glb` |
+| **Repositório** | `portfolio-3d-v2`, novo e limpo |
+| **Branches** | Uma branch por passo (`passo-4-cena-3d`). `main` só recebe merge do que passou no build |
+| **Deploy** | Vercel, automático a partir da `main` |
+| **Analytics** | Vercel Analytics — sem cookies, sem banner |
+| **Modo de trabalho** | Esqueleto e documentação montados com o Claude; cada passo executado pelo Raul no Claude Code, um por sessão |
+
+---
+
+## 13. Licenças e créditos
+
+| Ativo | Origem | Situação |
+|---|---|---|
+| Sansation | Google Fonts | Livre para uso na web |
+| Memoji | Apple, gerado pelo próprio Raul | Recurso da Apple, feito para uso dentro dos apps dela. Uso pessoal no próprio portfólio é comum, mas **não é um ativo que o Raul possui**. Se o site virar peça comercial, trocar por um avatar próprio é uma linha de código |
+| Ícone da Apple no notebook do Memoji | Apple | Único logo de marca do site. Pode ser removido por retoque, se preferir |
+| React, Three.js, R3F, drei, Tailwind | MIT | Livres |
+
+---
+
+## 14. Log de decisões
+
+Toda mudança de rumo vive aqui, com data e motivo. É a memória do projeto.
+
+| ID | Data | Decisão | Motivo | Status |
+|---|---|---|---|---|
+| **D-01** | 03/09 | Recomeçar do zero com PRD, em vez de consertar a v1 | A v1 travou por falta de escopo escrito, não por falta de código | Ativa |
+| **D-02** | 03/09 | Site clássico com toques 3D, não mundo navegável | Mundo 3D é meses de trabalho e conflita com o prazo de 26/10 | Ativa |
+| **D-03** | 03/09 | React + R3F em vez de Three.js puro | Ecossistema pronto para 90% do que o site precisa; menos código manual quebrando | Ativa |
+| **D-04** | 03/09 | Tema claro com roxo, tipografia Sansation | Escolha do Raul. Contraste conferido: preto 20,3:1 e roxo forte 8,6:1 sobre o fundo | Ativa |
+| **D-05** | 03/09 | Vercel Analytics entra na v1 | A seção 8 promete métricas de rolagem e clique; sem medição, aquelas metas eram ficção. O Vercel Analytics não usa cookies, então não exige banner na UE | Ativa |
+| **D-06** | 03/09 | Sem PT/EN na v1 | O público-alvo é Dublin. A alternância dobrava o trabalho de conteúdo sem aumentar a conversão | Ativa |
+| **D-07** | 03/09 | Seção Serviços cortada | Os cards de projeto já respondem "dá para contratar?". Uma seção a menos é uma semana a menos | Ativa |
+| **D-08** | 03/09 | Hero com notebook 3D em `.glb` | Referência do eric-cole.framer.website | **Revertida por D-10** |
+| **D-09** | 03/09 | Referência eric-cole.framer.website inspecionada | Descoberto que o site **não usa 3D**: a TV é um PNG e a tela é um `.mp4`. O efeito vem de animação de scroll, não de WebGL | Ativa |
+| **D-10** | 03/09 | Hero com o Memoji como textura em cena R3F, sem `.glb` | O Memoji não existe em 3D — a Apple só exporta imagem. Textura dentro de cena WebGL entrega o mesmo efeito por 100 KB em vez de 3 MB | Ativa |
+| **D-22** | 03/09 | Hero em layout de cantos: nome em cima à esquerda, função em cima à direita, cena no centro. Marca do header virou um ícone de laptop | Texto centralizado verticalmente parece indeciso; ancorado nos cantos ele cria uma moldura e libera o miolo para a cena. O ícone é SVG e não emoji: emoji muda de desenho a cada sistema e não aceita a cor da paleta | Ativa |
+| **D-20** | 03/09 | CV reescrito e corrigido | Três erros: (1) usava `raulbilu1982@gmail.com` enquanto o site usa o `.mldev`; (2) apontava para `linkedin.com/in/raul-rodrigues-6744043b1`, URL antiga e quebrada; (3) o cabeçalho dizia "Dublin, Ireland" e o perfil logo abaixo dizia "now relocating to Dublin". Corrigidos, mais dois projetos que faltavam (Cover Letter e Titanic com links) e TypeScript/RAG na lista de skills | Resolvida |
+| **D-21** | 03/09 | O CV revelou material para um 4º card: "B2B Websites with Geolocation" | É trabalho pago, para cliente real, e casa com a seção do globo. Se entrar, é o card mais forte depois do Cover Letter. Falta só o número de impacto | Aberta |
+| **D-19** | 03/09 | Segunda cena WebGL permitida: o globo da seção Location | A regra "uma cena só" existia por causa de peso, não por dogma. O globo reaproveita o chunk do Three.js já baixado pelo hero, e a textura dos continentes foi **gerada aqui** a partir dos contornos do Natural Earth já na cor da marca — 11 KB, contra 1–2 MB de uma foto de satélite. Custo marginal quase zero, e uma foto da Terra brigaria com a paleta. Teto fixado em duas cenas | Ativa |
+| **D-17** | 03/09 | Hero reduzido a nome + função; posicionamento, CTAs e disponibilidade descem para uma seção `Statement` revelada no scroll | Primeira dobra com uma ideia só é o que faz o site parecer caro — era o princípio nº 3 da seção 5.2.1 aplicado ao conteúdo, não só ao movimento. O contato continua a um clique no menu fixo, então a conversão não perde caminho | Ativa |
+| **D-18** | 03/09 | Memoji com `alphaTest` e `depthWrite`, e órbitas centradas em z=0 | Sem isso o recorte parecia um PNG colado. Com profundidade escrita, o trecho da órbita que passa atrás dele é ocultado de verdade — oclusão é a pista de profundidade mais forte que existe | Ativa |
+| **D-16** | 03/09 | Criada a seção 5.2.1 — linguagem de movimento, com os 6 efeitos permitidos na v1 | O que torna a referência impressionante é técnica (tipografia grande, movimento ligado ao scroll, contenção), não estilo. Listar os efeitos permitidos evita que "mais uma animação" vire o novo vetor de escopo escorregando | Ativa |
+| **D-12** | 03/09 | Headline: *"I build systems that take repetitive work off people's calendars"* | Frase do próprio Raul. Fala de calendário e de pessoas, não de tecnologia — a linguagem de quem contrata | Ativa |
+| **D-13** | 03/09 | E-mail do site: `raulrodrigues.mldev@gmail.com` | É o que já consta no CV. Precisa bater com o Contact info do LinkedIn | Ativa |
+| **D-14** | 03/09 | A v1 sobe com 3 projetos: 1 em destaque, 2 compactos | Os projetos grandes de IA virão depois do site e assumirão o destaque. O trabalho com clientes aparece como linha de credibilidade no Sobre, não como card | Ativa |
+| **D-15** | 03/09 | Títulos de seção corrigidos para inglês | O site é em inglês mas quatro títulos estavam em português. Menu em inglês e conteúdo em português é erro visível na primeira dobra | Ativa |
+| **D-11** | 03/09 | Memoji extraído da versão de 1024 px, não da transparente de 512 | A de 512 estava cortada no topo e embaixo. O fundo `#171717` foi removido por preenchimento a partir das bordas, preservando a camiseta escura | Ativa |
+
+---
+
+## 15. Backlog v2
+
+Vive em `docs/BACKLOG.md`. Resumo do que já está lá: tema claro/escuro, PT/EN,
+seção Serviços, estudo de caso por projeto, cena reagindo ao scroll, Memoji em
+vídeo, notebook 3D com os projetos rodando na tela, formulário de contato,
+certificados, blog técnico, fontes self-hospedadas.
+
+**Depois da v1:** os projetos-âncora de AI (revenue-leak detector e o agente em
+Python puro) entram como novos cards. O site vira a vitrine deles — não o
+contrário.

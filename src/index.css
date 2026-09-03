@@ -1,0 +1,129 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   PASSO 1 — Identidade visual.
+
+   No Tailwind v4 o tema mora aqui, no CSS. Não existe tailwind.config.js.
+   Mudar a cara do site inteiro = mudar estes valores.
+
+   Contraste conferido (RNF-06, mínimo AA = 4.5:1 para texto normal):
+     ink        sobre canvas ......... 20.3:1  ✔
+     muted      sobre canvas .......... 8.4:1  ✔
+     primary-deep sobre canvas ........ 8.6:1  ✔
+     branco     sobre primary-deep .... 8.9:1  ✔
+     primary    sobre canvas .......... 4.6:1  ✔ (no limite — use só em
+                                        texto grande, ícone, borda e fundo)
+--------------------------------------------------------------------------- */
+@theme {
+  /* superfícies */
+  --color-canvas: #fbfbfe; /* fundo da página */
+  --color-surface: #ffffff; /* cards, header fixo, blocos elevados */
+  --color-line: #e7e4ef; /* bordas e divisórias */
+
+  /* texto */
+  --color-ink: #000000; /* texto principal */
+  --color-muted: #4a4a5a; /* texto secundário */
+
+  /* marca */
+  --color-primary: #8c62ac; /* roxo suave: fundos, bordas, hover, 3D */
+  --color-primary-deep: oklch(0.438 0.218 303.724); /* = #6e11b0 — links,
+                                        botões e qualquer texto colorido */
+
+  /* Sansation tem apenas 300 / 400 / 700 (+ itálicos). Use font-light,
+     font-normal e font-bold — 500 e 600 viram peso sintético e ficam feios. */
+  --font-sans: 'Sansation', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', monospace;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* com o Lenis ativo, o smooth do CSS briga com ele e trava as âncoras */
+  }
+  html.lenis {
+    scroll-behavior: auto;
+    /* compensa o header fixo ao navegar por âncora (RF-01) */
+    scroll-padding-top: 5rem;
+    color-scheme: light;
+  }
+
+  body {
+    /* --ambient é escrito pelo useAmbientTint; sem JS, cai no canvas */
+    background-color: var(--ambient, var(--color-canvas));
+    transition: background-color 400ms linear;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-primary);
+    color: #ffffff;
+  }
+
+  /* RNF-06: foco sempre visível para quem navega por teclado */
+  :focus-visible {
+    outline: 2px solid var(--color-primary-deep);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* RNF-04: quem pediu menos movimento, recebe menos movimento */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* inclinação 3D dos cards (M-20) */
+  .tilt {
+    transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transform-style: preserve-3d;
+    transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tilt { transform: none; }
+  }
+
+  /* brilho que segue o cursor dentro de um card (M-6) */
+  .spotlight::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 300ms ease-out;
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 50%),
+      color-mix(in oklab, var(--color-primary) 14%, transparent),
+      transparent 62%
+    );
+  }
+  .spotlight:hover::before {
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .spotlight::before { display: none; }
+  }
+
+  /* animação de entrada das seções (RF-08) */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.7s ease-out,
+      transform 0.7s ease-out;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
