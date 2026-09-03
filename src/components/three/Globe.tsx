@@ -23,6 +23,13 @@ const RETURN_DELAY = 3000
 /** Abaixo disso o offset conta como zerado e o giro ocioso volta a correr. */
 const IDLE_EPS = 0.0005
 
+/** Velocidade do giro ocioso, em rad/s — uma volta a cada ~52 s (D-27). */
+const IDLE_SPEED = 0.12
+/** Oscilação com Dublin de frente: ±0,045 rad = ±2,6° (D-27). */
+const SWAY_AMPLITUDE = 0.045
+/** Frequência da oscilação, em rad/s — um ciclo a cada ~14 s (D-27). */
+const SWAY_SPEED = 0.45
+
 /** Dublin — as coordenadas que aparecem escritas na seção. */
 const DUBLIN = { lat: 53.3498, lon: -6.2603 }
 
@@ -136,9 +143,16 @@ export function Globe({ progress, drag }: Props) {
       d.dragging || Math.abs(d.offset.x) > IDLE_EPS || Math.abs(d.offset.y) > IDLE_EPS
     if (!userActive) spin.current += delta
 
-    // giro contínuo lento antes da aproximação, que vai cedendo lugar ao alvo
-    const idle = -spin.current * 0.06
-    const wantY = idle * (1 - eased) + target.y * eased
+    // D-27 — o tipo de movimento muda com a proximidade, não só a intensidade.
+    // Ao longe, giro contínuo; de perto, oscilação em torno de Dublin. Girar no
+    // eixo Y e manter Dublin de frente são incompatíveis, e nenhum piso de
+    // intensidade concilia os dois: 0,06 rad/s com 0,334 de força restante dava
+    // 1,15°/s, uma volta a cada 5 min — abaixo do limiar de percepção.
+    // Os dois regimes leem o mesmo `spin`, que congela sob controle do usuário,
+    // então o arrasto (M-22) continua tendo prioridade sobre ambos.
+    const spinning = -spin.current * IDLE_SPEED
+    const swaying = target.y + Math.sin(spin.current * SWAY_SPEED) * SWAY_AMPLITUDE
+    const wantY = spinning * (1 - eased) + swaying * eased
     const wantX = target.x * eased
     const wantScale = 1 + eased * 0.42
 
@@ -177,6 +191,7 @@ export function Globe({ progress, drag }: Props) {
 
     g.rotation.y = base.current.y + d.offset.y
     g.rotation.x = clampedX
+
   })
 
   return (

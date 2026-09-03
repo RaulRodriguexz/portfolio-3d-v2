@@ -80,8 +80,9 @@ Um commit por item, com confirmação do Raul entre eles.
 
 - O site é **em inglês**. Se abrir traduzido, é o Chrome — use "Mostrar original".
 - Abaixo de 640 px a cena 3D não é montada, de propósito. O Memoji vira imagem.
-- `prefers-reduced-motion` desliga o movimento. Está em revisão se ele deve
-  desligar também as cenas inteiras — hoje desliga, e isso é excessivo.
+- `prefers-reduced-motion` desliga o movimento. Hoje ele desliga também as
+  cenas 3D inteiras, o que é excessivo — a revisão desse comportamento é a
+  **D-26**, ainda aberta.
 
 ---
 
@@ -227,7 +228,7 @@ que é o que a GPU compõe de graça. Nenhuma biblioteca nova.
 | M-5 | Anel / partículas girando devagar em volta do Memoji | Hero | 4 | ✅ pronto (`Backdrop`) |
 | M-6 | Brilho seguindo o cursor dentro dos cards, e hover nas tags | Projetos, Stack | 5, 6 | ✅ pronto |
 | M-7 | Frase de posicionamento palavra por palavra ao entrar na tela | Statement | 3 | ✅ pronto |
-| M-8 | Globo girando e aproximando Dublin conforme o scroll | Location | extra | ✅ pronto |
+| M-8 | Globo girando ao longe e aproximando Dublin no scroll; de perto, troca o giro por oscilação (D-27) | Location | extra | ✅ pronto |
 | M-9 | Fita de tecnologias rolando em loop sem emenda | Stack | 6 | ✅ pronto |
 | M-10 | Tom do fundo da página mudando de forma quase imperceptível ao rolar | global | extra | ✅ pronto |
 | M-11 | Relógio de Dublin ao vivo | Location | extra | ✅ pronto |
@@ -504,6 +505,8 @@ Toda mudança de rumo vive aqui, com data e motivo. É a memória do projeto.
 | **D-23** | 03/09 | Container passa de 1024 px para 1280 px de largura máxima | Em telas de 1440 px ou mais, sobrava margem lateral demais e o conteúdo ficava encolhido no centro. O respiro lateral cresce junto (`lg:px-12`) para o texto não encostar na borda | Ativa |
 | **D-24** | 03/09 | Globo passa a ser arrastável com o mouse, com o usuário tendo prioridade sobre o scroll | Interação direta vale mais que animação assistida — mas os dois disputavam o mesmo eixo de rotação. Regra: o arrasto assume o controle, e após ~3 s sem interação o globo volta a apontar Dublin e devolve o comando ao scroll. No toque, só gesto horizontal é capturado, para o dedo nunca prender a rolagem da página | Ativa |
 | **D-25** | 03/09 | Marcador de Dublin vira pin com haste, no lugar do círculo rente à superfície | Um círculo colado na esfera some no meio dos continentes e não lê como localização. A haste resolve, e a oclusão pela esfera opaca esconde o pin sozinha quando Dublin gira para trás — mesma técnica que tirou a cara de PNG do Memoji (D-18) | Ativa |
+| **D-26** | 03/09 | `prefers-reduced-motion` hoje desliga as cenas 3D inteiras, não só o movimento | A preferência pede menos MOVIMENTO, não menos conteúdo. Proposta em avaliação: montar as cenas congeladas — sem parallax, sem rotação contínua, sem reação ao scroll — em vez de removê-las. Afeta `useCanRender3D`, que governa as duas cenas (hero e globo), por isso não entra no mesmo lote das mudanças locais D-23/D-24/D-25 | Aberta |
+| **D-27** | 03/09 | O movimento ocioso do globo muda de **tipo** com a proximidade, não só de intensidade: giro ao longe, oscilação de perto | Girar no eixo Y e manter Dublin de frente são objetivos incompatíveis, e nenhum piso de intensidade concilia os dois — medido: 0,06 rad/s × 0,334 de força restante dá 1,15°/s, uma volta a cada 5 minutos, abaixo do limiar de percepção. Uma fração de uma velocidade imperceptível continua imperceptível. A troca por oscilação (`sin`, ±2,6°) resolve mantendo Dublin centralizada, e segue o mesmo princípio da respiração lenta do Memoji no hero: o objeto nunca parece congelado sem sair do lugar. A velocidade base do giro sobe de 0,06 para 0,12 rad/s. Altera o M-8 | Ativa |
 
 ---
 
