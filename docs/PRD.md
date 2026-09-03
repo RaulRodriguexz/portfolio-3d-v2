@@ -5,7 +5,7 @@
 | **Versão** | 2.4 |
 | **Última revisão** | 03/09/2026 |
 | **Responsável** | Raul Rodrigues ([@RaulRodriguexz](https://github.com/RaulRodriguexz)) |
-| **Status** | Aprovado — em execução (Passos 1, 2 e 4 concluídos) |
+| **Status** | Aprovado — em execução (Passos 1 a 8 concluídos, 9 parcial) |
 | **Prazo de publicação** | 10/10/2026 (embarque para Dublin: 26/10/2026) |
 | **Repositório** | `portfolio-3d-v2` |
 
