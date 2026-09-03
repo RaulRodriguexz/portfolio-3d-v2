@@ -81,19 +81,31 @@ D-05). Nenhum outro rastreador — o site não pode criar cookies (RNF-10).
 
 ## Estado atual
 
-**O site está pronto. Falta publicar.**
+**🟢 O site está no ar:** <https://portfolio-3d-v2-gilt.vercel.app>
+Repositório: <https://github.com/RaulRodriguexz/portfolio-3d-v2> · deploy
+automático a partir da `main`.
 
-Passos 1 a 9 concluídos (o 9 sem o `@vercel/analytics`, que depende da conta).
-Movimento M-1 a M-20 entregue. Auditoria do Passo 8 rodada em 03/09: zero erro
-de console, zero overflow em 360/768/1024/1440, um único `<h1>`, todas as
-âncoras com destino, todo `target="_blank"` com `rel="noreferrer"`, canvas com
-`aria-hidden`, zero cookies.
+**Leia a seção 0 do PRD antes de qualquer coisa.** Ela é o painel do projeto —
+o que já está no ar, o que está em andamento e o que depende do Raul. É a fonte
+de verdade sobre o estado; esta seção aqui é só o resumo. **Mantenha a seção 0
+atualizada ao fim de cada passo**, movendo o que terminou para "Concluído".
+
+Passos 1 a 8 concluídos. Passo 9 parcial (falta o `@vercel/analytics`). Passo 10
+parcial: repositório e deploy prontos; faltam domínio, HTTPS e o Lighthouse na
+URL de produção. Movimento M-1 a M-21 entregue.
 
 Bundle inicial: **70 KB gzip**. `three` num chunk separado de 184 KB, carregado
 depois, compartilhado pelas duas cenas.
 
-**Falta, e depende do Raul:** criar o repositório no GitHub, registrar o
-domínio, importar na Vercel, ligar o `@vercel/analytics`, e a revisão do inglês
-por uma pessoa fluente (RNF-09).
+### Fila imediata
 
-**Próximo passo: Passo 10 — deploy.**
+Um commit por item, com confirmação do Raul entre eles.
+
+| Ordem | Item | Onde | Estado |
+|---|---|---|---|
+| 1 | Container de 1024 → 1280 px (D-23) | `src/components/layout/Container.tsx` | ✅ feito |
+| 2 | Globo arrastável com o mouse (M-22, D-24) | `src/components/three/Globe.tsx`, `GlobeScene.tsx`, `src/sections/Location.tsx` | 🔨 a fazer |
+| 3 | Pin de Dublin com haste (M-23, D-25) | `src/components/three/Globe.tsx` | 🔨 a fazer |
+
+**Depende do Raul:** registrar o domínio, ligar o `@vercel/analytics`, e a
+revisão do inglês por uma pessoa fluente (RNF-09).

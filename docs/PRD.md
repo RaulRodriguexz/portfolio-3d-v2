@@ -2,15 +2,16 @@
 
 | | |
 |---|---|
-| **Versão** | 2.4 |
+| **Versão** | 2.5 |
 | **Última revisão** | 03/09/2026 |
 | **Responsável** | Raul Rodrigues ([@RaulRodriguexz](https://github.com/RaulRodriguexz)) |
 | **Status** | Aprovado — em execução (Passos 1 a 8 concluídos, 9 parcial) |
 | **Prazo de publicação** | 10/10/2026 (embarque para Dublin: 26/10/2026) |
 | **Repositório** | `portfolio-3d-v2` |
 
-> **Como ler este documento.** As seções 5 e 6 são o contrato: o que entra e o
-> que não entra. A seção 14 é o log de decisões — nada muda sem passar por lá.
+> **Como ler este documento.** A seção 0 é o painel: estado atual e fila de
+> trabalho. As seções 5 e 6 são o contrato: o que entra e o que não entra. A
+> seção 14 é o log de decisões — nada muda sem passar por lá.
 > Todo pedido de código feito ao Claude Code deve citar um `RF-xx` ou `RNF-xx`
 > daqui. Se um pedido não encontra respaldo neste documento, o pedido está
 > errado ou o documento está desatualizado; resolva isso antes de escrever
@@ -22,6 +23,7 @@
 
 | Versão | Data | O que mudou |
 |---|---|---|
+| 2.5 | 03/09/2026 | Site publicado na Vercel. Log de decisões reordenado por ID. Adicionados M-22, M-23 e D-23 a D-25. Criada a seção 0 (fila de trabalho). |
 | 2.4 | 03/09/2026 | M-18 a M-20 (inércia, cortina de entrada, tilt). Passo 8 auditado e aprovado. CV corrigido e rodapé refeito. |
 | 2.3 | 03/09/2026 | Movimento M-12 a M-16. SEO, JSON-LD, robots, sitemap, favicon e og.png prontos. Auditoria do CV (D-20). |
 | 2.2 | 03/09/2026 | Seção Location com globo 3D (D-19). Movimento M-6 a M-11 entregue. Passos 5 e 6 concluídos. |
@@ -31,6 +33,55 @@
 | 1.2 | 03/09/2026 | Hero migrado para modelo `.glb` (revertido em 1.3). |
 | 1.1 | 03/09/2026 | Passo 1 executado: tema claro, paleta roxa, tipografia Sansation. |
 | 1.0 | 03/09/2026 | Documento inicial. |
+
+---
+
+## 0. Onde estamos
+
+> **Leia esta seção primeiro.** Ela é o painel do projeto: o que já está no ar,
+> o que está sendo feito agora e o que falta. Mantenha-a atualizada ao fim de
+> cada passo — é ela que impede a próxima sessão de recomeçar do zero.
+
+**🟢 No ar:** <https://portfolio-3d-v2-gilt.vercel.app>
+Repositório: <https://github.com/RaulRodriguexz/portfolio-3d-v2> · Deploy automático a partir da `main`
+
+### Concluído
+
+| | |
+|---|---|
+| **Passos 1 a 8** | identidade visual, conteúdo, hero, cena 3D, projetos, stack, contato, auditoria |
+| **Passo 9** | parcial — SEO, JSON-LD, robots, sitemap, favicon e og.png prontos; falta o `@vercel/analytics` |
+| **Passo 10** | parcial — repositório e deploy feitos; faltam domínio, HTTPS e Lighthouse |
+| **Movimento** | M-1 a M-21 entregues (seção 5.2.1) |
+| **Qualidade** | auditoria do Passo 8 sem erros · bundle inicial 70 KB gzip · zero cookies |
+
+### 🔨 Em andamento
+
+| Ordem | Item | Onde | Estado |
+|---|---|---|---|
+| 1 | Container de 1024 → 1280 px (D-23) | `components/layout/Container.tsx` | a fazer |
+| 2 | Globo arrastável com o mouse (M-22, D-24) | `three/Globe.tsx`, `GlobeScene.tsx`, `sections/Location.tsx` | a fazer |
+| 3 | Pin de Dublin com haste (M-23, D-25) | `three/Globe.tsx` | a fazer |
+
+Um commit por item, com confirmação do Raul entre eles.
+
+### ⏳ Fila depois disso
+
+| Item | Depende de | Bloqueia |
+|---|---|---|
+| Hero: preencher a dobra com a cena e integrar melhor o Memoji | referência visual que o Raul vai enviar | — |
+| `@vercel/analytics` (RF-09) | conta na Vercel — já existe | checklist §10 |
+| Domínio `raulrodrigues.dev` + HTTPS | registro do domínio pelo Raul | §10 e a URL do `og:image` |
+| Lighthouse na URL de produção (RNF-01) | site no ar — já está | §10 |
+| Revisão do inglês por pessoa fluente (RNF-09) | o Raul encontrar o revisor | **lançamento** |
+| 4º card de projeto: B2B com geolocalização (D-21) | número de impacto que só o Raul tem | — |
+
+### Não esquecer
+
+- O site é **em inglês**. Se abrir traduzido, é o Chrome — use "Mostrar original".
+- Abaixo de 640 px a cena 3D não é montada, de propósito. O Memoji vira imagem.
+- `prefers-reduced-motion` desliga o movimento. Está em revisão se ele deve
+  desligar também as cenas inteiras — hoje desliga, e isso é excessivo.
 
 ---
 
@@ -190,6 +241,8 @@ que é o que a GPU compõe de graça. Nenhuma biblioteca nova.
 | M-19 | Cortina de entrada da página | global | extra | ✅ pronto |
 | M-20 | Cards inclinando 3,5° com o mouse | Projetos | extra | ✅ pronto |
 | M-21 | Cursor piscando dentro do ícone de laptop do header | global | extra | ✅ pronto |
+| M-22 | Globo girando por arrasto do mouse, com inércia e retorno a Dublin | Location | extra | 🔨 em andamento |
+| M-23 | Marcador de Dublin como pin com haste, ocultado pelo globo quando gira para trás | Location | extra | 🔨 em andamento |
 
 **Regras duras do movimento.**
 
@@ -436,18 +489,21 @@ Toda mudança de rumo vive aqui, com data e motivo. É a memória do projeto.
 | **D-08** | 03/09 | Hero com notebook 3D em `.glb` | Referência do eric-cole.framer.website | **Revertida por D-10** |
 | **D-09** | 03/09 | Referência eric-cole.framer.website inspecionada | Descoberto que o site **não usa 3D**: a TV é um PNG e a tela é um `.mp4`. O efeito vem de animação de scroll, não de WebGL | Ativa |
 | **D-10** | 03/09 | Hero com o Memoji como textura em cena R3F, sem `.glb` | O Memoji não existe em 3D — a Apple só exporta imagem. Textura dentro de cena WebGL entrega o mesmo efeito por 100 KB em vez de 3 MB | Ativa |
-| **D-22** | 03/09 | Hero em layout de cantos: nome em cima à esquerda, função em cima à direita, cena no centro. Marca do header virou um ícone de laptop | Texto centralizado verticalmente parece indeciso; ancorado nos cantos ele cria uma moldura e libera o miolo para a cena. O ícone é SVG e não emoji: emoji muda de desenho a cada sistema e não aceita a cor da paleta | Ativa |
-| **D-20** | 03/09 | CV reescrito e corrigido | Três erros: (1) usava `raulbilu1982@gmail.com` enquanto o site usa o `.mldev`; (2) apontava para `linkedin.com/in/raul-rodrigues-6744043b1`, URL antiga e quebrada; (3) o cabeçalho dizia "Dublin, Ireland" e o perfil logo abaixo dizia "now relocating to Dublin". Corrigidos, mais dois projetos que faltavam (Cover Letter e Titanic com links) e TypeScript/RAG na lista de skills | Resolvida |
-| **D-21** | 03/09 | O CV revelou material para um 4º card: "B2B Websites with Geolocation" | É trabalho pago, para cliente real, e casa com a seção do globo. Se entrar, é o card mais forte depois do Cover Letter. Falta só o número de impacto | Aberta |
-| **D-19** | 03/09 | Segunda cena WebGL permitida: o globo da seção Location | A regra "uma cena só" existia por causa de peso, não por dogma. O globo reaproveita o chunk do Three.js já baixado pelo hero, e a textura dos continentes foi **gerada aqui** a partir dos contornos do Natural Earth já na cor da marca — 11 KB, contra 1–2 MB de uma foto de satélite. Custo marginal quase zero, e uma foto da Terra brigaria com a paleta. Teto fixado em duas cenas | Ativa |
-| **D-17** | 03/09 | Hero reduzido a nome + função; posicionamento, CTAs e disponibilidade descem para uma seção `Statement` revelada no scroll | Primeira dobra com uma ideia só é o que faz o site parecer caro — era o princípio nº 3 da seção 5.2.1 aplicado ao conteúdo, não só ao movimento. O contato continua a um clique no menu fixo, então a conversão não perde caminho | Ativa |
-| **D-18** | 03/09 | Memoji com `alphaTest` e `depthWrite`, e órbitas centradas em z=0 | Sem isso o recorte parecia um PNG colado. Com profundidade escrita, o trecho da órbita que passa atrás dele é ocultado de verdade — oclusão é a pista de profundidade mais forte que existe | Ativa |
-| **D-16** | 03/09 | Criada a seção 5.2.1 — linguagem de movimento, com os 6 efeitos permitidos na v1 | O que torna a referência impressionante é técnica (tipografia grande, movimento ligado ao scroll, contenção), não estilo. Listar os efeitos permitidos evita que "mais uma animação" vire o novo vetor de escopo escorregando | Ativa |
+| **D-11** | 03/09 | Memoji extraído da versão de 1024 px, não da transparente de 512 | A de 512 estava cortada no topo e embaixo. O fundo `#171717` foi removido por preenchimento a partir das bordas, preservando a camiseta escura | Ativa |
 | **D-12** | 03/09 | Headline: *"I build systems that take repetitive work off people's calendars"* | Frase do próprio Raul. Fala de calendário e de pessoas, não de tecnologia — a linguagem de quem contrata | Ativa |
 | **D-13** | 03/09 | E-mail do site: `raulrodrigues.mldev@gmail.com` | É o que já consta no CV. Precisa bater com o Contact info do LinkedIn | Ativa |
 | **D-14** | 03/09 | A v1 sobe com 3 projetos: 1 em destaque, 2 compactos | Os projetos grandes de IA virão depois do site e assumirão o destaque. O trabalho com clientes aparece como linha de credibilidade no Sobre, não como card | Ativa |
 | **D-15** | 03/09 | Títulos de seção corrigidos para inglês | O site é em inglês mas quatro títulos estavam em português. Menu em inglês e conteúdo em português é erro visível na primeira dobra | Ativa |
-| **D-11** | 03/09 | Memoji extraído da versão de 1024 px, não da transparente de 512 | A de 512 estava cortada no topo e embaixo. O fundo `#171717` foi removido por preenchimento a partir das bordas, preservando a camiseta escura | Ativa |
+| **D-16** | 03/09 | Criada a seção 5.2.1 — linguagem de movimento, com os 6 efeitos permitidos na v1 | O que torna a referência impressionante é técnica (tipografia grande, movimento ligado ao scroll, contenção), não estilo. Listar os efeitos permitidos evita que "mais uma animação" vire o novo vetor de escopo escorregando | Ativa |
+| **D-17** | 03/09 | Hero reduzido a nome + função; posicionamento, CTAs e disponibilidade descem para uma seção `Statement` revelada no scroll | Primeira dobra com uma ideia só é o que faz o site parecer caro — era o princípio nº 3 da seção 5.2.1 aplicado ao conteúdo, não só ao movimento. O contato continua a um clique no menu fixo, então a conversão não perde caminho | Ativa |
+| **D-18** | 03/09 | Memoji com `alphaTest` e `depthWrite`, e órbitas centradas em z=0 | Sem isso o recorte parecia um PNG colado. Com profundidade escrita, o trecho da órbita que passa atrás dele é ocultado de verdade — oclusão é a pista de profundidade mais forte que existe | Ativa |
+| **D-19** | 03/09 | Segunda cena WebGL permitida: o globo da seção Location | A regra "uma cena só" existia por causa de peso, não por dogma. O globo reaproveita o chunk do Three.js já baixado pelo hero, e a textura dos continentes foi **gerada aqui** a partir dos contornos do Natural Earth já na cor da marca — 11 KB, contra 1–2 MB de uma foto de satélite. Custo marginal quase zero, e uma foto da Terra brigaria com a paleta. Teto fixado em duas cenas | Ativa |
+| **D-20** | 03/09 | CV reescrito e corrigido | Três erros: (1) usava `raulbilu1982@gmail.com` enquanto o site usa o `.mldev`; (2) apontava para `linkedin.com/in/raul-rodrigues-6744043b1`, URL antiga e quebrada; (3) o cabeçalho dizia "Dublin, Ireland" e o perfil logo abaixo dizia "now relocating to Dublin". Corrigidos, mais dois projetos que faltavam (Cover Letter e Titanic com links) e TypeScript/RAG na lista de skills | Resolvida |
+| **D-21** | 03/09 | O CV revelou material para um 4º card: "B2B Websites with Geolocation" | É trabalho pago, para cliente real, e casa com a seção do globo. Se entrar, é o card mais forte depois do Cover Letter. Falta só o número de impacto | Aberta |
+| **D-22** | 03/09 | Hero em layout de cantos: nome em cima à esquerda, função em cima à direita, cena no centro. Marca do header virou um ícone de laptop | Texto centralizado verticalmente parece indeciso; ancorado nos cantos ele cria uma moldura e libera o miolo para a cena. O ícone é SVG e não emoji: emoji muda de desenho a cada sistema e não aceita a cor da paleta | Ativa |
+| **D-23** | 03/09 | Container passa de 1024 px para 1280 px de largura máxima | Em telas de 1440 px ou mais, sobrava margem lateral demais e o conteúdo ficava encolhido no centro. O respiro lateral cresce junto (`lg:px-12`) para o texto não encostar na borda | Ativa |
+| **D-24** | 03/09 | Globo passa a ser arrastável com o mouse, com o usuário tendo prioridade sobre o scroll | Interação direta vale mais que animação assistida — mas os dois disputavam o mesmo eixo de rotação. Regra: o arrasto assume o controle, e após ~3 s sem interação o globo volta a apontar Dublin e devolve o comando ao scroll. No toque, só gesto horizontal é capturado, para o dedo nunca prender a rolagem da página | Ativa |
+| **D-25** | 03/09 | Marcador de Dublin vira pin com haste, no lugar do círculo rente à superfície | Um círculo colado na esfera some no meio dos continentes e não lê como localização. A haste resolve, e a oclusão pela esfera opaca esconde o pin sozinha quando Dublin gira para trás — mesma técnica que tirou a cara de PNG do Memoji (D-18) | Ativa |
 
 ---
 
