@@ -2,6 +2,7 @@ import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import { Container } from '../components/layout/Container'
 import { useCanRender3D } from '../hooks/useCanRender3D'
 import { useElementProgress } from '../hooks/useElementProgress'
+import { useGlobeDrag } from '../hooks/useGlobeDrag'
 import { useReveal } from '../hooks/useReveal'
 
 const GlobeScene = lazy(() => import('../components/three/GlobeScene'))
@@ -43,6 +44,7 @@ export function Location() {
   const section = useRef<HTMLElement>(null)
   const progress = useElementProgress(section)
   const canRender3D = useCanRender3D()
+  const [globeCanvas, drag] = useGlobeDrag<HTMLCanvasElement>()
   const textRef = useReveal<HTMLDivElement>(0.3)
 
   return (
@@ -58,7 +60,7 @@ export function Location() {
       >
         {canRender3D && (
           <Suspense fallback={null}>
-            <GlobeScene progress={progress} />
+            <GlobeScene progress={progress} drag={drag} canvasRef={globeCanvas} />
           </Suspense>
         )}
       </div>

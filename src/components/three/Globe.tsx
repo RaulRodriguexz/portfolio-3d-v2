@@ -1,6 +1,7 @@
 import { useMemo, useRef, type RefObject } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useTexture } from '@react-three/drei'
+import type { GlobeDragState } from '../../hooks/useGlobeDrag'
 import {
   AdditiveBlending,
   BackSide,
@@ -14,6 +15,13 @@ const PRIMARY = '#8c62ac'
 const PRIMARY_DEEP = '#6e11b0'
 
 const RADIUS = 1.6
+
+/** Inclinação vertical máxima: ±60°, para o globo nunca virar de cabeça para baixo. */
+const MAX_TILT = Math.PI / 3
+/** Tempo sem interação, em ms, até o globo voltar a apontar Dublin. */
+const RETURN_DELAY = 3000
+/** Abaixo disso o offset conta como zerado e o giro ocioso volta a correr. */
+const IDLE_EPS = 0.0005
 
 /** Dublin — as coordenadas que aparecem escritas na seção. */
 const DUBLIN = { lat: 53.3498, lon: -6.2603 }
@@ -69,6 +77,8 @@ function Marker({ position }: { position: Vector3 }) {
 type Props = {
   /** Progresso de 0 a 1 da seção na viewport — comanda o giro e a aproximação. */
   progress: RefObject<number>
+  /** Rotação somada pelo arrasto do usuário (M-22). Tem prioridade sobre o scroll. */
+  drag: RefObject<GlobeDragState>
 }
 
 /**
@@ -85,8 +95,12 @@ type Props = {
  * fotografia da Terra de 1 a 2 MB. Além de leve, combina com a paleta — uma
  * foto de satélite brigaria com o roxo.
  */
-export function Globe({ progress }: Props) {
+export function Globe({ progress, drag }: Props) {
   const group = useRef<Group>(null)
+  /** Rotação que o scroll comanda, guardada à parte do que o arrasto soma. */
+  const base = useRef({ x: 0, y: 0 })
+  /** Relógio do giro ocioso. Congela enquanto o usuário tem o controle. */
+  const spin = useRef(0)
   const texture = useTexture('/images/world-dots.png')
   texture.colorSpace = SRGBColorSpace
 
@@ -108,6 +122,7 @@ export function Globe({ progress }: Props) {
   useFrame((_, delta) => {
     const g = group.current
     if (!g) return
+    const d = drag.current
 
     // p vai de 0 (seção entrando) a 1 (seção saindo); o interessante acontece
     // no meio, então remapeio 0.15–0.75 para 0–1
@@ -115,16 +130,53 @@ export function Globe({ progress }: Props) {
     const p = Math.min(1, Math.max(0, (raw - 0.15) / 0.6))
     const eased = p * p * (3 - 2 * p) // smoothstep
 
+    // o usuário tem prioridade (D-24): enquanto ele manda, o giro ocioso
+    // congela — senão o globo escorregaria por baixo do dedo
+    const userActive =
+      d.dragging || Math.abs(d.offset.x) > IDLE_EPS || Math.abs(d.offset.y) > IDLE_EPS
+    if (!userActive) spin.current += delta
+
     // giro contínuo lento antes da aproximação, que vai cedendo lugar ao alvo
-    const idle = -_.clock.elapsedTime * 0.06
+    const idle = -spin.current * 0.06
     const wantY = idle * (1 - eased) + target.y * eased
     const wantX = target.x * eased
     const wantScale = 1 + eased * 0.42
 
     const k = 1 - Math.pow(0.002, delta)
-    g.rotation.y += (wantY - g.rotation.y) * k
-    g.rotation.x += (wantX - g.rotation.x) * k
+    base.current.y += (wantY - base.current.y) * k
+    base.current.x += (wantX - base.current.x) * k
     g.scale.setScalar(g.scale.x + (wantScale - g.scale.x) * k)
+
+    if (!d.dragging) {
+      // inércia: continua girando e desacelera depois de soltar
+      d.offset.y += d.velocity.y * delta
+      d.offset.x += d.velocity.x * delta
+      const friction = Math.pow(0.12, delta)
+      d.velocity.y *= friction
+      d.velocity.x *= friction
+
+      // passados ~3 s sem interação o offset volta a zero. Zerar o offset é,
+      // por construção, devolver o comando ao scroll e reapontar Dublin
+      if (performance.now() - d.lastInteraction > RETURN_DELAY) {
+        const back = 1 - Math.pow(0.15, delta)
+        d.offset.y -= d.offset.y * back
+        d.offset.x -= d.offset.x * back
+        d.velocity.y = 0
+        d.velocity.x = 0
+      }
+    }
+
+    // o limite vale sobre o valor composto, não só sobre o offset; corrigir o
+    // offset na parede evita que ele acumule um crédito invisível de rotação
+    const composedX = base.current.x + d.offset.x
+    const clampedX = Math.min(MAX_TILT, Math.max(-MAX_TILT, composedX))
+    if (clampedX !== composedX) {
+      d.offset.x = clampedX - base.current.x
+      d.velocity.x = 0
+    }
+
+    g.rotation.y = base.current.y + d.offset.y
+    g.rotation.x = clampedX
   })
 
   return (
