@@ -33,7 +33,12 @@ export const profile = {
    * Coluna curta de metadados das seções cuja metade direita ficava vazia
    * (D-32). É informação, não enfeite — por isso mono, e por isso vive aqui.
    */
-  sectionMeta: ['2025 — now', 'Dublin, IE', 'Open to roles'],
+  sectionMeta: {
+    /** About — contexto de experiência: onde ele já esteve. */
+    about: ['Since 2025', 'Marketing · Legal · Transport · Dental', 'Self-taught'],
+    /** Contact — o que a pessoa pode fazer agora. */
+    contact: ['Dublin, IE', 'Open to roles', 'Freelance too'],
+  },
 
   /**
    * D-34 / M-24 — o único número grande da página. Um só: dois viram painel e

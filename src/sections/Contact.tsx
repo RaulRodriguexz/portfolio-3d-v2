@@ -13,7 +13,7 @@ export function Contact() {
   const { email, github, linkedin, cv } = profile.links
 
   return (
-    <Section id="contact" eyebrow="Contact" title="Let’s talk" meta={profile.sectionMeta}>
+    <Section id="contact" eyebrow="Contact" title="Let’s talk" meta={profile.sectionMeta.contact}>
       <p className="max-w-[36rem] text-base leading-relaxed text-muted">
         {profile.contactPitch}
       </p>
