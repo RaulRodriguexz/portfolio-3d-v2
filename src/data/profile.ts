@@ -49,6 +49,9 @@ export const profile = {
     suffix: ' min → under a minute',
   },
 
+  /** D-42 — a ação fixa no topo. Curta: o header é fino e continua fino. */
+  ctaLabel: 'Get in touch',
+
   /** D-35 — o trajeto, em mono, junto das coordenadas do globo. */
   route: 'BR → IE',
 

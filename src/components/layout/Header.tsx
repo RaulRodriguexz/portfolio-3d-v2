@@ -58,7 +58,14 @@ export function Header() {
         scrolled ? 'border-b border-line/70 bg-surface/85 backdrop-blur-md' : 'bg-transparent'
       }`}
     >
-      <Container className="flex h-16 items-center justify-between">
+      {/*
+        `wide` de propósito (D-42): o hero usa `Container wide`, e sem isto o
+        header ficava numa largura máxima menor. A 1440 px as duas coincidiam
+        por acaso — ambas presas ao padding — mas a 1920 px davam 60 px de
+        diferença à esquerda e 64 px à direita. Duas bordas quase iguais são
+        piores que duas claramente diferentes: é o que se lê como "torto".
+      */}
+      <Container wide className="relative flex h-16 items-center justify-between">
         {/* marca: um laptop desenhado em SVG em vez de emoji — emoji muda de
             desenho a cada sistema operacional e não aceita a cor da paleta */}
         <a
@@ -106,7 +113,16 @@ export function Header() {
           </span>
         </a>
 
-        <nav className="hidden items-center gap-8 sm:flex" aria-label="Main">
+        {/*
+          Centrada no container por posicionamento absoluto, não por
+          `justify-between`: com três itens de larguras diferentes, o do meio
+          só fica no centro por coincidência. A ordem no DOM continua
+          marca → navegação → ação, que é a ordem visual (RNF-06).
+        */}
+        <nav
+          className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 sm:flex"
+          aria-label="Main"
+        >
           {navItems.map((item) => {
             const isActive = active === item.id
             return (
@@ -131,15 +147,31 @@ export function Header() {
           })}
         </nav>
 
-        <button
-          type="button"
-          className="-mr-2 p-2 text-sm text-muted sm:hidden"
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          onClick={() => setOpen((v) => !v)}
-        >
-          {open ? 'Close' : 'Menu'}
-        </button>
+        <div className="flex items-center">
+          {/* âncora, não botão: o header é fino e continua fino (D-42) */}
+          <a
+            href="#contact"
+            className="group -mr-1 hidden items-center gap-1.5 p-1 text-sm text-primary-deep transition-opacity hover:opacity-75 sm:inline-flex"
+          >
+            {profile.ctaLabel}
+            <span
+              aria-hidden="true"
+              className="transition-transform duration-200 group-hover:translate-x-0.5"
+            >
+              →
+            </span>
+          </a>
+
+          <button
+            type="button"
+            className="-mr-2 p-2 text-sm text-muted sm:hidden"
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? 'Close' : 'Menu'}
+          </button>
+        </div>
       </Container>
 
       {open && (
@@ -148,7 +180,7 @@ export function Header() {
           className="border-t border-line/70 bg-surface/95 backdrop-blur-md sm:hidden"
           aria-label="Mobile"
         >
-          <Container className="flex flex-col py-2">
+          <Container wide className="flex flex-col py-2">
             {navItems.map((item) => (
               <a
                 key={item.id}
@@ -161,6 +193,21 @@ export function Header() {
                 {item.label}
               </a>
             ))}
+
+            {/*
+              D-42 — no mobile o CTA não cabe ao lado do botão Menu sem apertar
+              a marca, então ele vira o último item do menu, destacado por cor e
+              por uma linha acima. Continua sendo um caminho de contato a um
+              toque, que é o que a decisão pede.
+            */}
+            <a
+              href="#contact"
+              onClick={() => setOpen(false)}
+              className="mt-1 flex items-center gap-1.5 border-t border-line/60 py-3 text-sm text-primary-deep"
+            >
+              {profile.ctaLabel}
+              <span aria-hidden="true">→</span>
+            </a>
           </Container>
         </nav>
       )}
