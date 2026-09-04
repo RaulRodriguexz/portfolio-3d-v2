@@ -2,6 +2,7 @@ import { Section } from '../components/layout/Section'
 import { useReveal } from '../hooks/useReveal'
 import { EmptyState } from '../components/ui/EmptyState'
 import { profile } from '../data/profile'
+import { Emphasis } from '../components/ui/Emphasis'
 
 /** Seção 2 do PRD — responde "por que confiar nele?". */
 export function About() {
@@ -25,7 +26,7 @@ function Paragraph({ text, index }: { text: string; index: number }) {
   const ref = useReveal<HTMLParagraphElement>(0.2)
   return (
     <p ref={ref} className="reveal" style={{ transitionDelay: `${index * 110}ms` }}>
-      {text}
+      <Emphasis text={text} />
     </p>
   )
 }

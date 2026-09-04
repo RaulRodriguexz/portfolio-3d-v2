@@ -1,6 +1,7 @@
 import { Container } from '../components/layout/Container'
 import { Button } from '../components/ui/Button'
 import { WordReveal } from '../components/ui/WordReveal'
+import { Emphasis } from '../components/ui/Emphasis'
 import { useReveal } from '../hooks/useReveal'
 import { profile } from '../data/profile'
 
@@ -23,7 +24,7 @@ export function Statement() {
 
         <div ref={ref} className="reveal" style={{ transitionDelay: '420ms' }}>
           <p className="mt-9 max-w-[38rem] text-base leading-relaxed text-muted sm:text-lg">
-            {profile.subheadline}
+            <Emphasis text={profile.subheadline} />
           </p>
 
           <div className="mt-11 flex flex-wrap gap-4">

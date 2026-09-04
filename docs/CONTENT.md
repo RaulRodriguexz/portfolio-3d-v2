@@ -8,6 +8,10 @@ meu está marcado.
 **Status:** ✅ **aprovado em 03/09/2026.** Headline, e-mail e estratégia de
 projetos decididos. Este texto está pronto para ir para `src/data/` no Passo 2.
 
+**Convenção de ênfase (D-38):** um par de `**` marca o único trecho destacado
+do parágrafo. O site o renderiza em `primary-deep` pelo componente `Emphasis`.
+Um por parágrafo — dois destaques na mesma frase anulam um ao outro.
+
 Idioma do site: **inglês**. A tradução embaixo de cada bloco é só para
 conferência.
 
@@ -87,9 +91,9 @@ foco.
 *(sua linguagem do LinkedIn + o método que você me descreveu hoje)*
 
 > A self-taught AI and automation developer. I work where things are ambiguous
-> and unstructured — turning messy problems into clear plans, then into systems
-> that connect apps, models and APIs so information moves on its own. Running
-> for companies in marketing, legal, transport and dental since 2025.
+> — turning messy problems into clear plans, then into systems that connect
+> apps, models and APIs so **information moves on its own**. Running in
+> production for companies in marketing, legal, transport and dental since 2025.
 
 *PT: Desenvolvedor autodidata de IA e automação. Trabalho onde as coisas são
 ambíguas e desestruturadas — transformo problemas bagunçados em planos claros, e
@@ -118,16 +122,16 @@ desde 2025.*
 > curiosity into work.
 >
 > Since 2025 I have worked directly with company owners, and the pattern
-> repeats: the team is not slow, the process is. Information gets lost between
-> people, payments are handled by hand, and the website does not connect to
-> anything.
+> repeats: **the team is not slow, the process is**. Information gets lost
+> between people, payments are handled by hand, and the website does not
+> connect to anything.
 >
 > My job is to work where things are ambiguous: turn a messy problem into a
-> clear plan, and only then build. Usually the answer is an automation, an AI
-> assistant, or a system that finally has everything in one place.
+> clear plan, **and only then build**. Usually the answer is an automation, an
+> AI assistant, or a system that finally has everything in one place.
 >
-> In October 2026 I move to Dublin to study at SEDA College and keep building
-> inside the European tech ecosystem.
+> In **October 2026** I move to Dublin to study at SEDA College and keep
+> building inside the European tech ecosystem.
 
 *PT: Entrei em tecnologia ainda criança, no dia em que um computador apareceu em
 casa. Python primeiro, depois Java, C++ e C# — e no fim as ferramentas de IA que
@@ -144,7 +148,7 @@ College.*
 
 *(fecha com uma frase sua: "I read everything that arrives")*
 
-> If your team is losing hours every week to something a machine should be
+> If your team is **losing hours every week** to something a machine should be
 > doing, tell me about it. I'm open to roles in Dublin and to freelance work,
 > and I read everything that arrives.
 
@@ -202,8 +206,8 @@ reais te pagam, sem precisar expor cliente nem inventar número.
 - **O que você construiu:** Built from a written product spec: React, React
   Three Fiber and Tailwind, with the 3D scene code-split so the content renders
   before the WebGL bundle loads.
-- **Impacto:** Loads fast on mobile and degrades to a fully usable site without
-  WebGL.
+- **Impacto:** 70 KB of JavaScript before the 3D loads — and fully usable
+  with WebGL switched off.
 - **Stack:** React · TypeScript · React Three Fiber · Tailwind
 - **Repo:** https://github.com/RaulRodriguexz/portfolio-3d-v2
 

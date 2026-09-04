@@ -1,6 +1,7 @@
 import { Section } from '../components/layout/Section'
 import { Button } from '../components/ui/Button'
 import { CopyEmail } from '../components/ui/CopyEmail'
+import { Emphasis } from '../components/ui/Emphasis'
 import { profile } from '../data/profile'
 
 /**
@@ -15,7 +16,7 @@ export function Contact() {
   return (
     <Section id="contact" eyebrow="Contact" title="Let’s talk" meta={profile.sectionMeta.contact}>
       <p className="max-w-[36rem] text-base leading-relaxed text-muted">
-        {profile.contactPitch}
+        <Emphasis text={profile.contactPitch} />
       </p>
 
       <div className="mt-8 flex flex-wrap gap-4">
