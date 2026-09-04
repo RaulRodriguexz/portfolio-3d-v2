@@ -121,8 +121,9 @@ Um commit por item, com confirmação do Raul entre eles.
 
 **Depende do Raul:**
 
-- **testar o arrasto do globo com mouse e com dedo** — nenhuma medição
-  substitui isso, e o M-22 está no ar sem esse teste;
+- **testar o arrasto do globo com o dedo, no celular** — com mouse já foi
+  testado e aprovado em 04/09. Falta o caso em que o gesto pode roubar a
+  rolagem vertical da página, que nenhuma medição daqui reproduz;
 - **julgar a estética** das entregas D-32 a D-35 (metadados, numeração, faixa
   de impacto, `BR → IE`) e do D-38 (ênfase tipográfica);
 - registrar o domínio e ligar o `@vercel/analytics`;

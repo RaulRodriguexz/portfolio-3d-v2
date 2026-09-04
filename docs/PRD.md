@@ -283,7 +283,7 @@ que é o que a GPU compõe de graça. Nenhuma biblioteca nova.
 | M-19 | Cortina de entrada da página | global | extra | ✅ pronto |
 | M-20 | Cards inclinando 3,5° com o mouse | Projetos | extra | ✅ pronto |
 | M-21 | Cursor piscando dentro do ícone de laptop do header | global | extra | ✅ pronto |
-| M-22 | Globo girando por arrasto do mouse, com inércia e retorno a Dublin | Location | extra | ✅ código pronto (D-29, D-30) — **falta o teste de mão do Raul** |
+| M-22 | Globo girando por arrasto do mouse, com inércia e retorno a Dublin | Location | extra | ✅ pronto — testado à mão em 04/09, com mouse |
 | M-23 | Marcador de Dublin como pin com haste, ocultado pelo globo quando gira para trás | Location | extra | 🔨 em andamento |
 | M-24 | Número de impacto contando até o valor final ao entrar na tela, uma vez só | Statement → Projetos | extra | ✅ pronto |
 | M-25 | Fio roxo desenhando-se ao rolar, do hero até o globo, por `stroke-dashoffset` | global | extra | 🔨 em andamento (D-37) |
