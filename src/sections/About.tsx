@@ -6,7 +6,7 @@ import { profile } from '../data/profile'
 /** Seção 2 do PRD — responde "por que confiar nele?". */
 export function About() {
   return (
-    <Section id="about" eyebrow="About" title="How I work">
+    <Section id="about" eyebrow="About" title="How I work" meta={profile.sectionMeta}>
       {profile.about.length === 0 ? (
         <EmptyState step="Passo 2" file="src/data/profile.ts → about" />
       ) : (

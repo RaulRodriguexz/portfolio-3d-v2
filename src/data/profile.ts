@@ -29,6 +29,24 @@ export const profile = {
     'In October 2026 I move to Dublin to study at SEDA College and keep building inside the European tech ecosystem.',
   ],
 
+  /**
+   * Coluna curta de metadados das seções cuja metade direita ficava vazia
+   * (D-32). É informação, não enfeite — por isso mono, e por isso vive aqui.
+   */
+  sectionMeta: ['2025 — now', 'Dublin, IE', 'Open to roles'],
+
+  /**
+   * D-34 / M-24 — o único número grande da página. Um só: dois viram painel e
+   * o efeito se anula (princípio nº 3 da seção 5.2.1 do PRD).
+   */
+  impact: {
+    count: 30,
+    suffix: ' min → under a minute',
+  },
+
+  /** D-35 — o trajeto, em mono, junto das coordenadas do globo. */
+  route: 'BR → IE',
+
   /** Chamada final da seção de contato. */
   contactPitch:
     'If your team is losing hours every week to something a machine should be doing, tell me about it. I’m open to roles in Dublin and to freelance work, and I read everything that arrives.',

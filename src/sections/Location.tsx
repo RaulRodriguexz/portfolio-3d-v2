@@ -4,6 +4,8 @@ import { useCanRender3D } from '../hooks/useCanRender3D'
 import { useElementProgress } from '../hooks/useElementProgress'
 import { useGlobeDrag } from '../hooks/useGlobeDrag'
 import { useReveal } from '../hooks/useReveal'
+import { profile } from '../data/profile'
+import { sectionNumber } from '../data/nav'
 
 const GlobeScene = lazy(() => import('../components/three/GlobeScene'))
 
@@ -72,7 +74,7 @@ export function Location() {
       <Container className="relative z-10">
         <div ref={textRef} className="reveal max-w-[24ch]">
           <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-primary-deep">
-            Based in
+            {sectionNumber('location')} / Based in
           </p>
           <h2 className="text-[2.4rem] font-bold leading-[1.05] tracking-tight sm:text-[3.2rem]">
             Dublin,
@@ -89,6 +91,11 @@ export function Location() {
               <dd>
                 <DublinClock />
               </dd>
+            </div>
+            {/* D-35 — o trajeto, ao lado das coordenadas: dado, não enfeite */}
+            <div className="flex gap-3">
+              <dt className="text-muted/70">route</dt>
+              <dd className="text-primary-deep">{profile.route}</dd>
             </div>
           </dl>
         </div>

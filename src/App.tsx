@@ -8,6 +8,7 @@ import { Statement } from './sections/Statement'
 import { Location } from './sections/Location'
 import { About } from './sections/About'
 import { Projects } from './sections/Projects'
+import { ImpactBand } from './components/ui/ImpactBand'
 import { Stack } from './sections/Stack'
 import { Contact } from './sections/Contact'
 
@@ -34,6 +35,7 @@ export default function App() {
         <Hero />
         <Statement />
         <About />
+        <ImpactBand />
         <Projects />
         <Stack />
         <Location />
