@@ -58,7 +58,7 @@ export function ProjectCard({ project }: { project: Project }) {
         )}
       </header>
 
-      <dl className="max-w-[68ch] space-y-3 text-sm leading-relaxed">
+      <dl className="max-w-[30rem] space-y-3 text-sm leading-relaxed">
         <div>
           <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted/70">
             Problem

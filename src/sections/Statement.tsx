@@ -22,7 +22,7 @@ export function Statement() {
         </h2>
 
         <div ref={ref} className="reveal" style={{ transitionDelay: '420ms' }}>
-          <p className="mt-9 max-w-[68ch] text-base leading-relaxed text-muted sm:text-lg">
+          <p className="mt-9 max-w-[38rem] text-base leading-relaxed text-muted sm:text-lg">
             {profile.subheadline}
           </p>
 

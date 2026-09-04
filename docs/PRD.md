@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Versão** | 2.6 |
+| **Versão** | 2.8 |
 | **Última revisão** | 04/09/2026 |
 | **Responsável** | Raul Rodrigues ([@RaulRodriguexz](https://github.com/RaulRodriguexz)) |
 | **Status** | Aprovado — em execução (Passos 1 a 8 concluídos, 9 parcial) |
@@ -23,6 +23,8 @@
 
 | Versão | Data | O que mudou |
 |---|---|---|
+| 2.8 | 04/09/2026 | Auditoria medida no site em produção: sem overflow em 360–1920 px, fallback de mobile correto, mas o limite de leitura do D-31 falhou (D-39). |
+| 2.7 | 04/09/2026 | D-29, D-30 e D-31 entregues e em produção (`a3755ec`). Adicionados D-36 (grão), D-37 (fio roxo), D-38 (ênfase tipográfica no conteúdo) e M-25. RNF-08 confirmado na prática. |
 | 2.6 | 04/09/2026 | Revisão do site no ar. Log reordenado (D-28 estava antes do D-27). Adicionados D-29 a D-35 e M-24. RNF-05 passa a incluir 1920 px. Fila da seção 0 corrigida: itens marcados "a fazer" já tinham sido entregues. |
 | 2.5 | 03/09/2026 | Site publicado na Vercel. Log de decisões reordenado por ID. Adicionados M-22, M-23 e D-23 a D-25. Criada a seção 0 (fila de trabalho). |
 | 2.4 | 03/09/2026 | M-18 a M-20 (inércia, cortina de entrada, tilt). Passo 8 auditado e aprovado. CV corrigido e rodapé refeito. |
@@ -53,33 +55,43 @@ Repositório: <https://github.com/RaulRodriguexz/portfolio-3d-v2> · Deploy auto
 | **Passos 1 a 8** | identidade visual, conteúdo, hero, cena 3D, projetos, stack, contato, auditoria |
 | **Passo 9** | parcial — SEO, JSON-LD, robots, sitemap, favicon e og.png prontos; falta o `@vercel/analytics` |
 | **Passo 10** | parcial — repositório e deploy feitos; faltam domínio, HTTPS e Lighthouse |
-| **Movimento** | M-1 a M-21 entregues (seção 5.2.1) |
+| **Movimento** | M-1 a M-22 e M-24 entregues (seção 5.2.1) |
 | **Qualidade** | auditoria do Passo 8 sem erros · bundle inicial 70 KB gzip · zero cookies |
+| **Arrasto do globo** | D-29 e D-30 entregues — captura na `<section>`, critério a 45°, `touch-action: pan-y pinch-zoom`, inércia dobrada na `base` |
+| **Largura** | D-31 **parcial** — Container 96 rem e hero 104 rem entregues; o limite de leitura falhou, ver D-39 |
+| **Produção** | `a3755ec` · deploy automático da `main` confirmado na prática (RNF-08) |
 
 ### 🔨 Em andamento
 
 | Ordem | Item | Onde | Estado |
 |---|---|---|---|
-| 1 | Captura e classificação do arrasto (D-29) | `hooks/useGlobeDrag.ts`, `sections/Location.tsx` | a fazer |
-| 2 | Inércia na soltura do globo (D-30) | `hooks/useGlobeDrag.ts`, `three/Globe.tsx` | a fazer |
-| 3 | Largura de conteúdo e limite de leitura (D-31) | `components/layout/Container.tsx`, `sections/Hero.tsx`, seções com prosa | a fazer |
-| 4 | Densidade lateral e ritmo (D-32, D-33, D-34, D-35 · M-24) | `components/layout/Section.tsx`, `sections/*`, `data/*` | a fazer |
+| 1 | Densidade lateral e ritmo (D-32, D-33, D-34, D-35 · M-24) | `components/layout/Section.tsx`, `sections/*`, `data/*` | a fazer |
+| 2 | Limite de leitura em `rem`, com aceite por medição (D-39) | `sections/*`, `ui/ProjectCard.tsx` | a fazer |
+| 3 | Ênfase tipográfica no conteúdo (D-38) | `data/profile.ts`, `data/projects.ts`, novo `ui/Emphasis.tsx` | a fazer |
+| 3 | Grão sobre a página (D-36) | `index.css` ou `layout/Grain.tsx` | a fazer |
+| 4 | Fio roxo ligando hero e globo (D-37 · M-25) | novo `ui/Thread.tsx`, `App.tsx` | a fazer |
 | 5 | Pin de Dublin com haste (M-23, D-25) | `three/Globe.tsx` → extrair `three/Marker.tsx` | a fazer |
+| 6 | `WordReveal`: `h1.textContent` sem espaço | `ui/WordReveal.tsx` | a fazer |
 
 Um commit por item, com confirmação do Raul entre eles.
 
-**Já entregue mas ainda sob observação:** o giro por repouso (M-8, D-28) e o
-arrasto do globo (M-22, D-24) estão no ar. O arrasto ficou com dois defeitos
-confirmados em teste — ver D-29 e D-30. A extração do `Marker` para arquivo
-próprio já está **autorizada**: o `Globe.tsx` passou de 150 linhas e a regra 8
-do `CLAUDE.md` manda quebrar.
+**Sob observação:** as entregas de D-28 a D-31 estão em produção mas **nenhuma
+foi validada com olho em navegador**. A validação de 360 a 1920 px é do Raul e
+segue pendente. A extração do `Marker` para arquivo próprio já está
+**autorizada**: o `Globe.tsx` está em 226 linhas contra a regra 8 do
+`CLAUDE.md`.
+
+**Limitação de ferramenta:** o conector da Vercel devolve lista vazia em
+`list_projects` no time AVVIA, apesar de o projeto existir e publicar. É
+permissão do conector, não do projeto. Enquanto durar, a confirmação de deploy
+sai pela API do GitHub, que registra os deployments criados pela Vercel.
 
 ### ⏳ Fila depois disso
 
 | Item | Depende de | Bloqueia |
 |---|---|---|
-| `WordReveal`: `h1.textContent` devolve "RaulRodrigues", sem espaço | — | leitor de tela, indexação, copiar-colar |
-| Hero: o miolo abaixo do Memoji está oco — vão grande até a headline | decisão de layout junto com D-31 e D-34 | — |
+| Teste do arrasto do globo com mouse e com dedo (M-22, D-29, D-30) | o Raul, no navegador — é o único aceite que medição não substitui | fechar M-22 |
+| Hero: o miolo abaixo do Memoji está oco — vão grande até a headline | decisão de layout junto com D-34 e D-37 | — |
 | `@vercel/analytics` (RF-09) | conta na Vercel — já existe | checklist §10 |
 | Domínio `raulrodrigues.dev` + HTTPS | registro do domínio pelo Raul | §10 e a URL do `og:image` |
 | Lighthouse na URL de produção (RNF-01) | site no ar — já está | §10 |
@@ -260,11 +272,15 @@ que é o que a GPU compõe de graça. Nenhuma biblioteca nova.
 | M-22 | Globo girando por arrasto do mouse, com inércia e retorno a Dublin | Location | extra | ⚠️ no ar com defeito — ver D-29 e D-30 |
 | M-23 | Marcador de Dublin como pin com haste, ocultado pelo globo quando gira para trás | Location | extra | 🔨 em andamento |
 | M-24 | Número de impacto contando até o valor final ao entrar na tela, uma vez só | Statement → Projetos | extra | 🔨 em andamento (D-34) |
+| M-25 | Fio roxo desenhando-se ao rolar, do hero até o globo, por `stroke-dashoffset` | global | extra | 🔨 em andamento (D-37) |
 
 **Regras duras do movimento.**
 
 - Só `transform` e `opacity`. Animar `width`, `height`, `top` ou `left` obriga o
   navegador a recalcular layout a cada quadro e derruba o desempenho no celular.
+  **Única exceção autorizada:** `stroke-dashoffset` no fio do M-25 — é uma
+  propriedade de pintura de SVG, não dispara recálculo de layout, e é a única
+  forma de desenhar um traço progressivamente sem redesenhar a geometria.
 - Toda animação respeita `prefers-reduced-motion` (RF-08, RNF-06).
 - Nada de animação que bloqueie a leitura: o texto do hero tem que estar legível
   mesmo se o JavaScript falhar.
@@ -528,11 +544,15 @@ Toda mudança de rumo vive aqui, com data e motivo. É a memória do projeto.
 | **D-28** | 03/09 | O gatilho do "apontar Dublin" deixa de ser a POSIÇÃO do scroll e passa a ser o REPOUSO | O D-27 tratou o sintoma e errou a causa: o regime de giro livre só existia com `eased` baixo, e `eased` só é baixo quando a seção está mal entrando pela borda — quando dá para ver o globo, ele está travado; quando ele gira, ninguém está olhando. Nenhum ajuste de número conserta isso, porque a variável de controle estava errada. Girar e manter Dublin de frente são incompatíveis **quando disputam o mesmo instante**; amarrar cada um a um estado diferente — em movimento / em repouso — elimina a disputa em vez de administrá-la. Regra: gira a 0,2 rad/s continuamente, independente da posição da seção; após 1,5 s sem rolagem **e** sem arrasto, desacelera e assenta com Dublin de frente; ao voltar a rolar, retoma. Um carimbo de tempo só (`lastInteraction`, no `useGlobeDrag`) passa a governar scroll e arrasto juntos — por isso os ~3 s do D-24 caem para 1,5 s | Ativa |
 | **D-29** | 04/09 | A captura do arrasto sai do `<canvas>` e passa a cobrir a área visível do globo; o critério de classificação do gesto é afrouxado | Teste no navegador: o globo só responde em algumas regiões e a algumas direções iniciais. Duas causas somadas. (1) Os listeners estão presos ao canvas, cuja caixa é menor que a área onde o globo aparenta estar — fora dela o gesto não chega a existir. (2) A classificação exige `\|dx\| > \|dy\| * 1.4` no primeiro movimento além de 8 px: um puxão levemente diagonal é marcado como `scroll` e fica morto até o `pointerup`. Nova regra: zona de captura cobrindo a seção, e critério afrouxado **sem** perder a garantia de que o gesto vertical no toque nunca é roubado da página — essa garantia é inegociável e prevalece sobre a comodidade do arrasto. **Implementado:** os listeners passaram para a `<section>` — eventos de ponteiro borbulham de qualquer descendente, então a seção inteira responde sem precisar mexer em `pointer-events` de ninguém —, o critério caiu para `|dx| > |dy|` (45°) e a seção recebeu `touch-action: pan-y pinch-zoom`. Não houve trade-off: a garantia da rolagem vertical passou a vir do `touch-action` nativo, que o navegador honra à revelia do JS, então o limiar em JS deixou de ser a defesa e virou só preferência. O `pinch-zoom` é explícito porque `pan-y` sozinho desligaria o zoom de pinça na seção toda | Ativa |
 | **D-30** | 04/09 | A velocidade do gesto passa a sobreviver ao `pointerup`: soltar o globo o deixa girando e desacelerando | Hoje o movimento morre no instante em que o dedo ou o mouse solta, o que faz o globo parecer preso a um trilho em vez de ter massa. Causa provável: durante o arrasto só o `offset` se move e a `base` fica congelada, e no release a velocidade acumulada é descartada. A inércia tem de entrar **no mesmo valor de `base`** que o giro do D-28 usa; dois sistemas de movimento escrevendo em valores diferentes trazem de volta exatamente o salto que o D-28 eliminou. Depois de desacelerar, o ciclo de repouso segue igual: 1,5 s de silêncio e assenta em Dublin. **Implementado:** na borda de soltura o `offset` é dobrado dentro da `base` e a velocidade do gesto vira a velocidade angular da própria `base`, que decai até se fundir com os −0,2 rad/s do giro normal. Fora do arrasto o `offset` é sempre zero, então existe um sistema de movimento só — que é exatamente a condição que o D-28 exigia | Ativa |
-| **D-31** | 04/09 | O Container vai a **96 rem** (1536 px) **e** todo texto corrido ganha limite de leitura de 68 ch. Substitui o número do D-23 | O D-23 diagnosticou certo e resolveu pela metade: alargar a casca sem limitar a prosa troca um defeito por outro. Linha acima de ~75 caracteres faz o olho perder o começo da linha seguinte — é o motivo pelo qual jornal e livro nunca usam a largura da página. Regra: cards, grades, fita de stack e rodapé usam a largura nova inteira; parágrafos ficam capados. O hero é a exceção e vai mais largo que o padrão, para o nome e a função se aproximarem das bordas reais da tela, mantendo o layout de cantos do D-22 — ficou em 104 rem, contra 96 rem do padrão. **Nota:** a faixa de 72–76 rem avaliada na redação original era menor que os 80 rem que o D-23 já tinha entregue, e teria encolhido o site; 96 rem foi a escolha do Raul depois disso. O parágrafo do Statement também foi unificado em 68 ch, abrindo mão dos 52 ch que o D-17 usava para criar tensão tipográfica — decisão consciente, em favor de uma medida de leitura só no site inteiro | Ativa |
+| **D-31** | 04/09 | O Container vai a **96 rem** (1536 px) **e** todo texto corrido ganha limite de leitura de 68 ch. Substitui o número do D-23 | O D-23 diagnosticou certo e resolveu pela metade: alargar a casca sem limitar a prosa troca um defeito por outro. Linha acima de ~75 caracteres faz o olho perder o começo da linha seguinte — é o motivo pelo qual jornal e livro nunca usam a largura da página. Regra: cards, grades, fita de stack e rodapé usam a largura nova inteira; parágrafos ficam capados. O hero é a exceção e vai mais largo que o padrão, para o nome e a função se aproximarem das bordas reais da tela, mantendo o layout de cantos do D-22 — ficou em 104 rem, contra 96 rem do padrão. **Nota:** a faixa de 72–76 rem avaliada na redação original era menor que os 80 rem que o D-23 já tinha entregue, e teria encolhido o site; 96 rem foi a escolha do Claude Code na execução, e o Raul aprovou depois do fato. O parágrafo do Statement também foi unificado em 68 ch, abrindo mão dos 52 ch que o D-17 usava para criar tensão tipográfica — decisão consciente, em favor de uma medida de leitura só no site inteiro | Ativa |
 | **D-32** | 04/09 | Seções com metade direita vazia recebem uma coluna curta de metadados em mono | Diagnóstico a partir da captura do site no ar: `How I work` e `Let's talk` ocupam uma coluna à esquerda com metade da tela morta. A coluna (`2025 — now`, `Dublin, IE`, `Open to roles`) preenche com **informação**, não com enfeite, e cria a assimetria que o D-22 já provou funcionar no hero. É a mesma técnica da referência do D-09 | Aberta |
 | **D-33** | 04/09 | Rótulos de seção ganham numeração: `01 / ABOUT`, `02 / WORK`, `03 / STACK` | A página é uma pilha de sete blocos de forma idêntica — rótulo, título, texto, respiro, repete. Minimalismo só lê como intenção quando alguma coisa marca o ritmo; a única seção que quebra o padrão hoje (o globo) é a mais bem resolvida da página, e isso não é coincidência. Custo: uma linha no `Section.tsx` e um campo no dado | Aberta |
 | **D-34** | 04/09 | Um número de impacto sai de dentro do card e vira tipografia grande entre o Statement e os Projetos | "0.78 no Kaggle" e "30 minutos → menos de um minuto" hoje são texto miúdo dentro de card, ao lado de outros seis campos. Um número em corpo grande é a coisa que o recrutador leva embora da página, e é adição sem decoração: nenhum pixel novo de enfeite, só hierarquia. **Um só** — dois viram painel e o efeito se anula (princípio nº 3 da 5.2.1). Anima contando ao entrar na tela, uma vez (M-24), com largura reservada em `tabular-nums` para o número não empurrar o layout a cada quadro | Aberta |
 | **D-35** | 04/09 | Bandeira em emoji e foto da Irlanda **rejeitadas**; a origem é sinalizada por um marcador `BR → IE` em mono, na cor da marca | Emoji muda de desenho a cada sistema operacional — no Windows a bandeira irlandesa nem renderiza, sai como "IE" — e não aceita a cor da paleta; é o mesmo motivo que fez a marca do header virar SVG no D-22. Foto da Irlanda seria o elemento mais genérico da página, brigaria com a paleta clara e competiria com o globo, que já diz "Dublin" com mais personalidade por 11 KB (D-19). A intenção — sinalizar a mudança de país — é legítima e continua atendida, no veículo certo | Ativa |
+| **D-36** | 04/09 | Grão: uma textura de ruído sobre a página inteira, opacidade ~0,02, `pointer-events: none` | Fundo branco chapado é o que faz um site parecer template. O grão devolve materialidade — a página passa a ler como papel, não como tela vazia — e é o maior ganho de percepção por kilobyte disponível: ~2 KB em `data:` URI, um elemento, zero JavaScript, zero requisição. Restrições: `position: fixed` com `pointer-events: none` para nunca interceptar clique nem arrasto do globo; opacidade travada abaixo de 0,03, porque acima disso vira sujeira visível e prejudica o contraste AA do RNF-06; e o contraste do texto **tem de ser reconferido** depois de aplicado | Aberta |
+| **D-37** | 04/09 | Um fio roxo único atravessa a página: nasce numa órbita do hero, desce pela lateral passando atrás dos números das seções, e termina junto ao globo. Desenha-se conforme o scroll (M-25) | Hoje a página são sete blocos que não se conhecem — é o que a torna monótona apesar de cada bloco estar correto. O fio é **uma ideia só, repetida do topo ao fim**, que é o princípio nº 3 da seção 5.2.1 aplicado ao desenho e não ao movimento, e amarra as duas cenas 3D (D-19) numa narrativa em vez de deixá-las como dois enfeites separados. Custa um `<svg>` com um `<path>` e uma variável de scroll que o projeto já tem (`useScrollProgress`). Restrições: `aria-hidden`, atrás de todo conteúdo, `pointer-events: none`, e sumir por completo sob `prefers-reduced-motion` — sem ele a página continua íntegra, porque o fio não carrega informação | Aberta |
+| **D-38** | 04/09 | O conteúdo passa a admitir ênfase tipográfica: um trecho por parágrafo pode ser destacado, e o destaque vive no dado, não no JSX | Nas capturas do site no ar, todo texto de apoio tem exatamente o mesmo peso e a mesma cor — o olho não tem onde pousar e o parágrafo vira uma faixa cinza que ninguém lê. A melhor frase do site inteiro (*"the team is not slow, the process is"*) está enterrada no meio do segundo parágrafo do About. Regra: sintaxe `**...**` dentro das strings de `src/data/`, interpretada por um componente `Emphasis` de ~10 linhas que não usa biblioteca de Markdown; **no máximo um trecho por parágrafo** — dois destaques na mesma frase anulam um ao outro; o destaque usa `primary-deep` (nunca `primary`, que fica em 4,6:1 e reprova em texto pequeno, regra 6 do `CLAUDE.md`). Mantém o RF-03 intacto: o texto continua saindo de `src/data/` | Aberta |
+| **D-39** | 04/09 | O limite de leitura sai de `ch` e passa a ser declarado em `rem`, com aceite por medição. **O D-31 não está entregue** | Auditoria feita no site em produção (`a3755ec`), medindo com `canvas.measureText` a largura média real de caractere em Sansation e dividindo pela largura de cada bloco. Dois defeitos independentes. (1) **A unidade mente:** `ch` é a largura do glifo `0`, e em Sansation o `0` é bem mais largo que a minúscula média — `68ch` entrega **100 caracteres por linha**, não 68. Medido em 1920, 1440 e 1024 px: 100 caracteres no `subheadline`; 91 em 768 px nas descrições de card. A meta escrita no próprio D-31 era ~75. (2) **A regra quase não foi aplicada:** só o `subheadline` (884 px) e o `contactPitch` (748 px) têm `max-width`; os quatro parágrafos do About e as seis descrições de projeto estão em `max-width: none` e só são estreitados por acidente da grade. Nova regra: cap em `rem` por tamanho de fonte (~36 rem para 16 px, ~38 rem para 18 px, ~32 rem para 14 px) e **aceite por medição, nunca por unidade** — nenhum bloco de prosa acima de 78 caracteres por linha em 1920 px. Lição registrada: `ch` não significa "caractere" **Implementado e medido:** 36 rem para os 16 px do About e do contactPitch, 38 rem para os 18 px do subheadline, 30 rem para os 14 px dos cards e da stack. Medição por CDP em 1920 px sobre o build de produção: **13 blocos de prosa, máximo de 74 caracteres** — o pior caso caiu de 100 para 74. Nota: os 32 rem sugeridos para 14 px dariam 78,2 caracteres pela largura média medida (6,55 px/caractere), estourando o teto de 78 por dois décimos; 30 rem foi escolhido porque o aceite é por medição, não por unidade. Segunda nota: a causa (b) da redação original era artefato de medida — os parágrafos do About e as descrições dos cards já estavam capados pelo `<div>` e pelo `<dl>` que os contêm, então `getComputedStyle(p).maxWidth` lia `none` enquanto a largura renderizada já era limitada. A causa real era só a unidade | Ativa |
 
 ---
 
