@@ -58,7 +58,17 @@
     transition: background-color 400ms linear;
   }
 
+  /*
+   * `position: relative` para o fio do D-37 poder ocupar a altura do DOCUMENTO
+   * com `inset: 0`; sem isto ele resolveria contra o bloco contentor inicial e
+   * teria altura de viewport.
+   *
+   * ⚠️ O body NÃO pode voltar a ter `background-color`. O grão (`::before`) e o
+   * fio vivem os dois em `z-index: -1` como camadas do body — um fundo aqui
+   * apaga os DOIS de uma vez, sem erro no console e sem nada quebrar no build.
+   */
   body {
+    position: relative;
     color: var(--color-ink);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;

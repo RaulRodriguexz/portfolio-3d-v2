@@ -2,12 +2,31 @@
 
 | | |
 |---|---|
-| **Versão** | 2.9 |
+| **Versão** | 3.0 |
 | **Última revisão** | 04/09/2026 |
 | **Responsável** | Raul Rodrigues ([@RaulRodriguexz](https://github.com/RaulRodriguexz)) |
 | **Status** | Aprovado — em execução (Passos 1 a 8 concluídos, 9 parcial) |
 | **Prazo de publicação** | 10/10/2026 (embarque para Dublin: 26/10/2026) |
 | **Repositório** | `portfolio-3d-v2` |
+
+> ### ⚠️ Regra de manutenção deste documento
+>
+> A **seção 0** e o **changelog** são mantidos pelo Claude (Cowork), que audita
+> o site em produção e a pasta `docs/`. O **Claude Code atualiza estado** —
+> mover linha de "a fazer" para "concluído", marcar `✅` no inventário de
+> movimento, e acrescentar o que foi de fato implementado ao final de uma
+> decisão existente.
+>
+> **O Claude Code não reescreve nem reordena este documento**, não apaga
+> decisões, não renumera IDs e não altera a estrutura das seções. Ideia nova de
+> escopo vai para `docs/BACKLOG.md`, decisão nova entra ao **final** do log com
+> o próximo ID livre. Se algo aqui parecer errado, **aponte em vez de
+> corrigir** — três vezes em 04/09 o que parecia erro era leitura apressada, e
+> uma vez o documento estava certo e o diagnóstico é que estava errado.
+>
+> A seção 0 já ficou obsoleta quatro vezes em dois dias. Se você entregou algo,
+> **atualize o estado dela na mesma sessão** — é a única linha de manutenção
+> que é sua.
 
 > **Como ler este documento.** A seção 0 é o painel: estado atual e fila de
 > trabalho. As seções 5 e 6 são o contrato: o que entra e o que não entra. A
@@ -23,6 +42,7 @@
 
 | Versão | Data | O que mudou |
 |---|---|---|
+| 3.0 | 04/09/2026 | M-22 fechado — arrasto testado à mão pelo Raul. D-38 (ênfase) e D-36 (grão) entregues (`bdf9906`); contraste medido em 7,48:1 no pior caso. `CLAUDE.md` corrigido e `PRD-1.md` apagado — as duas dívidas de documentação estão quitadas. |
 | 2.9 | 04/09/2026 | D-39 e o lote D-32 a D-35 + M-24 entregues (`d7fa5dc`). Backlog recebe as duas ideias adiadas de 04/09. Corrigida a contradição entre a regra 2 do `CLAUDE.md` e a D-19. |
 | 2.8 | 04/09/2026 | Auditoria medida no site em produção: sem overflow em 360–1920 px, fallback de mobile correto, mas o limite de leitura do D-31 falhou (D-39). |
 | 2.7 | 04/09/2026 | D-29, D-30 e D-31 entregues e em produção (`a3755ec`). Adicionados D-36 (grão), D-37 (fio roxo), D-38 (ênfase tipográfica no conteúdo) e M-25. RNF-08 confirmado na prática. |
@@ -60,40 +80,34 @@ Repositório: <https://github.com/RaulRodriguexz/portfolio-3d-v2> · Deploy auto
 | **Qualidade** | auditoria do Passo 8 sem erros · bundle inicial 70 KB gzip · zero cookies |
 | **Arrasto do globo** | D-29 e D-30 entregues — captura na `<section>`, critério a 45°, `touch-action: pan-y pinch-zoom`, inércia dobrada na `base` |
 | **Largura e leitura** | D-31 e D-39 entregues — Container 96 rem, hero 104 rem, prosa em `rem` com máximo medido de 74 caracteres por linha |
-| **Ritmo e densidade** | D-32 a D-35 e M-24 entregues — coluna de metadados, numeração derivada do `id`, faixa de impacto, marcador `BR → IE` |
-| **Produção** | `d7fa5dc` · deploy automático da `main` confirmado na prática (RNF-08) |
+| **Ritmo e densidade** | D-32 a D-35 e M-24 entregues — coluna de metadados por seção, numeração derivada do `id`, faixa de impacto, marcador `BR → IE` |
+| **Ênfase e material** | D-38 e D-36 entregues — cinco destaques em `primary-deep`, um por parágrafo; grão a 2,8% com contraste medido em 7,48:1 no pior caso |
+| **Produção** | `bdf9906` · deploy automático da `main` confirmado na prática (RNF-08) |
 
 ### 🔨 Em andamento
 
 | Ordem | Item | Onde | Estado |
 |---|---|---|---|
-| 1 | Ênfase tipográfica no conteúdo (D-38) | `data/profile.ts`, `data/projects.ts`, novo `ui/Emphasis.tsx` | a fazer |
-| 2 | Diferenciar a coluna de metadados por seção (D-32) | `data/profile.ts` | a fazer |
-| 3 | Grão sobre a página (D-36) | `index.css` ou `layout/Grain.tsx` | a fazer |
-| 4 | Fio roxo ligando hero e globo (D-37 · M-25) | novo `ui/Thread.tsx`, `App.tsx` | a fazer |
-| 5 | Pin de Dublin com haste (M-23, D-25) | `three/Globe.tsx` → extrair `three/Marker.tsx` | a fazer |
-| 6 | `WordReveal`: `h1.textContent` sem espaço | `ui/WordReveal.tsx` | a fazer |
+| 1 | Fio roxo ligando hero e globo (D-37 · M-25) | novo `ui/Thread.tsx`, `App.tsx` | a fazer |
+| 2 | Pin de Dublin com haste (M-23, D-25) | `three/Globe.tsx` → extrair `three/Marker.tsx` | a fazer |
+| 3 | `WordReveal`: `h1.textContent` sem espaço | `ui/WordReveal.tsx` | a fazer |
+| 4 | Diagnóstico do `WORKFLOW.md` e do `ARCHITECTURE.md` | `docs/` | a fazer |
+| 5 | Reveal palavra a palavra nos `h2` (M-26) | `layout/Section.tsx` | a fazer — **depende do item 3** |
+| 6 | Links e botões magnéticos (M-27, promovido do BACKLOG) | CTAs do Statement, copiar e-mail, baixar CV | a fazer |
+| 7 | Parágrafo de abertura do About em corpo maior (D-40) | `sections/About.tsx` | a fazer |
 
 Um commit por item, com confirmação do Raul entre eles.
 
-**Sob observação:** a medição já cobre largura, overflow, fallback de mobile e
-caracteres por linha — tudo verificado. O que **nenhuma medição substitui** e
-segue pendente é o teste do arrasto do globo com mouse e com dedo, e o
-julgamento estético das entregas D-32 a D-35. Os dois são do Raul. A extração
-do `Marker` para arquivo próprio já está **autorizada**: o `Globe.tsx` está em
-226 linhas contra a regra 8 do `CLAUDE.md`.
+**Dependência entre itens 3 e 5:** aplicar o reveal aos `h2` antes de corrigir o
+espaço do `WordReveal` transforma um defeito num `h1` em seis — `SelectedWork`,
+`HowIwork` e os demais. O item 3 vem antes, ou no mesmo commit.
 
-**Dívida de documentação:** o `.claude/CLAUDE.md` não pode ser escrito pelas
-ferramentas remotas — só o Claude Code o atualiza. Em 04/09 ele estava com a
-fila dois dias atrasada e com a regra 2 ("uma cena 3D, só no hero")
-contradizendo a D-19 desde que o globo entrou. Correção pendente, no prompt do
-Raul.
-
-**Higiene da pasta `docs/`:** existe um `PRD-1.md` de 04/09 — cópia congelada
-do PRD, criada por engano num download. **Deve ser apagada.** O `CLAUDE.md`
-manda toda sessão obedecer a `docs/PRD.md`; duas cópias quase idênticas na
-mesma pasta é como uma sessão futura acaba executando um estado antigo do
-projeto sem perceber. Um documento de verdade, um só.
+**Sob observação:** a medição cobre largura, overflow, fallback de mobile,
+caracteres por linha e contraste — tudo verificado. O arrasto do globo foi
+testado à mão pelo Raul em 04/09 e **funciona**; falta só o teste com **dedo**
+no celular, que é o caso onde o gesto ainda pode roubar a rolagem da página. O
+julgamento estético do conjunto também segue com ele. A extração do `Marker`
+para arquivo próprio já está **autorizada** (regra 8 do `CLAUDE.md`).
 
 **Limitação de ferramenta:** o conector da Vercel devolve lista vazia em
 `list_projects` no time AVVIA, apesar de o projeto existir e publicar. É
@@ -104,7 +118,7 @@ sai pela API do GitHub, que registra os deployments criados pela Vercel.
 
 | Item | Depende de | Bloqueia |
 |---|---|---|
-| Teste do arrasto do globo com mouse e com dedo (M-22, D-29, D-30) | o Raul, no navegador — é o único aceite que medição não substitui | fechar M-22 |
+| Teste do arrasto com **dedo** no celular (D-29) | o Raul, num aparelho real — é onde o gesto pode roubar a rolagem | — |
 | Hero: o miolo abaixo do Memoji está oco — vão grande até a headline | decisão de layout junto com D-34 e D-37 | — |
 | `@vercel/analytics` (RF-09) | conta na Vercel — já existe | checklist §10 |
 | Domínio `raulrodrigues.dev` + HTTPS | registro do domínio pelo Raul | §10 e a URL do `og:image` |
@@ -286,7 +300,7 @@ que é o que a GPU compõe de graça. Nenhuma biblioteca nova.
 | M-22 | Globo girando por arrasto do mouse, com inércia e retorno a Dublin | Location | extra | ✅ pronto — testado à mão em 04/09, com mouse |
 | M-23 | Marcador de Dublin como pin com haste, ocultado pelo globo quando gira para trás | Location | extra | 🔨 em andamento |
 | M-24 | Número de impacto contando até o valor final ao entrar na tela, uma vez só | Statement → Projetos | extra | ✅ pronto |
-| M-25 | Fio roxo desenhando-se ao rolar, do hero até o globo, por `stroke-dashoffset` | global | extra | 🔨 em andamento (D-37) |
+| M-25 | Fio roxo desenhando-se ao rolar, do hero até o globo, por `stroke-dashoffset` | global | extra | ✅ pronto |
 
 **Regras duras do movimento.**
 
@@ -570,7 +584,7 @@ Toda mudança de rumo vive aqui, com data e motivo. É a memória do projeto.
 | **D-34** | 04/09 | Um número de impacto sai de dentro do card e vira tipografia grande entre o Statement e os Projetos | "0.78 no Kaggle" e "30 minutos → menos de um minuto" hoje são texto miúdo dentro de card, ao lado de outros seis campos. Um número em corpo grande é a coisa que o recrutador leva embora da página, e é adição sem decoração: nenhum pixel novo de enfeite, só hierarquia. **Um só** — dois viram painel e o efeito se anula (princípio nº 3 da 5.2.1). Anima contando ao entrar na tela, uma vez (M-24), com largura reservada em `tabular-nums` para o número não empurrar o layout a cada quadro **Implementado:** faixa entre o About e os Projetos, uma linha, sem rótulo. `tabular-nums` com `min-w-[2ch]` — para dígitos o `ch` é a unidade correta, ao contrário do que o D-39 mostrou para prosa. Defeito encontrado na verificação e corrigido antes do commit: um salto instantâneo de âncora podia atravessar o elemento sem satisfazer o threshold, deixando `0 min → under a minute` na tela — o que não é animação inacabada, é afirmação falsa. Agora, se o elemento já passou por cima, o valor final aparece direto **Regra geral que sai daqui, e que vale além do M-24:** todo elemento cujo estado animado carrega significado precisa de um **estado de repouso correto** — se a animação não rodar, o que fica na tela ainda tem que ser verdade. Um contador parado em zero, uma revelação que não revelou, uma barra que não encheu: nenhum deles é uma animação inacabada, são afirmações falsas. O caminho mais provável para isso não é o navegador falhar, é o salto instantâneo de um link de âncora do próprio menu. Vale para qualquer contador ou revelação futura | Ativa |
 | **D-35** | 04/09 | Bandeira em emoji e foto da Irlanda **rejeitadas**; a origem é sinalizada por um marcador `BR → IE` em mono, na cor da marca | Emoji muda de desenho a cada sistema operacional — no Windows a bandeira irlandesa nem renderiza, sai como "IE" — e não aceita a cor da paleta; é o mesmo motivo que fez a marca do header virar SVG no D-22. Foto da Irlanda seria o elemento mais genérico da página, brigaria com a paleta clara e competiria com o globo, que já diz "Dublin" com mais personalidade por 11 KB (D-19). A intenção — sinalizar a mudança de país — é legítima e continua atendida, no veículo certo | Ativa |
 | **D-36** | 04/09 | Grão: uma textura de ruído sobre a página inteira, opacidade ~0,02, `pointer-events: none` | Fundo branco chapado é o que faz um site parecer template. O grão devolve materialidade — a página passa a ler como papel, não como tela vazia — e é o maior ganho de percepção por kilobyte disponível: ~2 KB em `data:` URI, um elemento, zero JavaScript, zero requisição. Restrições: `position: fixed` com `pointer-events: none` para nunca interceptar clique nem arrasto do globo; opacidade travada abaixo de 0,03, porque acima disso vira sujeira visível e prejudica o contraste AA do RNF-06; e o contraste do texto **tem de ser reconferido** depois de aplicado **Implementado:** o ruído é um `feTurbulence` de SVG num data: URI de ~250 bytes — **zero JS e zero requisição de rede**. Fica num `body::before` com `position: fixed`, para não repintar a cada quadro de scroll, e `z-index: -1`, para ficar **atrás do conteúdo de verdade** e não apenas incapaz de interceptar clique. Isso exigiu mover o `background-color` do `<body>` para o `<html>`, o que foi barato porque o `--ambient` do M-10 já era escrito no `<html>`. Pseudo-elemento com `content: ''` não entra na árvore de acessibilidade, o que cumpre o papel do `aria-hidden` — atributo que pseudo-elemento não aceita. Opacidade 0,028. **Contraste medido por screenshot da página renderizada**, 24.960 pixels amostrados na margem, em três posições de scroll: `muted` sobre o fundo dá 7,84 / 8,10 / 8,32:1, e o pixel mais escuro do ruído dá 7,48:1 no pior caso — contra os 4,5:1 do RNF-06. `ink` fica em 18,97:1 e `primary-deep` em 8,00:1. Nenhuma redução de opacidade foi necessária | Ativa |
-| **D-37** | 04/09 | Um fio roxo único atravessa a página: nasce numa órbita do hero, desce pela lateral passando atrás dos números das seções, e termina junto ao globo. Desenha-se conforme o scroll (M-25) | Hoje a página são sete blocos que não se conhecem — é o que a torna monótona apesar de cada bloco estar correto. O fio é **uma ideia só, repetida do topo ao fim**, que é o princípio nº 3 da seção 5.2.1 aplicado ao desenho e não ao movimento, e amarra as duas cenas 3D (D-19) numa narrativa em vez de deixá-las como dois enfeites separados. Custa um `<svg>` com um `<path>` e uma variável de scroll que o projeto já tem (`useScrollProgress`). Restrições: `aria-hidden`, atrás de todo conteúdo, `pointer-events: none`, e sumir por completo sob `prefers-reduced-motion` — sem ele a página continua íntegra, porque o fio não carrega informação | Aberta |
+| **D-37** | 04/09 | Um fio roxo único atravessa a página: nasce numa órbita do hero, desce pela lateral passando atrás dos números das seções, e termina junto ao globo. Desenha-se conforme o scroll (M-25) | Hoje a página são sete blocos que não se conhecem — é o que a torna monótona apesar de cada bloco estar correto. O fio é **uma ideia só, repetida do topo ao fim**, que é o princípio nº 3 da seção 5.2.1 aplicado ao desenho e não ao movimento, e amarra as duas cenas 3D (D-19) numa narrativa em vez de deixá-las como dois enfeites separados. Custa um `<svg>` com um `<path>` e uma variável de scroll que o projeto já tem (`useScrollProgress`). Restrições: `aria-hidden`, atrás de todo conteúdo, `pointer-events: none`, e sumir por completo sob `prefers-reduced-motion` — sem ele a página continua íntegra, porque o fio não carrega informação **Implementado:** o caminho **não é um `<path>` escrito à mão**. A coluna dos números começa em 13,3% da largura a 1920 px, 4,7% a 1024 px e 6,7% a 360 px — nenhuma porcentagem única acerta as três, e a alternativa seria um número mágico por breakpoint. Em vez disso o caminho é gerado da geometria real: mede o `<p>` do rótulo de cada seção (o irmão anterior do `<h2>`, sem atributo novo), passa uma curva Catmull-Rom pelos centros, do hero até o globo, e remede no `ResizeObserver`. Os rótulos abaixo da Location são descartados, senão o fio desceria até o Contact e voltaria para cima, cruzando a si mesmo. **Camada:** `z-index: -1` como filho do `<body>`, acima do grão (que é `body::before`, mesmo nível, anterior na ordem de árvore) e abaixo de todo conteúdo; não cria contexto de empilhamento próprio. Exigiu `body { position: relative }`, senão `inset: 0` resolveria contra o bloco contentor inicial e o fio teria altura de viewport, não de documento. **⚠️ O `<body>` não pode voltar a ter `background-color`: isso apagaria o grão e o fio de uma vez, sem erro no console.** **Verificado por pixel, não por DOM:** A/B fotografando 140×140 px sobre o traço em três posições de scroll — 201/15/193 pixels roxos com o fio contra 0/0/0 com ele escondido, e a cor mais saturada em `rgb(193,171,212)`, que é exatamente a mistura de `#8c62ac` a 50% sobre o fundo. Comprimento desenhado cresce 1771 → 3895 → 5896, provando o `stroke-dashoffset` ligado ao scroll. Em 1920/1024/768/360 px o caminho é gerado sem overflow; sob `prefers-reduced-motion` o fio não é renderizado (paths na página caem de 2 para 1) | Ativa |
 | **D-38** | 04/09 | O conteúdo passa a admitir ênfase tipográfica: um trecho por parágrafo pode ser destacado, e o destaque vive no dado, não no JSX | Nas capturas do site no ar, todo texto de apoio tem exatamente o mesmo peso e a mesma cor — o olho não tem onde pousar e o parágrafo vira uma faixa cinza que ninguém lê. A melhor frase do site inteiro (*"the team is not slow, the process is"*) está enterrada no meio do segundo parágrafo do About. Regra: sintaxe `**...**` dentro das strings de `src/data/`, interpretada por um componente `Emphasis` de ~10 linhas que não usa biblioteca de Markdown; **no máximo um trecho por parágrafo** — dois destaques na mesma frase anulam um ao outro; o destaque usa `primary-deep` (nunca `primary`, que fica em 4,6:1 e reprova em texto pequeno, regra 6 do `CLAUDE.md`). Mantém o RF-03 intacto: o texto continua saindo de `src/data/` **Implementado:** `ui/Emphasis.tsx`, sem biblioteca de Markdown — divide a string no par de `**` e envolve o trecho num `<strong>` em `primary-deep`. Se houver mais de um par, só o primeiro vira destaque e o resto volta intacto: a regra limita a ênfase, não some texto da tela. Texto novo aplicado em `subheadline`, `about[1..3]` e `contactPitch`; `about[0]` e a headline (D-12) intocados; o `impact` de `this-site` ganhou número, como a seção 7 exige. Verificado no DOM: zero `**` visíveis, exatamente 5 `<strong>` em `oklch(0.438 0.218 303.724)`, peso 700, **um por parágrafo**. `docs/CONTENT.md` sincronizado, com a convenção do `**` explicada no cabeçalho | Ativa |
 | **D-39** | 04/09 | O limite de leitura sai de `ch` e passa a ser declarado em `rem`, com aceite por medição. **O D-31 não está entregue** | Auditoria feita no site em produção (`a3755ec`), medindo com `canvas.measureText` a largura média real de caractere em Sansation e dividindo pela largura de cada bloco. Dois defeitos independentes. (1) **A unidade mente:** `ch` é a largura do glifo `0`, e em Sansation o `0` é bem mais largo que a minúscula média — `68ch` entrega **100 caracteres por linha**, não 68. Medido em 1920, 1440 e 1024 px: 100 caracteres no `subheadline`; 91 em 768 px nas descrições de card. A meta escrita no próprio D-31 era ~75. (2) **A regra quase não foi aplicada:** só o `subheadline` (884 px) e o `contactPitch` (748 px) têm `max-width`; os quatro parágrafos do About e as seis descrições de projeto estão em `max-width: none` e só são estreitados por acidente da grade. Nova regra: cap em `rem` por tamanho de fonte (~36 rem para 16 px, ~38 rem para 18 px, ~32 rem para 14 px) e **aceite por medição, nunca por unidade** — nenhum bloco de prosa acima de 78 caracteres por linha em 1920 px. Lição registrada: `ch` não significa "caractere" **Implementado e medido:** 36 rem para os 16 px do About e do contactPitch, 38 rem para os 18 px do subheadline, 30 rem para os 14 px dos cards e da stack. Medição por CDP em 1920 px sobre o build de produção: **13 blocos de prosa, máximo de 74 caracteres** — o pior caso caiu de 100 para 74. Nota: os 32 rem sugeridos para 14 px dariam 78,2 caracteres pela largura média medida (6,55 px/caractere), estourando o teto de 78 por dois décimos; 30 rem foi escolhido porque o aceite é por medição, não por unidade. Segunda nota: a causa (b) da redação original era artefato de medida — os parágrafos do About e as descrições dos cards já estavam capados pelo `<div>` e pelo `<dl>` que os contêm, então `getComputedStyle(p).maxWidth` lia `none` enquanto a largura renderizada já era limitada. A causa real era só a unidade Terceira nota: **o aceite vale por largura de tela, não só a 1920 px**, porque tamanho de fonte responsivo muda a conta — um cap fixo em `rem` com fonte menor rende MAIS caracteres, não menos, que é a mesma armadilha do `ch` num eixo diferente. Medido nas cinco larguras: 74 caracteres em 1920, 1440, 1024 e 768 px, e 43 em 360 px. Não estourou porque a única fonte responsiva da prosa é o `sm:text-lg` do subheadline, que cai para 16 px só abaixo de 640 px, onde a viewport já aperta mais que o cap; com um breakpoint `lg:` no lugar do `sm:` o bloco teria estourado a 768 px. Qualquer classe de fonte responsiva nova em prosa obriga a remedir | Ativa |
 
