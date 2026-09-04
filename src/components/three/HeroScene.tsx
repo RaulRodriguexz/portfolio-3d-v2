@@ -58,9 +58,14 @@ export default function HeroScene() {
     >
       <Suspense fallback={null}>
         <Rig>
-          {/* centro-baixo: o texto ancora nos cantos de cima, a cena ocupa o
-              miolo da dobra sem colidir com nada */}
-          <group position={[0.55, -0.75, 0]} scale={0.9}>
+          {/*
+            D-41 — o deslocamento horizontal saiu daqui: o palco já é uma coluna
+            ancorada à direita, então empurrar a cena de novo em x seria mover
+            duas vezes. A escala subiu de 0,9 para 1,3 porque o palco ficou mais
+            baixo que a dobra inteira, e a cena é dimensionada pela altura do
+            canvas — sem isso o Memoji encolhia de 366 para 266 px de pele.
+          */}
+          <group position={[0, -0.28, 0]} scale={1.3}>
             <MemojiCard />
             <Backdrop />
           </group>

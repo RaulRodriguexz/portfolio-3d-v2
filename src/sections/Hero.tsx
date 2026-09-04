@@ -1,6 +1,6 @@
 import { Container } from '../components/layout/Container'
 import { WordReveal } from '../components/ui/WordReveal'
-import { HeroVisual } from '../components/three/HeroVisual'
+import { HeroHalo, HeroStage } from '../components/three/HeroVisual'
 import { profile } from '../data/profile'
 
 /**
@@ -17,7 +17,7 @@ export function Hero() {
       id="top"
       className="relative flex min-h-[94vh] flex-col overflow-hidden pt-28 sm:pt-32"
     >
-      <HeroVisual />
+      <HeroHalo />
 
       <Container wide className="relative z-10">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between sm:gap-10">
@@ -37,6 +37,9 @@ export function Hero() {
           </p>
         </div>
       </Container>
+
+      {/* D-41 — o palco ocupa a altura que sobra: não pode colidir com o texto */}
+      <HeroStage />
 
       {/* dica de scroll */}
       <div
