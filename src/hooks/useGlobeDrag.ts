@@ -1,4 +1,4 @@
-import { useEffect, useRef, type RefObject } from 'react'
+import { useEffect, useRef, useState, type RefObject } from 'react'
 
 /** Sensibilidade do arrasto: ~90° a cada 300 px percorridos. */
 const SENSITIVITY = 0.005
@@ -16,7 +16,10 @@ export type GlobeDragState = {
   velocity: { x: number; y: number }
   /** Verdadeiro enquanto o ponteiro está pressionado e arrastando. */
   dragging: boolean
-  /** `performance.now()` da última interação — dispara o retorno a Dublin. */
+  /**
+   * `performance.now()` da última atividade do usuário — **rolagem ou arrasto**
+   * (D-28). Um carimbo só governa os dois repousos; não existe um segundo.
+   */
   lastInteraction: number
 }
 
@@ -37,12 +40,20 @@ export type GlobeDragState = {
  * 2. **No toque, só gesto horizontal é capturado.** `touch-action: pan-y`
  *    entrega a rolagem vertical ao navegador — é a defesa que vale mesmo se o
  *    JS aqui errar. A classificação no primeiro movimento é a segunda camada.
+ *
+ * 3. **A rolagem também alimenta `lastInteraction`** (D-28). "Rolou" e
+ *    "arrastou" são o mesmo fato — atividade — então o repouso do globo é uma
+ *    leitura só, e não dois temporizadores competindo.
+ *
+ * Devolve um **callback ref**, não um ref comum: o canvas nasce depois, quando
+ * o chunk lazy do `GlobeScene` resolve. Com `useRef` o efeito rodava uma única
+ * vez, com o elemento ainda `null`, e os listeners nunca chegavam a ser presos.
  */
 export function useGlobeDrag<T extends HTMLElement>(): [
-  RefObject<T | null>,
+  (node: T | null) => void,
   RefObject<GlobeDragState>,
 ] {
-  const element = useRef<T>(null)
+  const [element, setElement] = useState<T | null>(null)
   const state = useRef<GlobeDragState>({
     offset: { x: 0, y: 0 },
     velocity: { x: 0, y: 0 },
@@ -51,7 +62,7 @@ export function useGlobeDrag<T extends HTMLElement>(): [
   })
 
   useEffect(() => {
-    const el = element.current
+    const el = element
     if (!el) return
     // quem pediu menos movimento não ganha arrasto nem inércia (ver D-26)
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -148,18 +159,25 @@ export function useGlobeDrag<T extends HTMLElement>(): [
       mode = 'undecided'
     }
 
+    // rolar conta como atividade tanto quanto arrastar (D-28)
+    const onScroll = () => {
+      state.current.lastInteraction = performance.now()
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
     el.addEventListener('pointerdown', onDown)
     el.addEventListener('pointermove', onMove)
     el.addEventListener('pointerup', onEnd)
     el.addEventListener('pointercancel', onEnd)
 
     return () => {
+      window.removeEventListener('scroll', onScroll)
       el.removeEventListener('pointerdown', onDown)
       el.removeEventListener('pointermove', onMove)
       el.removeEventListener('pointerup', onEnd)
       el.removeEventListener('pointercancel', onEnd)
     }
-  }, [])
+  }, [element])
 
-  return [element, state]
+  return [setElement, state]
 }

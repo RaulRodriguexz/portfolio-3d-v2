@@ -18,17 +18,10 @@ const RADIUS = 1.6
 
 /** Inclinação vertical máxima: ±60°, para o globo nunca virar de cabeça para baixo. */
 const MAX_TILT = Math.PI / 3
-/** Tempo sem interação, em ms, até o globo voltar a apontar Dublin. */
-const RETURN_DELAY = 3000
-/** Abaixo disso o offset conta como zerado e o giro ocioso volta a correr. */
-const IDLE_EPS = 0.0005
-
-/** Velocidade do giro ocioso, em rad/s — uma volta a cada ~52 s (D-27). */
-const IDLE_SPEED = 0.12
-/** Oscilação com Dublin de frente: ±0,045 rad = ±2,6° (D-27). */
-const SWAY_AMPLITUDE = 0.045
-/** Frequência da oscilação, em rad/s — um ciclo a cada ~14 s (D-27). */
-const SWAY_SPEED = 0.45
+/** Tempo sem rolagem nem arrasto, em ms, até o globo assentar em Dublin (D-28). */
+const REST_DELAY = 1500
+/** Velocidade do giro contínuo, em rad/s — uma volta a cada ~31 s (D-28). */
+const SPIN_SPEED = 0.2
 
 /** Dublin — as coordenadas que aparecem escritas na seção. */
 const DUBLIN = { lat: 53.3498, lon: -6.2603 }
@@ -104,10 +97,8 @@ type Props = {
  */
 export function Globe({ progress, drag }: Props) {
   const group = useRef<Group>(null)
-  /** Rotação que o scroll comanda, guardada à parte do que o arrasto soma. */
+  /** Rotação de repouso/giro, guardada à parte do que o arrasto soma. */
   const base = useRef({ x: 0, y: 0 })
-  /** Relógio do giro ocioso. Congela enquanto o usuário tem o controle. */
-  const spin = useRef(0)
   const texture = useTexture('/images/world-dots.png')
   texture.colorSpace = SRGBColorSpace
 
@@ -131,54 +122,54 @@ export function Globe({ progress, drag }: Props) {
     if (!g) return
     const d = drag.current
 
-    // p vai de 0 (seção entrando) a 1 (seção saindo); o interessante acontece
-    // no meio, então remapeio 0.15–0.75 para 0–1
+    // p vai de 0 (seção entrando) a 1 (seção saindo). Depois do D-28 ele governa
+    // só a aproximação; a rotação não olha mais para a posição da seção
     const raw = progress.current ?? 0
     const p = Math.min(1, Math.max(0, (raw - 0.15) / 0.6))
     const eased = p * p * (3 - 2 * p) // smoothstep
 
-    // o usuário tem prioridade (D-24): enquanto ele manda, o giro ocioso
-    // congela — senão o globo escorregaria por baixo do dedo
-    const userActive =
-      d.dragging || Math.abs(d.offset.x) > IDLE_EPS || Math.abs(d.offset.y) > IDLE_EPS
-    if (!userActive) spin.current += delta
-
-    // D-27 — o tipo de movimento muda com a proximidade, não só a intensidade.
-    // Ao longe, giro contínuo; de perto, oscilação em torno de Dublin. Girar no
-    // eixo Y e manter Dublin de frente são incompatíveis, e nenhum piso de
-    // intensidade concilia os dois: 0,06 rad/s com 0,334 de força restante dava
-    // 1,15°/s, uma volta a cada 5 min — abaixo do limiar de percepção.
-    // Os dois regimes leem o mesmo `spin`, que congela sob controle do usuário,
-    // então o arrasto (M-22) continua tendo prioridade sobre ambos.
-    const spinning = -spin.current * IDLE_SPEED
-    const swaying = target.y + Math.sin(spin.current * SWAY_SPEED) * SWAY_AMPLITUDE
-    const wantY = spinning * (1 - eased) + swaying * eased
-    const wantX = target.x * eased
-    const wantScale = 1 + eased * 0.42
+    // D-28 — o regime é decidido pelo REPOUSO, não pela posição da seção. Um
+    // carimbo só (`lastInteraction`) recebe rolagem e arrasto, então "parou de
+    // rolar" e "soltou o globo" são o mesmo evento, e não há dois prazos.
+    const resting = !d.dragging && performance.now() - d.lastInteraction > REST_DELAY
 
     const k = 1 - Math.pow(0.002, delta)
-    base.current.y += (wantY - base.current.y) * k
-    base.current.x += (wantX - base.current.x) * k
-    g.scale.setScalar(g.scale.x + (wantScale - g.scale.x) * k)
 
+    // arrastando, a base congela e só o offset se move: é a prioridade do M-22
     if (!d.dragging) {
-      // inércia: continua girando e desacelera depois de soltar
+      // inércia do arrasto, que corre em qualquer regime
       d.offset.y += d.velocity.y * delta
       d.offset.x += d.velocity.x * delta
       const friction = Math.pow(0.12, delta)
       d.velocity.y *= friction
       d.velocity.x *= friction
 
-      // passados ~3 s sem interação o offset volta a zero. Zerar o offset é,
-      // por construção, devolver o comando ao scroll e reapontar Dublin
-      if (performance.now() - d.lastInteraction > RETURN_DELAY) {
+      if (resting) {
+        // assenta no ângulo congruente mais próximo. Depois de girar livre,
+        // `base.y` acumulou dezenas de radianos; perseguir `target.y` cru
+        // desenrolaria várias voltas para trás em vez de no máximo meia
+        const turns = Math.round((base.current.y - target.y) / (Math.PI * 2))
+        base.current.y += (target.y + turns * Math.PI * 2 - base.current.y) * k
+
+        // o mesmo repouso zera o offset do arrasto: um pouso só, não dois
         const back = 1 - Math.pow(0.15, delta)
         d.offset.y -= d.offset.y * back
         d.offset.x -= d.offset.x * back
         d.velocity.y = 0
         d.velocity.x = 0
+      } else {
+        // giro integrado direto na base: sem acumulador absoluto, retomar o
+        // giro depois do repouso não tem de onde saltar
+        base.current.y -= SPIN_SPEED * delta
       }
     }
+
+    const wantX = resting ? target.x : 0
+    base.current.x += (wantX - base.current.x) * k
+
+    // a aproximação segue ligada ao scroll (D-19) — ela não disputa nada
+    const wantScale = 1 + eased * 0.42
+    g.scale.setScalar(g.scale.x + (wantScale - g.scale.x) * k)
 
     // o limite vale sobre o valor composto, não só sobre o offset; corrigir o
     // offset na parede evita que ele acumule um crédito invisível de rotação
@@ -191,7 +182,6 @@ export function Globe({ progress, drag }: Props) {
 
     g.rotation.y = base.current.y + d.offset.y
     g.rotation.x = clampedX
-
   })
 
   return (
