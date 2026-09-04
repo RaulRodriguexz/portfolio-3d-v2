@@ -30,7 +30,10 @@ B2B em contato dentro de 90 segundos — não impressionar tecnicamente.
 
 1. **Conteúdo nunca é escrito no JSX** (RF-03). Todo texto, projeto, link e item
    de stack vive em `src/data/`. Componente só consome.
-2. **Uma cena 3D, só no hero.** Nada de canvas em outras seções.
+2. **Duas cenas 3D no máximo, e o teto é esse** (decisão D-19): o Memoji no
+   hero e o globo da Location. As duas compartilham o mesmo chunk do `three`,
+   então a segunda custa quase nada. **Uma terceira cena é v2** — aponte a
+   seção 6 do PRD antes de codar.
 3. **Nada de `.glb`, física, pós-processamento ou shader customizado.** O
    elemento central do hero é o **Memoji do Raul como textura** num plano dentro
    da cena R3F, com geometria roxa em volta (PRD 5.2). Se pedirem laptop 3D,
@@ -92,20 +95,35 @@ atualizada ao fim de cada passo**, movendo o que terminou para "Concluído".
 
 Passos 1 a 8 concluídos. Passo 9 parcial (falta o `@vercel/analytics`). Passo 10
 parcial: repositório e deploy prontos; faltam domínio, HTTPS e o Lighthouse na
-URL de produção. Movimento M-1 a M-21 entregue.
+URL de produção. Movimento **M-1 a M-22 e M-24** entregue. Decisões D-23 a D-35,
+D-38 e D-39 em produção.
+
+**Em produção quando esta seção foi escrita: `9091b81`.** O hash corrente sai de
+`git log origin/main -1` — qualquer número anotado aqui envelhece no commit seguinte.
 
 Bundle inicial: **70 KB gzip**. `three` num chunk separado de 184 KB, carregado
 depois, compartilhado pelas duas cenas.
 
 ### Fila imediata
 
+> **Não confie nesta tabela sozinha — a fonte de verdade é a seção 0 do PRD.**
+> Se as duas divergirem, o PRD ganha, e conserte esta aqui na mesma sessão.
+
 Um commit por item, com confirmação do Raul entre eles.
 
 | Ordem | Item | Onde | Estado |
 |---|---|---|---|
-| 1 | Container de 1024 → 1280 px (D-23) | `src/components/layout/Container.tsx` | ✅ feito |
-| 2 | Globo arrastável com o mouse (M-22, D-24) | `src/components/three/Globe.tsx`, `GlobeScene.tsx`, `src/sections/Location.tsx` | 🔨 a fazer |
-| 3 | Pin de Dublin com haste (M-23, D-25) | `src/components/three/Globe.tsx` | 🔨 a fazer |
+| 1 | Grão sobre a página (D-36) | `index.css`, novo `ui/Grain.tsx` | 🔨 a fazer |
+| 2 | Fio roxo desenhado no scroll (D-37, M-25) | novo `ui/Thread.tsx`, `App.tsx` | 🔨 a fazer |
+| 3 | Pin de Dublin com haste (M-23, D-25) | `three/Globe.tsx` → extrair `three/Marker.tsx` | 🔨 a fazer |
+| 4 | `WordReveal`: `h1.textContent` devolve "RaulRodrigues" | `ui/WordReveal.tsx` | 🔨 a fazer |
+| 5 | Diagnóstico de `WORKFLOW.md` e `ARCHITECTURE.md` | `docs/` | 🔨 a fazer |
 
-**Depende do Raul:** registrar o domínio, ligar o `@vercel/analytics`, e a
-revisão do inglês por uma pessoa fluente (RNF-09).
+**Depende do Raul:**
+
+- **testar o arrasto do globo com mouse e com dedo** — nenhuma medição
+  substitui isso, e o M-22 está no ar sem esse teste;
+- **julgar a estética** das entregas D-32 a D-35 (metadados, numeração, faixa
+  de impacto, `BR → IE`) e do D-38 (ênfase tipográfica);
+- registrar o domínio e ligar o `@vercel/analytics`;
+- a revisão do inglês por uma pessoa fluente (RNF-09).

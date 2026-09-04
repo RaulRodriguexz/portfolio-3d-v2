@@ -300,6 +300,12 @@ que é o que a GPU compõe de graça. Nenhuma biblioteca nova.
   mesmo se o JavaScript falhar.
 - **Se um efeito não está nesta tabela, ele não entra na v1.** Ideia nova de
   animação vai para `docs/BACKLOG.md`.
+- **Degradar para verdade, nunca para mentira.** Todo elemento cujo estado
+  animado, interpretado ou parcial carrega significado precisa de um estado de
+  repouso correto. Se a animação não rodar, se o parser não casar, se o dado
+  vier torto — o que sobra na tela ainda tem que ser verdade. Um contador
+  parado em zero e um parágrafo com metade do texto sumida não são falhas
+  estéticas, são afirmações falsas. Origem: D-34 e D-38.
 
 ### 5.3 Requisitos funcionais
 
