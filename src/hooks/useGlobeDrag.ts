@@ -6,8 +6,13 @@ const SENSITIVITY = 0.005
 const MAX_VELOCITY = 4
 /** Quanto o gesto precisa andar, em px, antes de ser classificado. */
 const DECISION_THRESHOLD = 8
-/** O quanto o eixo horizontal precisa dominar o vertical para virar arrasto. */
-const HORIZONTAL_BIAS = 1.4
+/**
+ * O quanto o eixo horizontal precisa dominar o vertical para virar arrasto
+ * (D-29). Vale 1 — 45° cravados. Antes eram 1,4, o que matava qualquer puxão
+ * levemente diagonal. Afrouxar é seguro porque a garantia de que a rolagem
+ * vertical nunca é roubada passa a vir do `touch-action` nativo, não daqui.
+ */
+const HORIZONTAL_BIAS = 1
 
 export type GlobeDragState = {
   /** Rotação que o usuário somou por cima da que o scroll comanda. */
@@ -45,6 +50,12 @@ export type GlobeDragState = {
  *    "arrastou" são o mesmo fato — atividade — então o repouso do globo é uma
  *    leitura só, e não dois temporizadores competindo.
  *
+ * 4. **Os listeners moram na `<section>`, não no canvas** (D-29). Eventos de
+ *    ponteiro borbulham de qualquer descendente, então a seção inteira responde
+ *    ao arrasto — inclusive por cima do texto e das áreas onde o canvas não
+ *    chega. Nada precisa mexer em `pointer-events`: um filho com
+ *    `pointer-events: none` só deixa o evento cair na seção, que é quem escuta.
+ *
  * Devolve um **callback ref**, não um ref comum: o canvas nasce depois, quando
  * o chunk lazy do `GlobeScene` resolve. Com `useRef` o efeito rodava uma única
  * vez, com o elemento ainda `null`, e os listeners nunca chegavam a ser presos.
@@ -67,11 +78,9 @@ export function useGlobeDrag<T extends HTMLElement>(): [
     // quem pediu menos movimento não ganha arrasto nem inércia (ver D-26)
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
-    // o container da seção é pointer-events-none e o canvas herda isso; aqui é
-    // o único lugar onde o elemento do globo volta a receber ponteiro
-    el.style.pointerEvents = 'auto'
-    el.style.touchAction = 'pan-y'
-    el.style.cursor = 'grab'
+    // `pinch-zoom` explícito: `pan-y` sozinho desliga o zoom de pinça, e isso
+    // seria uma regressão de acessibilidade numa seção inteira (D-29)
+    el.style.touchAction = 'pan-y pinch-zoom'
 
     let pointerId: number | null = null
     let mode: 'undecided' | 'drag' | 'scroll' = 'undecided'
@@ -89,6 +98,7 @@ export function useGlobeDrag<T extends HTMLElement>(): [
       state.current.dragging = true
       el.setPointerCapture(e.pointerId)
       el.style.cursor = 'grabbing'
+      el.style.userSelect = 'none'
       lastX = e.clientX
       lastY = e.clientY
       lastTime = performance.now()
@@ -154,7 +164,8 @@ export function useGlobeDrag<T extends HTMLElement>(): [
         state.current.lastInteraction = performance.now()
         if (el.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId)
       }
-      el.style.cursor = 'grab'
+      el.style.cursor = ''
+      el.style.userSelect = ''
       pointerId = null
       mode = 'undecided'
     }

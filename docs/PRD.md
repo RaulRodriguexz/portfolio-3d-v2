@@ -2,8 +2,8 @@
 
 | | |
 |---|---|
-| **Versão** | 2.5 |
-| **Última revisão** | 03/09/2026 |
+| **Versão** | 2.6 |
+| **Última revisão** | 04/09/2026 |
 | **Responsável** | Raul Rodrigues ([@RaulRodriguexz](https://github.com/RaulRodriguexz)) |
 | **Status** | Aprovado — em execução (Passos 1 a 8 concluídos, 9 parcial) |
 | **Prazo de publicação** | 10/10/2026 (embarque para Dublin: 26/10/2026) |
@@ -23,6 +23,7 @@
 
 | Versão | Data | O que mudou |
 |---|---|---|
+| 2.6 | 04/09/2026 | Revisão do site no ar. Log reordenado (D-28 estava antes do D-27). Adicionados D-29 a D-35 e M-24. RNF-05 passa a incluir 1920 px. Fila da seção 0 corrigida: itens marcados "a fazer" já tinham sido entregues. |
 | 2.5 | 03/09/2026 | Site publicado na Vercel. Log de decisões reordenado por ID. Adicionados M-22, M-23 e D-23 a D-25. Criada a seção 0 (fila de trabalho). |
 | 2.4 | 03/09/2026 | M-18 a M-20 (inércia, cortina de entrada, tilt). Passo 8 auditado e aprovado. CV corrigido e rodapé refeito. |
 | 2.3 | 03/09/2026 | Movimento M-12 a M-16. SEO, JSON-LD, robots, sitemap, favicon e og.png prontos. Auditoria do CV (D-20). |
@@ -59,17 +60,26 @@ Repositório: <https://github.com/RaulRodriguexz/portfolio-3d-v2> · Deploy auto
 
 | Ordem | Item | Onde | Estado |
 |---|---|---|---|
-| 1 | Container de 1024 → 1280 px (D-23) | `components/layout/Container.tsx` | a fazer |
-| 2 | Globo arrastável com o mouse (M-22, D-24) | `three/Globe.tsx`, `GlobeScene.tsx`, `sections/Location.tsx` | a fazer |
-| 3 | Pin de Dublin com haste (M-23, D-25) | `three/Globe.tsx` | a fazer |
+| 1 | Captura e classificação do arrasto (D-29) | `hooks/useGlobeDrag.ts`, `sections/Location.tsx` | a fazer |
+| 2 | Inércia na soltura do globo (D-30) | `hooks/useGlobeDrag.ts`, `three/Globe.tsx` | a fazer |
+| 3 | Largura de conteúdo e limite de leitura (D-31) | `components/layout/Container.tsx`, `sections/Hero.tsx`, seções com prosa | a fazer |
+| 4 | Densidade lateral e ritmo (D-32, D-33, D-34, D-35 · M-24) | `components/layout/Section.tsx`, `sections/*`, `data/*` | a fazer |
+| 5 | Pin de Dublin com haste (M-23, D-25) | `three/Globe.tsx` → extrair `three/Marker.tsx` | a fazer |
 
 Um commit por item, com confirmação do Raul entre eles.
+
+**Já entregue mas ainda sob observação:** o giro por repouso (M-8, D-28) e o
+arrasto do globo (M-22, D-24) estão no ar. O arrasto ficou com dois defeitos
+confirmados em teste — ver D-29 e D-30. A extração do `Marker` para arquivo
+próprio já está **autorizada**: o `Globe.tsx` passou de 150 linhas e a regra 8
+do `CLAUDE.md` manda quebrar.
 
 ### ⏳ Fila depois disso
 
 | Item | Depende de | Bloqueia |
 |---|---|---|
-| Hero: preencher a dobra com a cena e integrar melhor o Memoji | referência visual que o Raul vai enviar | — |
+| `WordReveal`: `h1.textContent` devolve "RaulRodrigues", sem espaço | — | leitor de tela, indexação, copiar-colar |
+| Hero: o miolo abaixo do Memoji está oco — vão grande até a headline | decisão de layout junto com D-31 e D-34 | — |
 | `@vercel/analytics` (RF-09) | conta na Vercel — já existe | checklist §10 |
 | Domínio `raulrodrigues.dev` + HTTPS | registro do domínio pelo Raul | §10 e a URL do `og:image` |
 | Lighthouse na URL de produção (RNF-01) | site no ar — já está | §10 |
@@ -171,6 +181,11 @@ Uma página, sete blocos, nesta ordem:
 
 A seção **Serviços** foi cortada da v1 (ver 6 e log de decisões D-07).
 
+**Adição de 04/09 (D-34):** entre o bloco 1b (Statement) e o bloco 3 (Projetos)
+entra uma faixa curta com **um** número de impacto em tipografia grande. Não é
+uma seção nova com rótulo e título — é uma linha, sem cabeçalho, cuja função é
+dar um pico de hierarquia no ponto em que a página hoje é mais monótona.
+
 ### 5.2 A cena 3D do hero
 
 **Decisão:** o Memoji do Raul como elemento central, dentro de uma cena
@@ -242,8 +257,9 @@ que é o que a GPU compõe de graça. Nenhuma biblioteca nova.
 | M-19 | Cortina de entrada da página | global | extra | ✅ pronto |
 | M-20 | Cards inclinando 3,5° com o mouse | Projetos | extra | ✅ pronto |
 | M-21 | Cursor piscando dentro do ícone de laptop do header | global | extra | ✅ pronto |
-| M-22 | Globo girando por arrasto do mouse, com inércia e retorno a Dublin | Location | extra | 🔨 em andamento |
+| M-22 | Globo girando por arrasto do mouse, com inércia e retorno a Dublin | Location | extra | ⚠️ no ar com defeito — ver D-29 e D-30 |
 | M-23 | Marcador de Dublin como pin com haste, ocultado pelo globo quando gira para trás | Location | extra | 🔨 em andamento |
+| M-24 | Número de impacto contando até o valor final ao entrar na tela, uma vez só | Statement → Projetos | extra | 🔨 em andamento (D-34) |
 
 **Regras duras do movimento.**
 
@@ -277,7 +293,7 @@ que é o que a GPU compõe de graça. Nenhuma biblioteca nova.
 | **RNF-02** | Bundle JS inicial | ≤ 150 KB gzip, com `three` em chunk próprio carregado sob demanda | Saída do `npm run build` |
 | **RNF-03** | Primeiro conteúdo visível | Texto do hero renderizado antes de qualquer JS de 3D | DevTools → Network, throttle 4G |
 | **RNF-04** | Degradação sem WebGL | Site 100% utilizável; o Memoji aparece como imagem estática | Desligar WebGL no navegador |
-| **RNF-05** | Responsivo | Sem scroll horizontal e sem texto cortado em 360, 768, 1024 e 1440 px | DevTools responsivo |
+| **RNF-05** | Responsivo | Sem scroll horizontal e sem texto cortado em 360, 768, 1024, 1440 e 1920 px. Nenhuma linha de texto corrido passando de ~75 caracteres em tela larga (D-31) | DevTools responsivo |
 | **RNF-06** | Acessibilidade | Navegável só com Tab; contraste AA (4.5:1 em texto normal); canvas com `aria-hidden`; foco sempre visível | WAVE + navegação por teclado |
 | **RNF-07** | SEO e preview social | `<title>`, meta description, Open Graph com imagem 1200×630, `robots.txt`, `sitemap.xml` | opengraph.xyz |
 | **RNF-08** | Deploy | Push na `main` publica sozinho, em menos de 2 minutos | Painel da Vercel |
@@ -320,6 +336,8 @@ Isto **não** será construído agora. Não abra exceção; anote em `docs/BACKL
 **Enfeite**
 
 - Cursor customizado, preloader elaborado, transições entre páginas.
+- **Emoji de bandeira** em qualquer lugar do site, e **foto da Irlanda** ou de
+  Dublin (D-35). A origem é sinalizada em tipografia, não em imagem.
 
 **Engenharia**
 
@@ -502,12 +520,19 @@ Toda mudança de rumo vive aqui, com data e motivo. É a memória do projeto.
 | **D-20** | 03/09 | CV reescrito e corrigido | Três erros: (1) usava `raulbilu1982@gmail.com` enquanto o site usa o `.mldev`; (2) apontava para `linkedin.com/in/raul-rodrigues-6744043b1`, URL antiga e quebrada; (3) o cabeçalho dizia "Dublin, Ireland" e o perfil logo abaixo dizia "now relocating to Dublin". Corrigidos, mais dois projetos que faltavam (Cover Letter e Titanic com links) e TypeScript/RAG na lista de skills | Resolvida |
 | **D-21** | 03/09 | O CV revelou material para um 4º card: "B2B Websites with Geolocation" | É trabalho pago, para cliente real, e casa com a seção do globo. Se entrar, é o card mais forte depois do Cover Letter. Falta só o número de impacto | Aberta |
 | **D-22** | 03/09 | Hero em layout de cantos: nome em cima à esquerda, função em cima à direita, cena no centro. Marca do header virou um ícone de laptop | Texto centralizado verticalmente parece indeciso; ancorado nos cantos ele cria uma moldura e libera o miolo para a cena. O ícone é SVG e não emoji: emoji muda de desenho a cada sistema e não aceita a cor da paleta | Ativa |
-| **D-23** | 03/09 | Container passa de 1024 px para 1280 px de largura máxima | Em telas de 1440 px ou mais, sobrava margem lateral demais e o conteúdo ficava encolhido no centro. O respiro lateral cresce junto (`lg:px-12`) para o texto não encostar na borda | Ativa |
+| **D-23** | 03/09 | Container passa de 1024 px para 1280 px de largura máxima | Em telas de 1440 px ou mais, sobrava margem lateral demais e o conteúdo ficava encolhido no centro. O respiro lateral cresce junto (`lg:px-12`) para o texto não encostar na borda | **Ampliada pelo D-31** |
 | **D-24** | 03/09 | Globo passa a ser arrastável com o mouse, com o usuário tendo prioridade sobre o scroll | Interação direta vale mais que animação assistida — mas os dois disputavam o mesmo eixo de rotação. Regra: o arrasto assume o controle, e após ~3 s sem interação o globo volta a apontar Dublin e devolve o comando ao scroll. No toque, só gesto horizontal é capturado, para o dedo nunca prender a rolagem da página. **Prazo revisado para 1,5 s pelo D-28**, que unificou repouso de scroll e de arrasto num carimbo só | Ativa |
 | **D-25** | 03/09 | Marcador de Dublin vira pin com haste, no lugar do círculo rente à superfície | Um círculo colado na esfera some no meio dos continentes e não lê como localização. A haste resolve, e a oclusão pela esfera opaca esconde o pin sozinha quando Dublin gira para trás — mesma técnica que tirou a cara de PNG do Memoji (D-18) | Ativa |
 | **D-26** | 03/09 | `prefers-reduced-motion` hoje desliga as cenas 3D inteiras, não só o movimento | A preferência pede menos MOVIMENTO, não menos conteúdo. Proposta em avaliação: montar as cenas congeladas — sem parallax, sem rotação contínua, sem reação ao scroll — em vez de removê-las. Afeta `useCanRender3D`, que governa as duas cenas (hero e globo), por isso não entra no mesmo lote das mudanças locais D-23/D-24/D-25 | Aberta |
-| **D-28** | 03/09 | O gatilho do "apontar Dublin" deixa de ser a POSIÇÃO do scroll e passa a ser o REPOUSO | O D-27 tratou o sintoma e errou a causa: o regime de giro livre só existia com `eased` baixo, e `eased` só é baixo quando a seção está mal entrando pela borda — quando dá para ver o globo, ele está travado; quando ele gira, ninguém está olhando. Nenhum ajuste de número conserta isso, porque a variável de controle estava errada. Girar e manter Dublin de frente são incompatíveis **quando disputam o mesmo instante**; amarrar cada um a um estado diferente — em movimento / em repouso — elimina a disputa em vez de administrá-la. Regra: gira a 0,2 rad/s continuamente, independente da posição da seção; após 1,5 s sem rolagem **e** sem arrasto, desacelera e assenta com Dublin de frente; ao voltar a rolar, retoma. Um carimbo de tempo só (`lastInteraction`, no `useGlobeDrag`) passa a governar scroll e arrasto juntos — por isso os ~3 s do D-24 caem para 1,5 s | Ativa |
 | **D-27** | 03/09 | O movimento ocioso do globo muda de **tipo** com a proximidade, não só de intensidade: giro ao longe, oscilação de perto | Girar no eixo Y e manter Dublin de frente são objetivos incompatíveis, e nenhum piso de intensidade concilia os dois — medido: 0,06 rad/s × 0,334 de força restante dá 1,15°/s, uma volta a cada 5 minutos, abaixo do limiar de percepção. Uma fração de uma velocidade imperceptível continua imperceptível. A troca por oscilação (`sin`, ±2,6°) resolve mantendo Dublin centralizada, e segue o mesmo princípio da respiração lenta do Memoji no hero: o objeto nunca parece congelado sem sair do lugar. A velocidade base do giro sobe de 0,06 para 0,12 rad/s. Altera o M-8 | **Substituída por D-28** |
+| **D-28** | 03/09 | O gatilho do "apontar Dublin" deixa de ser a POSIÇÃO do scroll e passa a ser o REPOUSO | O D-27 tratou o sintoma e errou a causa: o regime de giro livre só existia com `eased` baixo, e `eased` só é baixo quando a seção está mal entrando pela borda — quando dá para ver o globo, ele está travado; quando ele gira, ninguém está olhando. Nenhum ajuste de número conserta isso, porque a variável de controle estava errada. Girar e manter Dublin de frente são incompatíveis **quando disputam o mesmo instante**; amarrar cada um a um estado diferente — em movimento / em repouso — elimina a disputa em vez de administrá-la. Regra: gira a 0,2 rad/s continuamente, independente da posição da seção; após 1,5 s sem rolagem **e** sem arrasto, desacelera e assenta com Dublin de frente; ao voltar a rolar, retoma. Um carimbo de tempo só (`lastInteraction`, no `useGlobeDrag`) passa a governar scroll e arrasto juntos — por isso os ~3 s do D-24 caem para 1,5 s | Ativa |
+| **D-29** | 04/09 | A captura do arrasto sai do `<canvas>` e passa a cobrir a área visível do globo; o critério de classificação do gesto é afrouxado | Teste no navegador: o globo só responde em algumas regiões e a algumas direções iniciais. Duas causas somadas. (1) Os listeners estão presos ao canvas, cuja caixa é menor que a área onde o globo aparenta estar — fora dela o gesto não chega a existir. (2) A classificação exige `\|dx\| > \|dy\| * 1.4` no primeiro movimento além de 8 px: um puxão levemente diagonal é marcado como `scroll` e fica morto até o `pointerup`. Nova regra: zona de captura cobrindo a seção, e critério afrouxado **sem** perder a garantia de que o gesto vertical no toque nunca é roubado da página — essa garantia é inegociável e prevalece sobre a comodidade do arrasto. **Implementado:** os listeners passaram para a `<section>` — eventos de ponteiro borbulham de qualquer descendente, então a seção inteira responde sem precisar mexer em `pointer-events` de ninguém —, o critério caiu para `|dx| > |dy|` (45°) e a seção recebeu `touch-action: pan-y pinch-zoom`. Não houve trade-off: a garantia da rolagem vertical passou a vir do `touch-action` nativo, que o navegador honra à revelia do JS, então o limiar em JS deixou de ser a defesa e virou só preferência. O `pinch-zoom` é explícito porque `pan-y` sozinho desligaria o zoom de pinça na seção toda | Ativa |
+| **D-30** | 04/09 | A velocidade do gesto passa a sobreviver ao `pointerup`: soltar o globo o deixa girando e desacelerando | Hoje o movimento morre no instante em que o dedo ou o mouse solta, o que faz o globo parecer preso a um trilho em vez de ter massa. Causa provável: durante o arrasto só o `offset` se move e a `base` fica congelada, e no release a velocidade acumulada é descartada. A inércia tem de entrar **no mesmo valor de `base`** que o giro do D-28 usa; dois sistemas de movimento escrevendo em valores diferentes trazem de volta exatamente o salto que o D-28 eliminou. Depois de desacelerar, o ciclo de repouso segue igual: 1,5 s de silêncio e assenta em Dublin. **Implementado:** na borda de soltura o `offset` é dobrado dentro da `base` e a velocidade do gesto vira a velocidade angular da própria `base`, que decai até se fundir com os −0,2 rad/s do giro normal. Fora do arrasto o `offset` é sempre zero, então existe um sistema de movimento só — que é exatamente a condição que o D-28 exigia | Ativa |
+| **D-31** | 04/09 | O Container vai a **96 rem** (1536 px) **e** todo texto corrido ganha limite de leitura de 68 ch. Substitui o número do D-23 | O D-23 diagnosticou certo e resolveu pela metade: alargar a casca sem limitar a prosa troca um defeito por outro. Linha acima de ~75 caracteres faz o olho perder o começo da linha seguinte — é o motivo pelo qual jornal e livro nunca usam a largura da página. Regra: cards, grades, fita de stack e rodapé usam a largura nova inteira; parágrafos ficam capados. O hero é a exceção e vai mais largo que o padrão, para o nome e a função se aproximarem das bordas reais da tela, mantendo o layout de cantos do D-22 — ficou em 104 rem, contra 96 rem do padrão. **Nota:** a faixa de 72–76 rem avaliada na redação original era menor que os 80 rem que o D-23 já tinha entregue, e teria encolhido o site; 96 rem foi a escolha do Raul depois disso. O parágrafo do Statement também foi unificado em 68 ch, abrindo mão dos 52 ch que o D-17 usava para criar tensão tipográfica — decisão consciente, em favor de uma medida de leitura só no site inteiro | Ativa |
+| **D-32** | 04/09 | Seções com metade direita vazia recebem uma coluna curta de metadados em mono | Diagnóstico a partir da captura do site no ar: `How I work` e `Let's talk` ocupam uma coluna à esquerda com metade da tela morta. A coluna (`2025 — now`, `Dublin, IE`, `Open to roles`) preenche com **informação**, não com enfeite, e cria a assimetria que o D-22 já provou funcionar no hero. É a mesma técnica da referência do D-09 | Aberta |
+| **D-33** | 04/09 | Rótulos de seção ganham numeração: `01 / ABOUT`, `02 / WORK`, `03 / STACK` | A página é uma pilha de sete blocos de forma idêntica — rótulo, título, texto, respiro, repete. Minimalismo só lê como intenção quando alguma coisa marca o ritmo; a única seção que quebra o padrão hoje (o globo) é a mais bem resolvida da página, e isso não é coincidência. Custo: uma linha no `Section.tsx` e um campo no dado | Aberta |
+| **D-34** | 04/09 | Um número de impacto sai de dentro do card e vira tipografia grande entre o Statement e os Projetos | "0.78 no Kaggle" e "30 minutos → menos de um minuto" hoje são texto miúdo dentro de card, ao lado de outros seis campos. Um número em corpo grande é a coisa que o recrutador leva embora da página, e é adição sem decoração: nenhum pixel novo de enfeite, só hierarquia. **Um só** — dois viram painel e o efeito se anula (princípio nº 3 da 5.2.1). Anima contando ao entrar na tela, uma vez (M-24), com largura reservada em `tabular-nums` para o número não empurrar o layout a cada quadro | Aberta |
+| **D-35** | 04/09 | Bandeira em emoji e foto da Irlanda **rejeitadas**; a origem é sinalizada por um marcador `BR → IE` em mono, na cor da marca | Emoji muda de desenho a cada sistema operacional — no Windows a bandeira irlandesa nem renderiza, sai como "IE" — e não aceita a cor da paleta; é o mesmo motivo que fez a marca do header virar SVG no D-22. Foto da Irlanda seria o elemento mais genérico da página, brigaria com a paleta clara e competiria com o globo, que já diz "Dublin" com mais personalidade por 11 KB (D-19). A intenção — sinalizar a mudança de país — é legítima e continua atendida, no veículo certo | Ativa |
 
 ---
 

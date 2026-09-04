@@ -10,7 +10,7 @@ export function About() {
       {profile.about.length === 0 ? (
         <EmptyState step="Passo 2" file="src/data/profile.ts → about" />
       ) : (
-        <div className="max-w-2xl space-y-5 text-base leading-relaxed text-muted">
+        <div className="max-w-[68ch] space-y-5 text-base leading-relaxed text-muted">
           {profile.about.map((paragraph, i) => (
             <Paragraph key={paragraph.slice(0, 24)} text={paragraph} index={i} />
           ))}

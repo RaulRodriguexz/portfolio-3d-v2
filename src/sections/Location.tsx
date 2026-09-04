@@ -42,25 +42,29 @@ function DublinClock() {
  */
 export function Location() {
   const section = useRef<HTMLElement>(null)
+  // o arrasto escuta a seção inteira (D-29), não só o canvas
   const progress = useElementProgress(section)
   const canRender3D = useCanRender3D()
-  const [globeCanvas, drag] = useGlobeDrag<HTMLCanvasElement>()
+  const [attachDrag, drag] = useGlobeDrag<HTMLElement>()
   const textRef = useReveal<HTMLDivElement>(0.3)
 
   return (
     <section
-      ref={section}
+      ref={(node) => {
+        section.current = node
+        attachDrag(node)
+      }}
       id="location"
       className="relative flex min-h-[86vh] items-center overflow-hidden border-t border-line/60 py-24 sm:py-32"
     >
       {/* o globo ocupa a metade direita no desktop e o fundo no mobile */}
       <div
-        className="pointer-events-none absolute inset-y-0 right-0 w-full opacity-60 sm:w-[56%] sm:opacity-100"
+        className="pointer-events-none absolute inset-y-0 right-0 w-full cursor-grab opacity-60 sm:w-[56%] sm:opacity-100"
         aria-hidden="true"
       >
         {canRender3D && (
           <Suspense fallback={null}>
-            <GlobeScene progress={progress} drag={drag} canvasRef={globeCanvas} />
+            <GlobeScene progress={progress} drag={drag} />
           </Suspense>
         )}
       </div>

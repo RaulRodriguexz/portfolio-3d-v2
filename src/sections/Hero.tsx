@@ -19,7 +19,7 @@ export function Hero() {
     >
       <HeroVisual />
 
-      <Container className="relative z-10">
+      <Container wide className="relative z-10">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between sm:gap-10">
           {/* canto superior esquerdo — quem é */}
           <div>

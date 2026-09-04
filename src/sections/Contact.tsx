@@ -14,7 +14,7 @@ export function Contact() {
 
   return (
     <Section id="contact" eyebrow="Contact" title="Let’s talk">
-      <p className="max-w-xl text-base leading-relaxed text-muted">
+      <p className="max-w-[68ch] text-base leading-relaxed text-muted">
         {profile.contactPitch}
       </p>
 

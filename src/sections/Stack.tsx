@@ -15,7 +15,7 @@ export function Stack() {
           {stackGroups.map((group) => (
             <div key={group.label} className="space-y-3">
               <h3 className="text-lg font-bold">{group.label}</h3>
-              <p className="text-sm leading-relaxed text-muted">{group.summary}</p>
+              <p className="max-w-[68ch] text-sm leading-relaxed text-muted">{group.summary}</p>
               <div className="flex flex-wrap gap-2 pt-1">
                 {group.items.map((item) => (
                   <Tag key={item}>{item}</Tag>

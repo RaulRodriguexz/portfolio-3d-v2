@@ -99,6 +99,12 @@ export function Globe({ progress, drag }: Props) {
   const group = useRef<Group>(null)
   /** Rotação de repouso/giro, guardada à parte do que o arrasto soma. */
   const base = useRef({ x: 0, y: 0 })
+  /** Velocidade angular da base, em rad/s. Repousa em -SPIN_SPEED (D-30). */
+  const spinVel = useRef(-SPIN_SPEED)
+  /** Idem para a inclinação, que sempre decai a zero. */
+  const tiltVel = useRef(0)
+  /** Detecta a borda de soltura para transferir o gesto à base uma vez só. */
+  const wasDragging = useRef(false)
   const texture = useTexture('/images/world-dots.png')
   texture.colorSpace = SRGBColorSpace
 
@@ -135,37 +141,41 @@ export function Globe({ progress, drag }: Props) {
 
     const k = 1 - Math.pow(0.002, delta)
 
-    // arrastando, a base congela e só o offset se move: é a prioridade do M-22
-    if (!d.dragging) {
-      // inércia do arrasto, que corre em qualquer regime
-      d.offset.y += d.velocity.y * delta
-      d.offset.x += d.velocity.x * delta
-      const friction = Math.pow(0.12, delta)
-      d.velocity.y *= friction
-      d.velocity.x *= friction
+    // D-30 — na soltura, o que o gesto acumulou passa para a base: o offset é
+    // dobrado dentro dela e a velocidade do arrasto vira a velocidade angular
+    // da própria base. Fora do arrasto o offset é sempre zero, então existe um
+    // sistema de movimento só — é isso que impede o salto que o D-28 resolveu.
+    if (wasDragging.current && !d.dragging) {
+      base.current.y += d.offset.y
+      base.current.x += d.offset.x
+      d.offset.y = 0
+      d.offset.x = 0
+      spinVel.current = d.velocity.y
+      tiltVel.current = d.velocity.x
+      d.velocity.y = 0
+      d.velocity.x = 0
+    }
+    wasDragging.current = d.dragging
 
+    // arrastando, a base congela e só o offset se move: prioridade do M-22
+    if (!d.dragging) {
       if (resting) {
         // assenta no ângulo congruente mais próximo. Depois de girar livre,
         // `base.y` acumulou dezenas de radianos; perseguir `target.y` cru
         // desenrolaria várias voltas para trás em vez de no máximo meia
         const turns = Math.round((base.current.y - target.y) / (Math.PI * 2))
         base.current.y += (target.y + turns * Math.PI * 2 - base.current.y) * k
-
-        // o mesmo repouso zera o offset do arrasto: um pouso só, não dois
-        const back = 1 - Math.pow(0.15, delta)
-        d.offset.y -= d.offset.y * back
-        d.offset.x -= d.offset.x * back
-        d.velocity.y = 0
-        d.velocity.x = 0
+        base.current.x += (target.x - base.current.x) * k
+        spinVel.current = -SPIN_SPEED
+        tiltVel.current = 0
       } else {
-        // giro integrado direto na base: sem acumulador absoluto, retomar o
-        // giro depois do repouso não tem de onde saltar
-        base.current.y -= SPIN_SPEED * delta
+        // a velocidade do gesto desacelera até se fundir com o giro normal
+        spinVel.current += (-SPIN_SPEED - spinVel.current) * (1 - Math.pow(0.25, delta))
+        tiltVel.current *= Math.pow(0.12, delta)
+        base.current.y += spinVel.current * delta
+        base.current.x += tiltVel.current * delta
       }
     }
-
-    const wantX = resting ? target.x : 0
-    base.current.x += (wantX - base.current.x) * k
 
     // a aproximação segue ligada ao scroll (D-19) — ela não disputa nada
     const wantScale = 1 + eased * 0.42
