@@ -47,13 +47,45 @@
     color-scheme: light;
   }
 
-  body {
-    /* --ambient é escrito pelo useAmbientTint; sem JS, cai no canvas */
+  /*
+   * O fundo mora no <html>, não no <body> (D-36). Assim o grão pode ocupar a
+   * camada de trás do body, entre o fundo e o conteúdo — atrás de tudo de
+   * verdade, e não apenas incapaz de interceptar o clique. O `--ambient` já era
+   * escrito no <html> pelo useAmbientTint, então nada mais precisou mudar.
+   */
+  html {
     background-color: var(--ambient, var(--color-canvas));
     transition: background-color 400ms linear;
+  }
+
+  body {
     color: var(--color-ink);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+  }
+
+  /*
+   * D-36 — grão. Fundo branco chapado é o que faz um site parecer template; o
+   * ruído devolve materialidade e a página passa a ler como papel.
+   *
+   * Zero JS e zero requisição de rede: o ruído é um `feTurbulence` de SVG num
+   * data: URI de ~250 bytes, não uma imagem baixada. Fica em `position: fixed`
+   * para não repintar a cada quadro de scroll, e em `z-index: -1` para ficar
+   * atrás do conteúdo. Pseudo-elemento com `content: ''` não entra na árvore de
+   * acessibilidade, o que já cumpre o papel do `aria-hidden` — atributo que um
+   * pseudo-elemento não pode receber.
+   *
+   * Opacidade travada abaixo de 0,03: acima disso o contraste de texto começa a
+   * cair e o RNF-06 reprova.
+   */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.028;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
   }
 
   ::selection {
