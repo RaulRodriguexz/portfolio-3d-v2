@@ -61,6 +61,17 @@ divertido é de construir.
 
 ## Ideias novas
 
+- 2026-09-04 — **links e botões magnéticos**: ao chegar a ~60 px do cursor, o
+  elemento se inclina levemente na direção dele e volta ao sair. ~15 linhas, só
+  `transform`, sem biblioteca. Motivo: é a interação que faz a pessoa mexer o
+  mouse de propósito para ver de novo. **Não** é cursor customizado, que segue
+  proibido na seção 6 do PRD. Adiada em 04/09 junto com a de baixo, para o lote
+  de mágica da v1 ficar em duas ideias em vez de quatro.
+- 2026-09-04 — **unificar a linguagem visual das duas cenas 3D**: as órbitas do
+  hero passam a usar o mesmo motivo de pontos do globo, para a página ler como
+  um lugar só em vez de dois enfeites separados. Custo zero em KB — é a mesma
+  geometria com outro material. Motivo: hoje o hero e o globo não se parecem.
+
 <!-- Exemplo:
 - 2026-09-10 — cursor customizado no hero. Motivo: vi num site e achei bonito.
 -->

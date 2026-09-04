@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Versão** | 2.8 |
+| **Versão** | 2.9 |
 | **Última revisão** | 04/09/2026 |
 | **Responsável** | Raul Rodrigues ([@RaulRodriguexz](https://github.com/RaulRodriguexz)) |
 | **Status** | Aprovado — em execução (Passos 1 a 8 concluídos, 9 parcial) |
@@ -23,6 +23,7 @@
 
 | Versão | Data | O que mudou |
 |---|---|---|
+| 2.9 | 04/09/2026 | D-39 e o lote D-32 a D-35 + M-24 entregues (`d7fa5dc`). Backlog recebe as duas ideias adiadas de 04/09. Corrigida a contradição entre a regra 2 do `CLAUDE.md` e a D-19. |
 | 2.8 | 04/09/2026 | Auditoria medida no site em produção: sem overflow em 360–1920 px, fallback de mobile correto, mas o limite de leitura do D-31 falhou (D-39). |
 | 2.7 | 04/09/2026 | D-29, D-30 e D-31 entregues e em produção (`a3755ec`). Adicionados D-36 (grão), D-37 (fio roxo), D-38 (ênfase tipográfica no conteúdo) e M-25. RNF-08 confirmado na prática. |
 | 2.6 | 04/09/2026 | Revisão do site no ar. Log reordenado (D-28 estava antes do D-27). Adicionados D-29 a D-35 e M-24. RNF-05 passa a incluir 1920 px. Fila da seção 0 corrigida: itens marcados "a fazer" já tinham sido entregues. |
@@ -58,16 +59,16 @@ Repositório: <https://github.com/RaulRodriguexz/portfolio-3d-v2> · Deploy auto
 | **Movimento** | M-1 a M-22 e M-24 entregues (seção 5.2.1) |
 | **Qualidade** | auditoria do Passo 8 sem erros · bundle inicial 70 KB gzip · zero cookies |
 | **Arrasto do globo** | D-29 e D-30 entregues — captura na `<section>`, critério a 45°, `touch-action: pan-y pinch-zoom`, inércia dobrada na `base` |
-| **Largura** | D-31 **parcial** — Container 96 rem e hero 104 rem entregues; o limite de leitura falhou, ver D-39 |
-| **Produção** | `a3755ec` · deploy automático da `main` confirmado na prática (RNF-08) |
+| **Largura e leitura** | D-31 e D-39 entregues — Container 96 rem, hero 104 rem, prosa em `rem` com máximo medido de 74 caracteres por linha |
+| **Ritmo e densidade** | D-32 a D-35 e M-24 entregues — coluna de metadados, numeração derivada do `id`, faixa de impacto, marcador `BR → IE` |
+| **Produção** | `d7fa5dc` · deploy automático da `main` confirmado na prática (RNF-08) |
 
 ### 🔨 Em andamento
 
 | Ordem | Item | Onde | Estado |
 |---|---|---|---|
-| 1 | Densidade lateral e ritmo (D-32, D-33, D-34, D-35 · M-24) | `components/layout/Section.tsx`, `sections/*`, `data/*` | a fazer |
-| 2 | Limite de leitura em `rem`, com aceite por medição (D-39) | `sections/*`, `ui/ProjectCard.tsx` | a fazer |
-| 3 | Ênfase tipográfica no conteúdo (D-38) | `data/profile.ts`, `data/projects.ts`, novo `ui/Emphasis.tsx` | a fazer |
+| 1 | Ênfase tipográfica no conteúdo (D-38) | `data/profile.ts`, `data/projects.ts`, novo `ui/Emphasis.tsx` | a fazer |
+| 2 | Diferenciar a coluna de metadados por seção (D-32) | `data/profile.ts` | a fazer |
 | 3 | Grão sobre a página (D-36) | `index.css` ou `layout/Grain.tsx` | a fazer |
 | 4 | Fio roxo ligando hero e globo (D-37 · M-25) | novo `ui/Thread.tsx`, `App.tsx` | a fazer |
 | 5 | Pin de Dublin com haste (M-23, D-25) | `three/Globe.tsx` → extrair `three/Marker.tsx` | a fazer |
@@ -75,11 +76,24 @@ Repositório: <https://github.com/RaulRodriguexz/portfolio-3d-v2> · Deploy auto
 
 Um commit por item, com confirmação do Raul entre eles.
 
-**Sob observação:** as entregas de D-28 a D-31 estão em produção mas **nenhuma
-foi validada com olho em navegador**. A validação de 360 a 1920 px é do Raul e
-segue pendente. A extração do `Marker` para arquivo próprio já está
-**autorizada**: o `Globe.tsx` está em 226 linhas contra a regra 8 do
-`CLAUDE.md`.
+**Sob observação:** a medição já cobre largura, overflow, fallback de mobile e
+caracteres por linha — tudo verificado. O que **nenhuma medição substitui** e
+segue pendente é o teste do arrasto do globo com mouse e com dedo, e o
+julgamento estético das entregas D-32 a D-35. Os dois são do Raul. A extração
+do `Marker` para arquivo próprio já está **autorizada**: o `Globe.tsx` está em
+226 linhas contra a regra 8 do `CLAUDE.md`.
+
+**Dívida de documentação:** o `.claude/CLAUDE.md` não pode ser escrito pelas
+ferramentas remotas — só o Claude Code o atualiza. Em 04/09 ele estava com a
+fila dois dias atrasada e com a regra 2 ("uma cena 3D, só no hero")
+contradizendo a D-19 desde que o globo entrou. Correção pendente, no prompt do
+Raul.
+
+**Higiene da pasta `docs/`:** existe um `PRD-1.md` de 04/09 — cópia congelada
+do PRD, criada por engano num download. **Deve ser apagada.** O `CLAUDE.md`
+manda toda sessão obedecer a `docs/PRD.md`; duas cópias quase idênticas na
+mesma pasta é como uma sessão futura acaba executando um estado antigo do
+projeto sem perceber. Um documento de verdade, um só.
 
 **Limitação de ferramenta:** o conector da Vercel devolve lista vazia em
 `list_projects` no time AVVIA, apesar de o projeto existir e publicar. É
@@ -269,7 +283,7 @@ que é o que a GPU compõe de graça. Nenhuma biblioteca nova.
 | M-19 | Cortina de entrada da página | global | extra | ✅ pronto |
 | M-20 | Cards inclinando 3,5° com o mouse | Projetos | extra | ✅ pronto |
 | M-21 | Cursor piscando dentro do ícone de laptop do header | global | extra | ✅ pronto |
-| M-22 | Globo girando por arrasto do mouse, com inércia e retorno a Dublin | Location | extra | ⚠️ no ar com defeito — ver D-29 e D-30 |
+| M-22 | Globo girando por arrasto do mouse, com inércia e retorno a Dublin | Location | extra | ✅ código pronto (D-29, D-30) — **falta o teste de mão do Raul** |
 | M-23 | Marcador de Dublin como pin com haste, ocultado pelo globo quando gira para trás | Location | extra | 🔨 em andamento |
 | M-24 | Número de impacto contando até o valor final ao entrar na tela, uma vez só | Statement → Projetos | extra | ✅ pronto |
 | M-25 | Fio roxo desenhando-se ao rolar, do hero até o globo, por `stroke-dashoffset` | global | extra | 🔨 em andamento (D-37) |
