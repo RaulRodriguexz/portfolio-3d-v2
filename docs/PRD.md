@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Versão** | 3.9 |
+| **Versão** | 4.0 |
 | **Última revisão** | 05/09/2026 |
 | **Responsável** | Raul Rodrigues ([@RaulRodriguexz](https://github.com/RaulRodriguexz)) |
 | **Status** | Aprovado — em execução (Passos 1 a 8 concluídos, 9 parcial) |
@@ -19,7 +19,11 @@
 > decisão existente.
 >
 > **O Claude Code não reescreve nem reordena este documento**, não apaga
-> decisões, não renumera IDs e não altera a estrutura das seções. Ideia nova de
+> decisões, não renumera IDs e não altera a estrutura das seções. **O alcance
+> dessa proibição é este PRD**, porque aqui os IDs são referências que outros
+> documentos citam. Num arquivo que ele foi encarregado de reescrever — como o
+> `WORKFLOW.md` na D-47 — renumerar seções é parte do saneamento: deixar §1,
+> §3, §5 e §6 seria cicatriz visível. Ideia nova de
 > escopo vai para `docs/BACKLOG.md`, decisão nova entra ao **final** do log com
 > o próximo ID livre. Se algo aqui parecer errado, **aponte em vez de
 > corrigir** — três vezes em 04/09 o que parecia erro era leitura apressada, e
@@ -43,6 +47,7 @@
 
 | Versão | Data | O que mudou |
 |---|---|---|
+| 4.0 | 05/09/2026 | **D-47 entregue** (`dc46b1b`): o `WORKFLOW.md` foi de 520 para 112 linhas e o `CLAUDE.md` deixou de rotear para ele — a fonte do próximo passo passa a ser a seção 0 deste documento. Acrescentada à 5.2.1 a regra **"reduzir sem deixar ponteiro solto"**. Esclarecido o alcance da proibição de renumerar: vale para este PRD, não para arquivo que o Claude Code foi encarregado de reescrever. |
 | 3.9 | 05/09/2026 | Diagnóstico dos dois documentos concluído → **D-47** (o `WORKFLOW.md` perde o plano e vira método; o `CLAUDE.md` deixa de rotear para ele) e **D-48** (o `ARCHITECTURE.md` é corrigido, o contrato de camadas passa a ser documentado, o `Thread.tsx` vai para `layout/`). **Corrigida uma mentira deste PRD:** a seção 12 afirmava "uma branch por passo" desde a v1 — o histórico sempre teve uma `main` só. |
 | 3.8 | 05/09/2026 | **Fechamento da sessão de 05/09**: cinco commits no ar, produção em `1413e18`, D-46 entregue. Fila renumerada — restam seis itens, começando pelo diagnóstico do `WORKFLOW.md` e do `ARCHITECTURE.md`. Acrescentado à seção 0 o bloco "onde a próxima sessão pega o trabalho". |
 | 3.7 | 05/09/2026 | Varredura de texto concluída (D-45): `<br />` da Location corrigido em `2c96e11`; fita da Stack e irmãos por `gap` ficam como estão, com o motivo escrito para não serem "consertados" depois. Aberta a D-46 (setas decorativas com `aria-hidden`, 4 lugares). Nova regra na 5.2.1: detector que acusa demais tem critério errado, não código errado. |
@@ -93,6 +98,7 @@ Repositório: <https://github.com/RaulRodriguexz/portfolio-3d-v2> · Deploy auto
 | **Ritmo e densidade** | D-32 a D-35 e M-24 entregues — coluna de metadados por seção, numeração derivada do `id`, faixa de impacto, marcador `BR → IE` |
 | **Ênfase e material** | D-38 e D-36 entregues — cinco destaques em `primary-deep`, um por parágrafo; grão a 2,8% com contraste medido em 7,48:1 no pior caso |
 | **Fio roxo** | D-37 e M-25 entregues — caminho gerado da geometria medida dos rótulos, `ResizeObserver`, confirmado por A/B de pixel em três posições de scroll |
+| **Documentos** | D-47 e D-48 entregues — `WORKFLOW` vira método (520 → 112 linhas), `ARCHITECTURE` corrigido com o contrato de camadas escrito, `Thread` movido para `layout/` |
 | **Setas decorativas** | D-46 entregue — os dez links com seta têm nome acessível limpo; zero setas lidas por leitor de tela |
 | **Texto legível por máquina** | Varredura da página inteira: os 14 títulos (`h1`, `h2`, `h3`) leem como frases corretas; `<br />` da Location corrigido — `"Dublin, Ireland"` |
 | **Texto de máquina** | D-45 resolvida — varredura completa: 14 títulos corretos, `<br />` da Location consertado (`2c96e11`); fita da Stack e irmãos por `gap` ficam como estão, com o motivo escrito |
@@ -107,7 +113,7 @@ Repositório: <https://github.com/RaulRodriguexz/portfolio-3d-v2> · Deploy auto
 | Ordem | Item | Onde | Estado |
 |---|---|---|---|
 | 1 | `WORKFLOW.md` reduzido a método + `CLAUDE.md` deixa de rotear para ele (D-47) | `docs/WORKFLOW.md`, `.claude/CLAUDE.md` | ✅ feito em 05/09 |
-| 2 | `ARCHITECTURE.md` corrigido + contrato de camadas + `Thread.tsx` para `layout/` (D-48) | `docs/ARCHITECTURE.md`, `components/` | a fazer |
+| 2 | `ARCHITECTURE.md` corrigido + contrato de camadas + `Thread.tsx` para `layout/` (D-48) | `docs/ARCHITECTURE.md`, `components/` | ✅ feito em 05/09 |
 | 3 | Reveal palavra a palavra nos `h2` (M-26) | `layout/Section.tsx` | a fazer |
 | 4 | Links e botões magnéticos (M-27) | CTAs do Statement, copiar e-mail, baixar CV | a fazer |
 | 5 | Parágrafo de abertura do About em corpo maior (D-40) | `sections/About.tsx` | a fazer |
@@ -391,6 +397,14 @@ que é o que a GPU compõe de graça. Nenhuma biblioteca nova.
   renderiza, confirme pelo DOM — contexto WebGL vivo, `reveal` com
   `is-visible`, opacidade 1. **DOM íntegro e foto vazia = defeito do
   instrumento.**
+- **Reduzir sem deixar ponteiro solto.** Tirar conteúdo de um documento não é
+  apagar linhas: é remover o que saiu **e** o que apontava para ele. Na D-47,
+  cortar os dez passos deixaria três resíduos — uma regra dizendo "todo prompt
+  **aqui**" quando os prompts tinham acabado de sair, uma seção abrindo com
+  "fora do fluxo dos dez passos", e um limiar duplicado com o que o substituiu.
+  Referência que aponta para o vazio é exatamente o defeito que a redução
+  existia para corrigir. Vale para código igual: remover uma função e deixar o
+  comentário que a explicava é o mesmo erro.
 - **Detector que acusa demais não achou nada — só fez barulho.** Na varredura
   da D-45, o primeiro detector marcou mais de 100 ocorrências, quase todas
   falso positivo, porque contava vãos sem distinguir irmãos de bloco

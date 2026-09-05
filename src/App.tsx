@@ -9,7 +9,7 @@ import { Location } from './sections/Location'
 import { About } from './sections/About'
 import { Projects } from './sections/Projects'
 import { ImpactBand } from './components/ui/ImpactBand'
-import { Thread } from './components/ui/Thread'
+import { Thread } from './components/layout/Thread'
 import { Stack } from './sections/Stack'
 import { Contact } from './sections/Contact'
 

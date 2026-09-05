@@ -21,7 +21,9 @@ portfolio-3d-v2/
 ├── docs/                      ← PLANEJAMENTO. Não vai para o site.
 │   ├── PRD.md                    o que o site é e o que não é
 │   ├── ARCHITECTURE.md           este arquivo
-│   ├── WORKFLOW.md               os passos e os prompts certos
+│   ├── WORKFLOW.md               MÉTODO: as regras e os prompts auxiliares.
+│   │                             Os dez passos saíram na D-47 — a fila mora
+│   │                             na seção 0 do PRD, e só lá
 │   ├── CONTENT.md                rascunho dos TEXTOS antes de virarem código
 │   └── BACKLOG.md                onde as ideias novas esperam a v2
 │
@@ -34,10 +36,15 @@ portfolio-3d-v2/
 │   ├── fonts/                    fontes self-hosted (quando sair do Google)
 │   ├── models/                   modelos 3D .glb (v2 — vazio por enquanto)
 │   ├── images/
-│   │   └── projects/             capas dos projetos, 1200×630
+│   │   ├── projects/             capas dos projetos, 1200×630
+│   │   ├── memoji.png            o Memoji, textura da cena do hero
+│   │   ├── memoji.webp           o mesmo, para o fallback sem WebGL
+│   │   └── world-dots.png        continentes do globo, 11 KB (D-19)
 │   ├── cv.pdf                    seu currículo (você coloca)
 │   ├── og.png                    imagem de preview em redes sociais
-│   └── favicon.svg
+│   ├── favicon.svg
+│   ├── robots.txt                RNF-07
+│   └── sitemap.xml               RNF-07
 │
 └── src/                       ← CÓDIGO.
     ├── main.tsx                  ponto de entrada, não mexer
@@ -45,25 +52,39 @@ portfolio-3d-v2/
     ├── index.css                 TEMA: cores, fontes, animações base
     │
     ├── data/                  ← TODO O CONTEÚDO do site vive aqui.
-    │   ├── profile.ts            você, headline, about, links
+    │   ├── profile.ts            você, headline, about, links, metadados
     │   ├── projects.ts           lista de projetos
     │   ├── stack.ts              ferramentas agrupadas
-    │   └── nav.ts                itens do menu
+    │   └── nav.ts                navItems (o menu) E sectionOrder (a numeração)
     │
     ├── sections/              ← As faixas da página, uma por arquivo.
-    │   ├── Hero.tsx  About.tsx  Projects.tsx  Stack.tsx  Contact.tsx
+    │   ├── Hero.tsx              nome e função nos cantos, palco do Memoji
+    │   ├── Statement.tsx         a frase de posicionamento (D-17)
+    │   ├── About.tsx  Projects.tsx  Stack.tsx  Contact.tsx
+    │   └── Location.tsx          globo 3D, coordenadas e relógio (D-19)
     │
     ├── components/
-    │   ├── layout/               Container, Section, Header, Footer
-    │   ├── ui/                   peças reutilizáveis (Button, Tag, Card...)
-    │   └── three/                TUDO de 3D fica isolado aqui
+    │   ├── layout/               a casca da página e as camadas de fundo:
+    │   │                         Container, Section, Header, Footer, Intro,
+    │   │                         Thread (o fio do D-37)
+    │   ├── ui/                   peças reutilizáveis, usadas mais de uma vez
+    │   │                         ou parametrizadas por dado: Button, Tag,
+    │   │                         ProjectCard, WordReveal, Emphasis, Marquee,
+    │   │                         CopyEmail, ImpactBand, EmptyState
+    │   └── three/                TUDO de 3D fica isolado aqui: HeroScene,
+    │                             HeroVisual, MemojiCard, Backdrop,
+    │                             GlobeScene, Globe, Marker
     │
-    └── hooks/                    comportamentos reaproveitáveis
+    └── hooks/                    comportamentos reaproveitáveis:
+                                  useReveal, useScrollProgress,
+                                  useElementProgress, useActiveSection,
+                                  useAmbientTint, useCanRender3D,
+                                  useGlobeDrag, useSmoothScroll
 ```
 
 ---
 
-## As quatro regras que sustentam isso
+## As cinco regras que sustentam isso
 
 **1. Conteúdo em `src/data/`, nunca no JSX.**
 Trocar uma frase do site = editar um arquivo `.ts` de dados. Nenhum componente
@@ -71,9 +92,13 @@ contém texto de verdade. É isso que permite adicionar tradução PT/EN depois 
 reescrever o site.
 
 **2. Todo o 3D isolado em `components/three/`.**
-Nada fora dessa pasta importa `three` diretamente. A pasta inteira entra por
-`React.lazy`, então o Three.js vira um chunk separado que só é baixado depois do
-conteúdo aparecer. É o que segura a performance no celular (RNF-02, RNF-03).
+Nada fora dessa pasta importa `three` diretamente — vale hoje, verificado por
+`grep`. O que entra por `React.lazy` são as **cenas** (`HeroScene`,
+`GlobeScene`), não a pasta inteira: `HeroVisual` é importado normalmente pelo
+`Hero`, porque é ele quem decide, com o `useCanRender3D`, se monta a cena ou o
+`<img>` de fallback. Essa decisão precisa existir antes de qualquer chunk de 3D
+ser buscado. O resultado é o que importa: o Three.js fica num chunk próprio,
+baixado só depois de o conteúdo aparecer (RNF-02, RNF-03).
 
 **3. Seções não desenham espaçamento.**
 Toda seção usa `<Section>`, que já resolve âncora, respiro, título e animação de
@@ -81,8 +106,39 @@ entrada. Se você precisa mexer no ritmo da página, mexe em um arquivo só.
 
 **4. Cor e fonte só via tokens.**
 Definidos em `src/index.css`, dentro de `@theme`. No Tailwind v4 o tema mora no
-CSS — **não existe `tailwind.config.js` neste projeto**. Nada de `#5eead4` solto
-no meio de um `className`; use `text-accent`, `border-line`, `bg-ink`.
+CSS — **não existe `tailwind.config.js` neste projeto**. Nada de `#8c62ac` solto
+no meio de um `className`; use `text-primary-deep`, `border-line`, `bg-surface`.
+
+Os sete tokens, e só eles: `canvas` (fundo), `surface` (cards e header), `line`
+(bordas), `ink` (texto principal), `muted` (texto secundário), `primary` (roxo
+suave — decorativo, 3D, hover) e `primary-deep` (roxo forte — **todo texto
+colorido**, porque `primary` fica em 4,6:1 e reprova em corpo pequeno).
+
+**5. O `<body>` não pode ter `background-color`.**
+Esta é a regra mais fácil de quebrar sem perceber, e por isso está escrita aqui
+e não só num comentário de CSS.
+
+O fundo da página mora no `<html>`. O `<body>` é transparente de propósito,
+porque **duas camadas decorativas vivem atrás do conteúdo dele**, em
+`z-index: -1`:
+
+| Camada | Onde | O que é |
+|---|---|---|
+| Grão | `body::before`, em `index.css` | ruído a 2,8% de opacidade (D-36) |
+| Fio | `layout/Thread.tsx` | o traço roxo desenhado no scroll (D-37) |
+
+As duas pintam **acima** do fundo do `<html>` e **abaixo** de todo o conteúdo.
+Entre elas, quem vem antes na ordem de árvore pinta primeiro: o grão é o papel,
+o fio é desenhado sobre ele.
+
+**O sintoma, para alguém reconhecer quando acontecer:** devolver
+`background-color` ao `<body>` faz o grão e o fio **sumirem os dois de uma vez**.
+Sem erro no console, sem aviso do TypeScript, com o `npm run build` verde e o
+lint limpo. A página simplesmente fica lisa, e nada aponta para a causa.
+
+O `<body>` também precisa continuar `position: relative` — sem isso o `inset: 0`
+do fio resolveria contra o bloco contentor inicial e ele teria altura de
+viewport em vez de altura de documento.
 
 ---
 
@@ -97,8 +153,9 @@ no meio de um `className`; use `text-accent`, `border-line`, `bg-ink`.
 | Um modelo 3D | `public/models/` |
 | Uma fonte baixada | `public/fonts/` |
 | Um efeito, geometria ou shader | `src/components/three/` |
-| Um botão, tag, card | `src/components/ui/` |
-| Uma faixa nova da página | `src/sections/` + registrar em `App.tsx` e `data/nav.ts` |
+| Um botão, tag, card — algo usado mais de uma vez ou parametrizado por dado | `src/components/ui/` |
+| Uma camada da página inteira, usada uma vez, atrás do conteúdo | `src/components/layout/` — foi por isso que o `Thread` saiu de `ui/` (D-48) |
+| Uma faixa nova da página | `src/sections/` + montar em `App.tsx` + registrar em **`sectionOrder`** de `data/nav.ts` para ela receber número (D-33), e em `navItems` **só se ela entra no menu** — a Location está em `sectionOrder` e não em `navItems`, e é por isso que ela tem número mas não aparece no menu |
 | Uma ideia para depois | `docs/BACKLOG.md` |
 | Uma regra que o Claude tem que lembrar sempre | `.claude/CLAUDE.md` |
 
