@@ -41,6 +41,7 @@ function suavizar(p: Ponto[]) {
  */
 export function Thread() {
   const caminho = useRef<SVGPathElement>(null)
+  const luz = useRef<SVGGElement>(null)
   const [d, setD] = useState('')
   const [altura, setAltura] = useState(0)
   const [distancia, setDistancia] = useState(1)
@@ -113,7 +114,18 @@ export function Thread() {
     let quadro = 0
     const aplicar = () => {
       quadro = 0
-      p.style.strokeDashoffset = String(total * (1 - (progresso.current ?? 0)))
+      const avanco = progresso.current ?? 0
+      const desenhado = total * avanco
+      p.style.strokeDashoffset = String(total - desenhado)
+
+      // M-28 — o ponto sai da MESMA geometria: é a ponta do traço, lida do
+      // próprio `<path>` pelo comprimento já desenhado. Nenhum segundo cálculo
+      // de caminho, nenhum número mágico; se a curva mudar, o ponto acompanha.
+      const g = luz.current
+      if (g) {
+        const ponta = p.getPointAtLength(desenhado)
+        g.setAttribute('transform', `translate(${ponta.x.toFixed(1)} ${ponta.y.toFixed(1)})`)
+      }
     }
     const aoRolar = () => {
       if (quadro) return
@@ -146,6 +158,22 @@ export function Thread() {
         strokeLinecap="round"
         strokeOpacity="0.5"
       />
+
+      {/*
+        M-28 — o ponto de luz na ponta. Sem ele a linha termina cortada no
+        vazio e lê como interrompida; com ele, lê como estando sendo desenhada.
+        Mesma técnica do `OrbitSpark` do hero (M-5), aplicada a uma geometria
+        que o fio já calculava.
+
+        Ponto, não farol: 3 px de raio com um halo fraco, para não competir com
+        a faixa de impacto (D-34) nem com o Memoji. Herda do `<svg>` o
+        `aria-hidden`, o `pointer-events: none`, a camada e o
+        `motion-reduce:hidden`.
+      */}
+      <g ref={luz}>
+        <circle r="7" fill="var(--color-primary)" fillOpacity="0.16" />
+        <circle r="3" fill="var(--color-primary-deep)" fillOpacity="0.85" />
+      </g>
     </svg>
   )
 }

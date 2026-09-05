@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Versão** | 4.3 |
+| **Versão** | 4.4 |
 | **Última revisão** | 05/09/2026 |
 | **Responsável** | Raul Rodrigues ([@RaulRodriguexz](https://github.com/RaulRodriguexz)) |
 | **Status** | Aprovado — em execução (Passos 1 a 8 concluídos, 9 parcial) |
@@ -47,6 +47,7 @@
 
 | Versão | Data | O que mudou |
 |---|---|---|
+| 4.4 | 05/09/2026 | **M-27 entregue** (`0b43a10`) — ímã dentro do `Button`, medido em três cenários; no toque o hook nem registra listener, e sob `reduced-motion` quatro eventos chegaram com deslocamento zero. Nova regra na 5.2.1: **zero só prova alguma coisa se o estímulo tiver chegado.** |
 | 4.3 | 05/09/2026 | Aberta a **D-51 / M-28**: ponto de luz na ponta do fio, que **fecha o inventário de movimento em 28**. Era uma das duas ideias de 04/09 que ficaram em aberto sem decisão registrada; a outra — unificar a linguagem visual das duas cenas 3D — permanece no `BACKLOG` como v2. Fila renumerada para oito itens. |
 | 4.2 | 05/09/2026 | **M-26 entregue** (`ba10fb4`) — o `WordReveal` passou a aceitar um `start` externo e o `useReveal` um `onReveal`, então os `h2` revelam sem um segundo `IntersectionObserver`; medido, um observer por seção. Aberta a **D-50**: o `h2` da Location fica fora do reveal de propósito, porque uniformizar desfaria o conserto do `<br />`. **Corrigido um erro meu:** o D-49 tinha sido inserido antes do D-45, quebrando a ordem do log. |
 | 4.1 | 05/09/2026 | **D-48 entregue** (`f320780`), com o `Thread.tsx` movido por rename real. A varredura achou que o `ARCHITECTURE.md` descrevia errado o mecanismo do `React.lazy` desde que o `HeroVisual` existe → nova regra na 5.2.1: **ninguém checa um mecanismo quando o resultado bate**. Aberta a **D-49**: o contrato de camadas e o modo escuro colidem, e o D-44 é o gatilho mais provável da falha. |
@@ -101,6 +102,7 @@ Repositório: <https://github.com/RaulRodriguexz/portfolio-3d-v2> · Deploy auto
 | **Ritmo e densidade** | D-32 a D-35 e M-24 entregues — coluna de metadados por seção, numeração derivada do `id`, faixa de impacto, marcador `BR → IE` |
 | **Ênfase e material** | D-38 e D-36 entregues — cinco destaques em `primary-deep`, um por parágrafo; grão a 2,8% com contraste medido em 7,48:1 no pior caso |
 | **Fio roxo** | D-37 e M-25 entregues — caminho gerado da geometria medida dos rótulos, `ResizeObserver`, confirmado por A/B de pixel em três posições de scroll |
+| **Ponto na ponta do fio** | M-28 entregue — posição lida do próprio `<path>`; erro de 0 px contra o comprimento desenhado em três posições de scroll. **Fecha o inventário de movimento** |
 | **Links magnéticos** | M-27 entregue — medido: 0 px longe, 4 px a meio raio, 8 px no teto, 0 px ao sair; no toque o ímã nem é instalado |
 | **Reveal nos títulos** | M-26 entregue — os `h2` revelam palavra a palavra pegando carona no observer do `useReveal`; medido: exatamente 1 observer por `h2`, nenhum novo |
 | **Documentos** | D-47 e D-48 entregues — `WORKFLOW` vira método (520 → 112 linhas), `ARCHITECTURE` corrigido com o contrato de camadas escrito, `Thread` movido para `layout/` |
@@ -121,7 +123,7 @@ Repositório: <https://github.com/RaulRodriguexz/portfolio-3d-v2> · Deploy auto
 | 2 | `ARCHITECTURE.md` corrigido + contrato de camadas + `Thread.tsx` para `layout/` (D-48) | `docs/ARCHITECTURE.md`, `components/` | ✅ feito em 05/09 |
 | 3 | Reveal palavra a palavra nos `h2` (M-26) | `layout/Section.tsx` | ✅ feito em 05/09 |
 | 4 | Links e botões magnéticos (M-27) | CTAs do Statement, copiar e-mail, baixar CV | ✅ feito em 05/09 |
-| 5 | Ponto de luz na ponta do fio (M-28, D-51) | `layout/Thread.tsx` | a fazer |
+| 5 | Ponto de luz na ponta do fio (M-28, D-51) | `layout/Thread.tsx` | ✅ feito em 05/09 |
 | 6 | Parágrafo de abertura do About em corpo maior (D-40) | `sections/About.tsx` | a fazer |
 | 7 | Auditoria de foco (RNF-06) e página 404 própria | global, `vercel.json` ou `404.html` | a fazer |
 | 8 | **Modo escuro com botão de alternância (D-44)** | `index.css`, as duas cenas 3D, `Grain`, `Thread`, `Header` | a fazer — **último; é o item que se corta se o calendário apertar. Ler a D-49 antes de escrever qualquer linha** |
@@ -351,7 +353,7 @@ que é o que a GPU compõe de graça. Nenhuma biblioteca nova.
 | M-25 | Fio roxo desenhando-se ao rolar, do hero até o globo, por `stroke-dashoffset` | global | extra | ✅ pronto |
 | M-26 | Títulos de seção revelando palavra a palavra, reusando o `WordReveal` com stagger menor que o do hero | todas as seções | extra | ✅ pronto |
 | M-27 | Links e botões magnéticos: o elemento se desloca até ~8 px na direção do cursor a ~60 px e volta ao sair | CTAs do Statement, copiar e-mail, baixar CV | extra | ✅ pronto |
-| M-28 | Ponto de luz na ponta do fio, acompanhando o traço enquanto ele se desenha no scroll | global | extra | 🔨 em andamento (D-51) — **último do inventário; nada entra depois** |
+| M-28 | Ponto de luz na ponta do fio, acompanhando o traço enquanto ele se desenha no scroll | global | extra | ✅ pronto |
 
 **Regras duras do movimento.**
 
@@ -391,6 +393,16 @@ que é o que a GPU compõe de graça. Nenhuma biblioteca nova.
   para animar, para quebrar linha, para estilizar — é aceito só depois de
   conferir o `textContent` renderizado. Vale para leitor de tela, indexação e
   copiar-colar, ou seja, RNF-06 e RNF-07 ao mesmo tempo.
+- **Zero só prova alguma coisa se o estímulo tiver chegado.** Testar que um
+  efeito está *desligado* exige duas medidas, não uma: que o gatilho ocorreu
+  **e** que nada aconteceu. No M-27, o ímã sob `prefers-reduced-motion` mediu
+  0 px de deslocamento — mas isso, sozinho, é indistinguível de "nenhum evento
+  chegou". A prova veio de contar os `pointermove`: quatro chegaram, e o
+  deslocamento continuou zero. Sem essa contagem, a guarda não estava
+  verificada, estava só não contrariada. O contraexemplo apareceu no mesmo
+  item: a primeira medição deu zero em tudo porque o botão estava a `top: -872`,
+  fora da viewport, onde despachar mouse não gera evento nenhum — código certo,
+  teste mudo.
 - **Medição vazia não é prova de código quebrado — desconfie primeiro do
   instrumento.** Aconteceu duas vezes, do mesmo jeito: o teste devolvia nada e
   a conclusão fácil era "não renderiza". No fio (M-25), o recorte da captura
