@@ -31,11 +31,20 @@ export function HeroHalo() {
  * depender de um deslocamento fixo que colapsa em janela baixa — era o que
  * fazia as últimas letras caírem sobre o ombro em 1440×700.
  *
- * **D-41, eixo horizontal.** A partir de `lg` o palco vira coluna própria
- * encostada à direita (`ml-auto`), então o vão até o nome passa a acompanhar o
- * layout em vez do centro da viewport. Abaixo de `lg` a composição é empilhada:
- * o Memoji fica centrado sob o texto, e sobreposição horizontal não importa
- * porque os dois estão em faixas verticais diferentes.
+ * **D-41, eixo horizontal — revisto.** A primeira versão dava ao palco uma
+ * coluna própria à direita (`ml-auto` com largura fracionária), para abrir um
+ * vão até o nome. Esse vão era cinto e suspensório: com a separação vertical
+ * virando estrutural, a colisão que ele evitava já não podia acontecer. O
+ * resíduo era um Memoji 357 px à direita do eixo do conteúdo.
+ *
+ * Agora o palco ocupa a largura cheia, então seu centro é o centro do
+ * container — que é o mesmo eixo do conteúdo, porque o container é centrado.
+ * Centralizar não é alinhar à grade: é simetria, e simetria precisa de eixo,
+ * não de aresta. O eixo é o vão entre as duas colunas de texto do D-22.
+ *
+ * Nada de deslocamento em unidades de mundo na cena: unidade de mundo não
+ * acompanha breakpoint, que foi o que reprovou o experimento de empurrar o
+ * Memoji para a borda direita.
  *
  * Abaixo de 640 px nada muda em relação ao comportamento anterior.
  *
@@ -47,7 +56,7 @@ export function HeroStage() {
 
   return (
     <div
-      className="pointer-events-none relative mt-6 min-h-[38vh] w-full flex-1 sm:mt-8 lg:ml-auto lg:w-[48%] xl:w-[52%]"
+      className="pointer-events-none relative mt-6 min-h-[38vh] w-full flex-1 sm:mt-8"
       aria-hidden="true"
     >
       {canRender3D ? (
