@@ -4,6 +4,13 @@ import { useMagnetic } from '../../hooks/useMagnetic'
 /**
  * Botão de e-mail que também copia.
  *
+ * **Foco (RNF-06):** os dois focáveis daqui recebem o anel para DENTRO e em
+ * branco. O anel padrão do site fica 3 px fora do elemento — e aqui isso o
+ * jogava contra duas paredes de uma vez: o `overflow-hidden` da pílula o
+ * cortava, e o que sobrava caía sobre o próprio `primary-deep`, dando 1,79:1.
+ * Medido na auditoria de 05/09; para dentro e em branco dá 8,9:1 sobre a
+ * pílula, sem nada para cortar.
+ *
  * Clicar abre o cliente de e-mail, como qualquer link `mailto:`. O botão ao
  * lado copia o endereço — porque metade das pessoas não usa cliente de e-mail
  * no navegador, e ficar sem reação ao clicar é a forma mais silenciosa de
@@ -34,14 +41,14 @@ export function CopyEmail({ email }: { email: string }) {
     >
       <a
         href={`mailto:${email}`}
-        className="px-6 py-3 text-sm transition-colors duration-200 hover:bg-primary"
+        className="px-6 py-3 text-sm transition-colors duration-200 hover:bg-primary focus-visible:outline-white focus-visible:[outline-offset:-3px]"
       >
         {email}
       </a>
       <button
         type="button"
         onClick={copy}
-        className="relative border-l border-white/25 px-4 text-sm transition-colors duration-200 hover:bg-primary"
+        className="relative border-l border-white/25 px-4 text-sm transition-colors duration-200 hover:bg-primary focus-visible:outline-white focus-visible:[outline-offset:-3px]"
         aria-label={copied ? 'Email copied' : 'Copy email address'}
       >
         <span
