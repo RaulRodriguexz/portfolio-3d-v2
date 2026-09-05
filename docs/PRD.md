@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Versão** | 3.3 |
+| **Versão** | 3.4 |
 | **Última revisão** | 05/09/2026 |
 | **Responsável** | Raul Rodrigues ([@RaulRodriguexz](https://github.com/RaulRodriguexz)) |
 | **Status** | Aprovado — em execução (Passos 1 a 8 concluídos, 9 parcial) |
@@ -43,6 +43,7 @@
 
 | Versão | Data | O que mudou |
 |---|---|---|
+| 3.4 | 05/09/2026 | Pin de Dublin entregue (M-23, D-25) — o inventário de movimento fecha em M-1 a M-25, faltando só M-26 e M-27. Acrescentada à 5.2.1 a regra "medição vazia não é prova de código quebrado", tirada de dois diagnósticos falsos seguidos. |
 | 3.3 | 05/09/2026 | Memoji centralizado (D-43 entregue). **D-44 — modo escuro entra na v1**, por pedido repetido, com o custo escrito e posição de último na fila; a seção 6 deixa de proibi-lo. Acrescentada à fila a auditoria de foco e a página 404. |
 | 3.2 | 05/09/2026 | D-41 (alinhamento do hero) e D-42 (nav centrada com CTA) entregues. Escritas as decisões que só existiam na fila: D-40 (lead do About), M-26 e M-27. Adicionada a D-43 — o Memoji volta ao centro, e o experimento de alinhá-lo à direita fica registrado como descartado, com as três razões. |
 | 3.1 | 04/09/2026 | Fio roxo entregue (`3ce9431`), caminho gerado da geometria medida e confirmado por A/B de pixel. Crítica externa recebida: hero desalinhado e nav a centralizar → D-41 e D-42, que passam à frente da fila. Modo escuro pedido e recusado para a v1. |
@@ -80,13 +81,14 @@ Repositório: <https://github.com/RaulRodriguexz/portfolio-3d-v2> · Deploy auto
 | **Passos 1 a 8** | identidade visual, conteúdo, hero, cena 3D, projetos, stack, contato, auditoria |
 | **Passo 9** | parcial — SEO, JSON-LD, robots, sitemap, favicon e og.png prontos; falta o `@vercel/analytics` |
 | **Passo 10** | parcial — repositório e deploy feitos; faltam domínio, HTTPS e Lighthouse |
-| **Movimento** | M-1 a M-22, M-24 e M-25 entregues (seção 5.2.1). Faltam M-23, M-26 e M-27 |
+| **Movimento** | M-1 a M-25 entregues (seção 5.2.1). Faltam apenas **M-26 e M-27** |
 | **Qualidade** | auditoria do Passo 8 sem erros · bundle inicial 70 KB gzip · zero cookies |
 | **Arrasto do globo** | D-29 e D-30 entregues — captura na `<section>`, critério a 45°, `touch-action: pan-y pinch-zoom`, inércia dobrada na `base` |
 | **Largura e leitura** | D-31 e D-39 entregues — Container 96 rem, hero 104 rem, prosa em `rem` com máximo medido de 74 caracteres por linha |
 | **Ritmo e densidade** | D-32 a D-35 e M-24 entregues — coluna de metadados por seção, numeração derivada do `id`, faixa de impacto, marcador `BR → IE` |
 | **Ênfase e material** | D-38 e D-36 entregues — cinco destaques em `primary-deep`, um por parágrafo; grão a 2,8% com contraste medido em 7,48:1 no pior caso |
 | **Fio roxo** | D-37 e M-25 entregues — caminho gerado da geometria medida dos rótulos, `ResizeObserver`, confirmado por A/B de pixel em três posições de scroll |
+| **`WordReveal`** | Espaço real fora do recorte — `textContent` do `h1` e da frase de posicionamento voltam a ter espaços; larguras caíram 5,6 px e 24,7 px |
 | **Pin de Dublin** | M-23 e D-25 entregues — `Marker` em arquivo próprio, haste e cabeça, oclusão confirmada por arrasto real; `Globe.tsx` de 226 para 195 linhas |
 | **Header** | D-42 entregue — nav centrada, `Get in touch` à direita, e a mesma largura de container do hero; tinta alinhada com 0 px à esquerda e −1 px à direita |
 | **Alinhamento do hero** | D-41 entregue — palco em coluna própria com `flex-1`; gutter de 43 a 626 px e folga vertical de 101 a 169 px na cena 3D, zero colisão em seis larguras e três alturas |
@@ -96,7 +98,7 @@ Repositório: <https://github.com/RaulRodriguexz/portfolio-3d-v2> · Deploy auto
 
 | Ordem | Item | Onde | Estado |
 |---|---|---|---|
-| 1 | `WordReveal`: `h1.textContent` sem espaço | `ui/WordReveal.tsx` | a fazer |
+| 1 | `WordReveal`: `h1.textContent` sem espaço | `ui/WordReveal.tsx` | ✅ feito em 04/09 |
 | 2 | Diagnóstico do `WORKFLOW.md` e do `ARCHITECTURE.md` | `docs/` | a fazer — **apontar, não corrigir** |
 | 3 | Reveal palavra a palavra nos `h2` (M-26) | `layout/Section.tsx` | a fazer — **depende do item 1** |
 | 4 | Links e botões magnéticos (M-27) | CTAs do Statement, copiar e-mail, baixar CV | a fazer |
@@ -348,6 +350,19 @@ que é o que a GPU compõe de graça. Nenhuma biblioteca nova.
   da tinta, o que quase provocou a "correção" de um alinhamento correto (D-42).
   Antes de aceitar um número, pergunte se ele descreve o que aparece na tela ou
   só o que a API devolve mais fácil.
+- **Medição vazia não é prova de código quebrado — desconfie primeiro do
+  instrumento.** Aconteceu duas vezes, do mesmo jeito: o teste devolvia nada e
+  a conclusão fácil era "não renderiza". No fio (M-25), o recorte da captura
+  estava em coordenadas erradas e fotografava outro lugar. No pin (M-23),
+  `Page.captureScreenshot` com `clip` e sem `captureBeyondViewport` interpreta
+  as coordenadas em espaço de **documento**, e a foto saiu do topo da página
+  com a seção renderizada logo abaixo — além de `scrollIntoView` e
+  `window.scrollTo` em chamadas separadas não rolarem nada, porque o rAF do
+  Lenis desfaz a posição entre uma chamada e outra: a rolagem tem de acontecer
+  dentro de um único script na página. Regra: antes de declarar que algo não
+  renderiza, confirme pelo DOM — contexto WebGL vivo, `reveal` com
+  `is-visible`, opacidade 1. **DOM íntegro e foto vazia = defeito do
+  instrumento.**
 
 ### 5.3 Requisitos funcionais
 
