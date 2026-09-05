@@ -8,6 +8,13 @@ type Props = {
   stagger?: number
   /** Só começa quando o bloco entra na tela, em vez de no carregamento. */
   whenVisible?: boolean
+  /**
+   * Controle externo (M-26). Quando definido, manda no lugar do temporizador e
+   * do observer próprio: quem decide o instante é quem já observa o bloco —
+   * nos `h2`, o `useReveal` da `<Section>`. Evita um segundo
+   * IntersectionObserver olhando exatamente o mesmo elemento.
+   */
+  start?: boolean
   className?: string
 }
 
@@ -34,14 +41,18 @@ export function WordReveal({
   delay = 120,
   stagger = 70,
   whenVisible = false,
+  start,
   className = '',
 }: Props) {
+  const controlado = start !== undefined
   const [ready, setReady] = useState(false)
   const host = useRef<HTMLSpanElement>(null)
   const reduced = useRef(false)
 
   useEffect(() => {
     reduced.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    // comandado de fora: nada de temporizador nem de observer aqui
+    if (controlado) return
     if (reduced.current) {
       setReady(true)
       return
@@ -69,9 +80,10 @@ export function WordReveal({
     )
     observer.observe(el)
     return () => observer.disconnect()
-  }, [delay, whenVisible])
+  }, [delay, whenVisible, controlado])
 
   const words = text.split(' ')
+  const visivel = controlado ? start : ready
 
   return (
     <span ref={host} className={className}>
@@ -85,8 +97,8 @@ export function WordReveal({
             <span
               className="inline-block will-change-transform"
               style={{
-                transform: ready ? 'translateY(0)' : 'translateY(105%)',
-                opacity: ready ? 1 : 0,
+                transform: visivel ? 'translateY(0)' : 'translateY(105%)',
+                opacity: visivel ? 1 : 0,
                 transition: reduced.current
                   ? 'none'
                   : `transform 700ms cubic-bezier(0.16, 1, 0.3, 1) ${i * stagger}ms, opacity 500ms ease-out ${i * stagger}ms`,

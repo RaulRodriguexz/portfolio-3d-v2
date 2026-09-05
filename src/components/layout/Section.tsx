@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { Container } from './Container'
+import { WordReveal } from '../ui/WordReveal'
 import { useReveal } from '../../hooks/useReveal'
 import { sectionNumber } from '../../data/nav'
 
@@ -24,7 +26,15 @@ type Props = {
  * de sincronia quando a ordem da página mudar.
  */
 export function Section({ id, eyebrow, title, meta, children }: Props) {
-  const ref = useReveal<HTMLDivElement>()
+  /**
+   * M-26 — o título revela palavra a palavra, **pegando carona no observer que
+   * o `useReveal` já tem**: nenhum IntersectionObserver novo olhando o mesmo
+   * bloco. O `stagger` é menos de um terço do hero (110 ms) de propósito — o
+   * hero é o momento da página, e um `h2` que demorasse o mesmo roubaria a cena
+   * de si mesmo.
+   */
+  const [revelado, setRevelado] = useState(false)
+  const ref = useReveal<HTMLDivElement>(0.15, () => setRevelado(true))
   const numero = sectionNumber(id)
 
   return (
@@ -37,7 +47,9 @@ export function Section({ id, eyebrow, title, meta, children }: Props) {
               {eyebrow}
             </p>
           )}
-          <h2 className="mb-10 text-3xl font-bold tracking-tight sm:text-4xl">{title}</h2>
+          <h2 className="mb-10 text-3xl font-bold tracking-tight sm:text-4xl">
+            <WordReveal text={title} start={revelado} stagger={38} />
+          </h2>
           {meta ? (
             <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-16">
               <div>{children}</div>
