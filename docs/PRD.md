@@ -115,6 +115,7 @@ Repositório: <https://github.com/RaulRodriguexz/portfolio-3d-v2> · Deploy auto
 | **Arrasto do globo** | D-29 e D-30 entregues — captura na `<section>`, critério a 45°, `touch-action: pan-y pinch-zoom`, inércia dobrada na `base` |
 | **Largura e leitura** | D-31 e D-39 entregues — Container 96 rem, hero 104 rem, prosa em `rem` com máximo medido de 74 caracteres por linha |
 | **Ritmo e densidade** | D-32 a D-35 e M-24 entregues — coluna de metadados por seção, numeração derivada do `id`, faixa de impacto, marcador `BR → IE` |
+| **Modo escuro, frente 4 (D-57)** | Bloqueador removido — o `useAmbientTint` ganhou jogo próprio de paradas escuras. Medido: `<html>` em `rgb(28 20 37)` e `rgb(20 17 25)` no escuro, e inalterado no claro. **Pendência amarrada:** o botão da frente 7 tem de forçar reapply, senão alternar parado no topo não repinta |
 | **Globo invertido** | D-56 entregue — oceano roxo e continentes claros com 3,47:1 entre si, malha custando 0,42 de contraste, anel de radar em duas faixas para cruzar as duas superfícies. Textura recolorida na paleta: 11.372 bytes, os mesmos |
 | **Globo: giro livre depois do arrasto** | D-55 entregue — soltar suspende o assentamento; medido 6,6% de pixels mudando por 800 ms depois de 8 s sem rolagem, contra 0,18% depois de uma rolagem |
 | **Globo: volta completa e zona de arrasto** | D-54 entregue — teto de ±60° removido com assentamento congruente no eixo X (sem ele o percurso chegava a 6π para trás), gesto só **começa** perto do planeta, e o `cursor-grab` que era inerte passou a funcionar |
