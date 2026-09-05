@@ -78,6 +78,10 @@
   --color-primary-deep: oklch(0.78 0.16 303.724); /* = rgb(205,156,255) */
 
   --color-on-primary: oklch(0.19 0.02 303.724);
+
+  /* barra de rolagem, campos e controles nativos acompanham; sem isto eles
+     continuam claros e piscam contra a página escura */
+  color-scheme: dark;
 }
 
 @layer base {

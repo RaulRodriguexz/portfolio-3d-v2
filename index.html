@@ -5,6 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+    <!--
+      D-44, frente 6 — o tema é decidido AQUI, antes de qualquer folha de estilo
+      e antes do bundle. Se isto virasse um efeito do React, quem escolheu
+      escuro veria um quadro branco a cada carregamento — e um toggle que pisca
+      branco é pior que não ter toggle.
+
+      Só escreve o atributo; a cor mora no CSS (D-49). Sem `localStorage`
+      gravado, segue a preferência do sistema, que é o que a pessoa já pediu ao
+      configurar o aparelho. Envolto em try porque `localStorage` lança em
+      janela privada de alguns navegadores, e um tema que derruba a página é
+      pior que um tema errado.
+    -->
+    <script>
+      ;(function () {
+        try {
+          var t = localStorage.getItem('tema')
+          if (t !== 'dark' && t !== 'light') {
+            t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+          }
+          if (t === 'dark') {
+            var h = document.documentElement
+            h.dataset.theme = 'dark'
+            // fecha a janela ANTES da folha de estilo: até ela chegar não
+            // existe regra de fundo nenhuma e o canvas do navegador é branco.
+            // `color-scheme` inline faz o próprio navegador pintar escuro nesse
+            // intervalo. Não se põe `background-color` aqui: um valor literal
+            // no `<html>` venceria a regra do CSS e mataria o tom ambiente do
+            // M-10, que trabalha pela variável `--ambient`.
+            h.style.colorScheme = 'dark'
+          }
+        } catch (e) {}
+      })()
+    </script>
+
     <!-- RNF-07: SEO e preview em redes sociais. Troque a URL quando publicar. -->
     <title>Raul Rodrigues — AI &amp; Automation Developer</title>
     <meta
