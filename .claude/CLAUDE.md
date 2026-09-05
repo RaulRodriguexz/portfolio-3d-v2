@@ -14,7 +14,10 @@ B2B em contato dentro de 90 segundos — não impressionar tecnicamente.
 1. `docs/PRD.md` — escopo, requisitos numerados (RF/RNF), o que está fora, log
    de decisões. Se um pedido conflita com o PRD, **aponte o conflito antes de
    escrever código**.
-2. `docs/WORKFLOW.md` — os dez passos e o prompt pronto de cada um.
+2. `docs/WORKFLOW.md` — **método**, não plano: as cinco regras, como se
+   escreve um pedido bom, os prompts auxiliares e o que fazer quando travar.
+   Não procure a fila aqui — os dez passos saíram na D-47, porque já tinham
+   sido todos executados.
 3. `docs/CONTENT.md` — o texto do site, em rascunho, antes de virar dado.
 4. `docs/BACKLOG.md` — onde toda ideia nova espera a v2.
 
@@ -57,7 +60,8 @@ B2B em contato dentro de 90 segundos — não impressionar tecnicamente.
 
 ## Protocolo de trabalho
 
-- **Um passo por sessão.** Os passos estão em `docs/WORKFLOW.md`.
+- **Um item por vez.** **A fonte do próximo passo é a seção 0 do
+  `docs/PRD.md`, e só ela.** Item pela metade não vira commit.
 - **Antes de escrever código,** diga em até 3 linhas o que vai mudar e em quais
   arquivos, e **espere a confirmação do Raul**.
 - Não toque em arquivo fora da lista do passo. Se precisar, peça.

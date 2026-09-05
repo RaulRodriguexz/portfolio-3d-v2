@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Versão** | 3.7 |
+| **Versão** | 3.9 |
 | **Última revisão** | 05/09/2026 |
 | **Responsável** | Raul Rodrigues ([@RaulRodriguexz](https://github.com/RaulRodriguexz)) |
 | **Status** | Aprovado — em execução (Passos 1 a 8 concluídos, 9 parcial) |
@@ -43,6 +43,8 @@
 
 | Versão | Data | O que mudou |
 |---|---|---|
+| 3.9 | 05/09/2026 | Diagnóstico dos dois documentos concluído → **D-47** (o `WORKFLOW.md` perde o plano e vira método; o `CLAUDE.md` deixa de rotear para ele) e **D-48** (o `ARCHITECTURE.md` é corrigido, o contrato de camadas passa a ser documentado, o `Thread.tsx` vai para `layout/`). **Corrigida uma mentira deste PRD:** a seção 12 afirmava "uma branch por passo" desde a v1 — o histórico sempre teve uma `main` só. |
+| 3.8 | 05/09/2026 | **Fechamento da sessão de 05/09**: cinco commits no ar, produção em `1413e18`, D-46 entregue. Fila renumerada — restam seis itens, começando pelo diagnóstico do `WORKFLOW.md` e do `ARCHITECTURE.md`. Acrescentado à seção 0 o bloco "onde a próxima sessão pega o trabalho". |
 | 3.7 | 05/09/2026 | Varredura de texto concluída (D-45): `<br />` da Location corrigido em `2c96e11`; fita da Stack e irmãos por `gap` ficam como estão, com o motivo escrito para não serem "consertados" depois. Aberta a D-46 (setas decorativas com `aria-hidden`, 4 lugares). Nova regra na 5.2.1: detector que acusa demais tem critério errado, não código errado. |
 | 3.6 | 05/09/2026 | **Contradição interna removida:** a seção 0 ainda trazia a nota "modo escuro: recusado para a v1" enquanto a fila, três linhas acima, mandava implementá-lo (D-44). Fila enxugada: o `WordReveal` saiu de "em andamento" para "concluído" e entrou o `<br />` da Location com a varredura de texto. Duas dependências marcadas como resolvidas. |
 | 3.5 | 05/09/2026 | `WordReveal` corrigido (`f2e42ab`) — o defeito não era do `h1`: a frase do Statement, que é a D-12, virava uma palavra de 56 caracteres. Terceiro caso achado na varredura, o `<br />` da Location. Escrita a regra "o que o olho lê e o que a máquina lê têm de ser a mesma frase" na 5.2.1. |
@@ -104,8 +106,8 @@ Repositório: <https://github.com/RaulRodriguexz/portfolio-3d-v2> · Deploy auto
 
 | Ordem | Item | Onde | Estado |
 |---|---|---|---|
-| 1 | Setas decorativas com `aria-hidden` — 4 lugares (D-46) | `ui/ProjectCard.tsx`, `sections/Contact.tsx` | ✅ feito em 05/09 |
-| 2 | Diagnóstico do `WORKFLOW.md` e do `ARCHITECTURE.md` | `docs/` | a fazer — **apontar, não corrigir** |
+| 1 | `WORKFLOW.md` reduzido a método + `CLAUDE.md` deixa de rotear para ele (D-47) | `docs/WORKFLOW.md`, `.claude/CLAUDE.md` | ✅ feito em 05/09 |
+| 2 | `ARCHITECTURE.md` corrigido + contrato de camadas + `Thread.tsx` para `layout/` (D-48) | `docs/ARCHITECTURE.md`, `components/` | a fazer |
 | 3 | Reveal palavra a palavra nos `h2` (M-26) | `layout/Section.tsx` | a fazer |
 | 4 | Links e botões magnéticos (M-27) | CTAs do Statement, copiar e-mail, baixar CV | a fazer |
 | 5 | Parágrafo de abertura do About em corpo maior (D-40) | `sections/About.tsx` | a fazer |
@@ -125,8 +127,23 @@ por medição e se reajustou sozinho às três mudanças de hero.
 caracteres por linha e contraste — tudo verificado. O arrasto do globo foi
 testado à mão pelo Raul em 04/09 e **funciona**; falta só o teste com **dedo**
 no celular, que é o caso onde o gesto ainda pode roubar a rolagem da página. O
-julgamento estético do conjunto também segue com ele. A extração do `Marker`
-para arquivo próprio já está **autorizada** (regra 8 do `CLAUDE.md`).
+julgamento estético do conjunto também segue com ele.
+
+**Onde a próxima sessão pega o trabalho.** Sessão de 05/09 encerrada com cinco
+commits, todos no ar. Produção em `1413e18`.
+
+| Commit | O quê |
+|---|---|
+| `0e52223` | Memoji centrado no eixo do conteúdo (D-43) |
+| `a2ed8b7` | Pin de Dublin com haste, `Marker` em arquivo próprio (M-23, D-25) |
+| `f2e42ab` | Espaço real no `WordReveal` — `h1` e a frase do Statement |
+| `2c96e11` | Espaço no `<br />` da Location — `"Dublin, Ireland"` |
+| `1413e18` | Setas decorativas com `aria-hidden`, 4 lugares (D-46) |
+
+Sem dívida de documentação: PRD, `CLAUDE.md` e esta seção refletem o estado
+real. **O próximo item é análise pura** — ler o `WORKFLOW.md` e o
+`ARCHITECTURE.md` e apontar o que está falso, sem alterar arquivo. A sessão
+começa lendo, não reconstruindo contexto.
 
 **Limitação de ferramenta:** o conector da Vercel devolve lista vazia em
 `list_projects` no time AVVIA, apesar de o projeto existir e publicar. É
@@ -138,7 +155,7 @@ sai pela API do GitHub, que registra os deployments criados pela Vercel.
 | Item | Depende de | Bloqueia |
 |---|---|---|
 | Teste do arrasto com **dedo** no celular (D-29) | o Raul, num aparelho real — é onde o gesto pode roubar a rolagem | — |
-| Hero: o miolo abaixo do Memoji está oco — vão grande até a headline | decisão de layout junto com D-34 e D-37 | — |
+| Hero: o miolo oco — **provavelmente resolvido** pelo D-43 (Memoji centrado) somado à faixa do D-34 e ao fio do D-37 | confirmação visual do Raul | — |
 | `@vercel/analytics` (RF-09) | conta na Vercel — já existe | checklist §10 |
 | Domínio `raulrodrigues.dev` + HTTPS | registro do domínio pelo Raul | §10 e a URL do `og:image` |
 | Lighthouse na URL de produção (RNF-01) | site no ar — já está | §10 |
@@ -588,7 +605,7 @@ Mudar qualquer item exige uma razão escrita no log da seção 14 — não um im
 | **Idioma** | Inglês. Sem versão em português na v1 |
 | **Hero** | Memoji como textura em cena R3F, sem `.glb` |
 | **Repositório** | `portfolio-3d-v2`, novo e limpo |
-| **Branches** | Uma branch por passo (`passo-4-cena-3d`). `main` só recebe merge do que passou no build |
+| **Branches** | **Uma `main` só.** Todo commit vai direto nela, e o build tem de passar antes do push. Este documento afirmou até 05/09 que havia "uma branch por passo" — era falso desde o primeiro commit; o histórico nunca teve outra branch. Corrigido pelo D-47 |
 | **Deploy** | Vercel, automático a partir da `main` |
 | **Analytics** | Vercel Analytics — sem cookies, sem banner |
 | **Modo de trabalho** | Esqueleto e documentação montados com o Claude; cada passo executado pelo Raul no Claude Code, um por sessão |
@@ -659,6 +676,8 @@ Toda mudança de rumo vive aqui, com data e motivo. É a memória do projeto.
 | **D-44** | 05/09 | **Modo escuro com botão de alternância entra na v1**, e entra por último. Reverte a exclusão da seção 6 | Pedido explícito do Raul, repetido duas vezes — o segundo pedido é o que mudou a decisão: ideia repetida é vontade, ideia dita uma vez é impulso. O custo, escrito para ninguém subestimar depois: (1) tokens do `@theme` em variante escura, com **contraste AA remedido nos dois temas** — o que passa no claro não passa automaticamente no escuro; (2) as **duas cenas 3D** foram calibradas para fundo claro (D-18, D-19) — halo do Memoji, sombra de contato, textura de pontos do globo, cor das órbitas e poeira precisam de variante; (3) o grão (D-36) a 2,8% sobre branco não é 2,8% sobre preto: recalibrar e remedir o contraste do texto miúdo; (4) o tom ambiente do M-10 precisa de par escuro; (5) o fio roxo (M-25) a 50% de opacidade pode sumir ou berrar; (6) **persistência sem flash branco na primeira pintura** — script inline antes do paint; um toggle que pisca branco em quem escolheu escuro é pior que não ter toggle; (7) o botão acessível por teclado, com estado anunciado. **Posição na fila: último.** É o único item cuja ausência não impede o lançamento, e por isso é o primeiro a ser cortado se o prazo de 10/10 apertar — um site claro no ar em Dublin vale mais que um site de dois temas em construção. Se qualquer frente custar mais do que o previsto, o Claude Code avisa **antes** de começar: cortar com clareza é melhor que entregar pela metade | Aberta |
 | **D-45** | 05/09 | Varredura de texto visual × texto de máquina concluída. **Corrigido:** o `<br />` da Location. **Decidido NÃO corrigir:** a fita da Stack e os irmãos separados por `gap` | Auditoria completa, feita depois dos três casos que geraram a regra da 5.2.1. Resultado: os 14 títulos da página leem como frase correta, e rótulos numerados, faixa de impacto, coluna de metadados e rodapé estão limpos. Só o `<br />` da Location era da mesma classe — corrigido em `2c96e11`, `"Dublin,Ireland"` → `"Dublin, Ireland"`. **Duas coisas ficam como estão, e o motivo importa mais que a decisão.** (1) **A fita da Stack (M-9) repete a lista três vezes no texto da página** — a trilha é duplicada para o loop sem emenda e os mesmos itens já aparecem na grade acima. Para leitor de tela é inofensivo: o contêiner tem `aria-hidden="true"` e é ignorado inteiro. Para indexação é fraco, não fatal — repetir lista de palavras-chave é ruído, não penalidade. E os dois consertos possíveis custam mais que o problema: não existe em HTML um nó limpo que a extração de texto ignore, e gerar a segunda trilha por CSS tira conteúdo do DOM de um jeito que atrapalha mais do que ajuda. **Fica.** (2) **Irmãos separados por `gap`** — nav, tags dos cards, linhas do `<dl>`, CTAs — aparecem colados no `textContent` bruto, mas cada um é elemento próprio com nome acessível próprio, e o leitor de tela anuncia separadamente. Só apareceria para quem concatenasse o texto cru da página. **Não é defeito.** Registrado para ninguém "consertar" no futuro achando que é a mesma coisa do `<br />` | Resolvida |
 | **D-46** | 05/09 | As setas decorativas dos links ganham `aria-hidden="true"` — quatro lugares | Metade das setas do site já é decorativa e metade entra no nome acessível: `Live demo →` e `Code →` nos cards, `GitHub →` e `LinkedIn →` no Contato são anunciados com a seta junto, enquanto o rodapé e o `Get in touch` do header já a escondem. Não é a classe do `<br />` — ali faltava separação, aqui **sobra um caractere decorativo dentro do nome acessível**. É inconsistência, não escolha: o padrão certo já existe no próprio código, em dois lugares. Conserto: `aria-hidden="true"` no `<span>` da seta, como o rodapé faz. Serve o RNF-06. **Implementado:** os quatro links passaram ao padrão do rodapé — `group inline-flex items-center gap-1.5` com a seta num `<span aria-hidden>`. Efeito colateral desejado: o avanço no hover passa a ser da **seta** e não do link inteiro, que é o que o M-17 descreve e o que o rodapé já fazia; antes o `Live demo` deslocava o rótulo junto. Medido depois: os **dez** links com seta do site têm nome acessível limpo, e zero setas são lidas por leitor de tela | Ativa |
+| **D-47** | 05/09 | O `WORKFLOW.md` perde o plano e vira **documento de método**. O `CLAUDE.md` deixa de apontá-lo como fonte do "próximo passo" | Diagnóstico medido: o documento descreve os dez passos como trabalho a fazer quando todos já foram executados, prescreve um ritual de branches que o projeto **nunca usou** (o histórico tem uma `main` só), e o prompt do Passo 3 manda "reservar a metade direita da primeira dobra" — uma sessão que o executasse **desfaria o D-43**, entregue anteontem. O dano não é hipotético: o `CLAUDE.md` roteia toda sessão nova para lá em dois pontos, para buscar "o próximo passo". **Um documento de plano fica falso no dia em que o plano acaba** — e este acabou. O que sobrevive é bom e fica: as cinco regras (§1), a anatomia de um bom prompt (§3) e os prompts auxiliares (§5). Sai: o ciclo de branches (§2) e a lista de dez passos (§4). O limiar do §6 ("mais de cinco arquivos = passo grande demais") também sai: o D-31 tocou 12 arquivos e passou em build e medição, o D-42 tocou 3 — o número deixou de discriminar. O sinal que substitui é o que a prática já usa: **se você não consegue dizer o que muda em até 3 linhas, o passo está grande demais.** A partir daqui, a fonte do "próximo passo" é a **seção 0 deste PRD**, e só ela | Aberta |
+| **D-48** | 05/09 | O `ARCHITECTURE.md` é corrigido, e o **contrato de camadas** passa a ser documentado. O `Thread.tsx` muda de `ui/` para `layout/` | O documento envelheceu por **omissão**, não por contradição — por isso ajuda e é corrigido em vez de reduzido. Suas quatro regras estruturais continuam verdadeiras, e o isolamento do `three` foi verificado mecanicamente: nada fora de `components/three/` importa `three` ou `@react-three`. Correções: faltam `Statement.tsx` (D-17) e `Location.tsx` (D-19) na árvore — e omitir a Location esconde **metade do WebGL do projeto**; a regra 4 cita um token `accent` que **não existe** (`grep` retorna zero), e o exemplo não compila; falta `robots.txt`, `sitemap.xml` e `world-dots.png` na lista de `public/`; e a receita de "faixa nova da página" está incompleta desde o D-33, porque `nav.ts` passou a ter duas listas — `navItems` e `sectionOrder` — e seguir a receita como está deixaria a seção nova sem número. **O acréscimo mais caro é o que não estava lá:** o contrato de camadas criado pelo D-36 e pelo D-37. Grão e fio vivem em `z-index: -1` como camadas do `<body>`, e **o `<body>` não pode voltar a ter `background-color`** — se voltar, os dois somem juntos, sem erro no console e com o build verde. Isso é arquitetura e é armadilha de falha silenciosa; hoje existe só como comentário dentro do `index.css`. Por fim, o `Thread.tsx` sai de `ui/`, descrita como "peças reutilizáveis", para `layout/`: é camada decorativa da página inteira, usada uma vez, com `z-index` negativo. Move-se o arquivo em vez de afrouxar a descrição da pasta — o documento fica verdadeiro, e não acomodando exceção | Aberta |
 ---
 
 ## 15. Backlog v2
