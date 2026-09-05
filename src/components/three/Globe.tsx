@@ -101,9 +101,15 @@ export function Globe({ progress, drag }: Props) {
     const eased = p * p * (3 - 2 * p) // smoothstep
 
     // D-28 — o regime é decidido pelo REPOUSO, não pela posição da seção. Um
+    // D-55 — `livre` suspende o assentamento depois de um arrasto. Não é um
+    // segundo temporizador: o carimbo continua único, e o que entra é a
+    // ORIGEM da última interação. Sem isso, "Dublin de frente" e "mundinho
+    // girando" ficam incompatíveis por construção, e tentar conciliá-los com
+    // número foi exatamente o erro que o D-27 cometeu.
     // carimbo só (`lastInteraction`) recebe rolagem e arrasto, então "parou de
     // rolar" e "soltou o globo" são o mesmo evento, e não há dois prazos.
-    const resting = !d.dragging && performance.now() - d.lastInteraction > REST_DELAY
+    const resting =
+      !d.dragging && !d.livre && performance.now() - d.lastInteraction > REST_DELAY
 
     const k = 1 - Math.pow(0.002, delta)
 

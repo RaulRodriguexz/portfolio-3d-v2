@@ -28,6 +28,17 @@ export type GlobeDragState = {
    * (D-28). Um carimbo só governa os dois repousos; não existe um segundo.
    */
   lastInteraction: number
+  /**
+   * D-55 — verdadeiro depois de um arrasto, falso depois de uma rolagem.
+   *
+   * O `lastInteraction` diz **quando** houve interação; este diz **de onde ela
+   * veio**, e é essa distinção que resolve um conflito que nenhum número
+   * resolve. Rolar é ler, e quem lê merece Dublin de frente; arrastar é
+   * brincar, e quem brinca não quer que o brinquedo se arrume sozinho.
+   * Enquanto for verdadeiro, o assentamento automático fica suspenso e o globo
+   * gira livre por tempo indeterminado — até a próxima rolagem.
+   */
+  livre: boolean
 }
 
 /**
@@ -79,6 +90,7 @@ export function useGlobeDrag<T extends HTMLElement>(
     velocity: { x: 0, y: 0 },
     dragging: false,
     lastInteraction: 0,
+    livre: false,
   })
 
   useEffect(() => {
@@ -196,6 +208,8 @@ export function useGlobeDrag<T extends HTMLElement>(
       if (mode === 'drag') {
         state.current.dragging = false
         state.current.lastInteraction = performance.now()
+        // soltou depois de girar: o globo fica livre até alguém rolar (D-55)
+        state.current.livre = true
         if (el.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId)
       }
       el.style.cursor = ''
@@ -207,6 +221,8 @@ export function useGlobeDrag<T extends HTMLElement>(
     // rolar conta como atividade tanto quanto arrastar (D-28)
     const onScroll = () => {
       state.current.lastInteraction = performance.now()
+      // voltou a ler: o globo volta a se arrumar e a apontar Dublin (D-55)
+      state.current.livre = false
     }
 
     window.addEventListener('scroll', onScroll, { passive: true })
