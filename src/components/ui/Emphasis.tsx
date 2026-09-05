@@ -17,7 +17,15 @@ export function Emphasis({ text }: { text: string }) {
   return (
     <>
       {antes}
-      <strong className="font-bold text-primary-deep">{trecho}</strong>
+      {/*
+        D-52 (b) — marca-texto atrás do trecho. `box-decoration-clone` faz o
+        fundo e o arredondamento se repetirem em cada linha quando o destaque
+        quebra, em vez de virar uma faixa só cortada ao meio. O `-mx-1`
+        devolve o espaço que o `px-1` tomou, para o texto não desalinhar.
+      */}
+      <strong className="box-decoration-clone -mx-1 rounded-[3px] bg-primary/15 px-1 font-bold text-primary-deep">
+        {trecho}
+      </strong>
       {resto.join('**')}
     </>
   )

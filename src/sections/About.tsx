@@ -8,6 +8,22 @@ import { Emphasis } from '../components/ui/Emphasis'
 export function About() {
   return (
     <Section id="about" eyebrow="About" title="How I work" meta={profile.sectionMeta.about}>
+      {/*
+        D-52 (a) — a citação abre a seção, em corpo maior que os parágrafos e
+        menor que o `h2`. Contraste ENTRE blocos: cinco parágrafos do mesmo
+        tamanho continuam cinco parágrafos do mesmo tamanho, por mais colorido
+        que seja o trecho dentro de cada um.
+      */}
+      <p className="mb-10 max-w-[34rem] text-xl font-normal leading-snug text-ink sm:text-2xl">
+        <span aria-hidden="true" className="text-primary-deep">
+          “
+        </span>
+        {profile.aboutQuote}
+        <span aria-hidden="true" className="text-primary-deep">
+          ”
+        </span>
+      </p>
+
       {profile.about.length === 0 ? (
         <EmptyState step="Passo 2" file="src/data/profile.ts → about" />
       ) : (

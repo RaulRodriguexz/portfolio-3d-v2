@@ -14,17 +14,31 @@ export const profile = {
   /** A frase mais importante do site (PRD, decisão D-12). */
   headline: 'I build systems that take repetitive work off people’s calendars.',
 
-  subheadline:
-    'A self-taught AI and automation developer. I work where things are ambiguous — turning messy problems into clear plans, then into systems that connect apps, models and APIs so **information moves on its own**. Running in production for companies in marketing, legal, transport and dental since 2025.',
+  /**
+   * D-52 (c) — dois parágrafos, não um bloco de 298 caracteres. O primeiro é
+   * curto e direto porque é a segunda coisa que a pessoa lê no site. O texto
+   * não foi reescrito: só a divisão, e o travessão virou ponto final.
+   */
+  subheadline: [
+    'A self-taught AI and automation developer. I work where things are ambiguous.',
+    'Turning messy problems into clear plans, then into systems that connect apps, models and APIs so **information moves on its own**. Running in production for companies in marketing, legal, transport and dental since 2025.',
+  ],
 
   location: 'Brazil → Dublin, Ireland · October 2026',
 
   availability: 'Open to AI / automation roles in Dublin and to freelance projects',
 
+  /**
+   * D-52 (a) — a melhor frase do site, que estava enterrada no meio do
+   * parágrafo 2, vira a abertura da seção. **Uma citação só na página inteira**:
+   * duas viram painel e o efeito se anula, como o D-34 já fixou para o número.
+   */
+  aboutQuote: 'The team is not slow, the process is.',
+
   /** Seção About — uma frase por item. */
   about: [
     'I got into technology as a kid, the day a computer showed up at home. Python first, then Java, C++ and C# — and eventually the AI tools that turned curiosity into work.',
-    'Since 2025 I have worked directly with company owners, and the pattern repeats: **the team is not slow, the process is**. Information gets lost between people, payments are handled by hand, and the website does not connect to anything.',
+    'Since 2025 I have worked directly with company owners, and the same pattern keeps showing up. Information gets lost between people, payments are **handled by hand**, and the website does not connect to anything.',
     'My job is to work where things are ambiguous: turn a messy problem into a clear plan, **and only then build**. Usually the answer is an automation, an AI assistant, or a system that finally has everything in one place.',
     'In **October 2026** I move to Dublin to study at SEDA College and keep building inside the European tech ecosystem.',
   ],

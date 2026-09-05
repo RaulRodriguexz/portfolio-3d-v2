@@ -23,9 +23,16 @@ export function Statement() {
         </h2>
 
         <div ref={ref} className="reveal" style={{ transitionDelay: '420ms' }}>
-          <p className="mt-9 max-w-[38rem] text-base leading-relaxed text-muted sm:text-lg">
-            <Emphasis text={profile.subheadline} />
-          </p>
+          {profile.subheadline.map((paragrafo, i) => (
+            <p
+              key={paragrafo.slice(0, 24)}
+              className={`max-w-[38rem] text-base leading-relaxed text-muted sm:text-lg ${
+                i === 0 ? 'mt-9' : 'mt-5'
+              }`}
+            >
+              <Emphasis text={paragrafo} />
+            </p>
+          ))}
 
           <div className="mt-11 flex flex-wrap gap-4">
             <Button href="#projects">See the work</Button>
