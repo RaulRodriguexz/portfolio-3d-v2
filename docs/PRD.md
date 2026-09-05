@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Versão** | 3.4 |
+| **Versão** | 3.6 |
 | **Última revisão** | 05/09/2026 |
 | **Responsável** | Raul Rodrigues ([@RaulRodriguexz](https://github.com/RaulRodriguexz)) |
 | **Status** | Aprovado — em execução (Passos 1 a 8 concluídos, 9 parcial) |
@@ -43,6 +43,8 @@
 
 | Versão | Data | O que mudou |
 |---|---|---|
+| 3.6 | 05/09/2026 | **Contradição interna removida:** a seção 0 ainda trazia a nota "modo escuro: recusado para a v1" enquanto a fila, três linhas acima, mandava implementá-lo (D-44). Fila enxugada: o `WordReveal` saiu de "em andamento" para "concluído" e entrou o `<br />` da Location com a varredura de texto. Duas dependências marcadas como resolvidas. |
+| 3.5 | 05/09/2026 | `WordReveal` corrigido (`f2e42ab`) — o defeito não era do `h1`: a frase do Statement, que é a D-12, virava uma palavra de 56 caracteres. Terceiro caso achado na varredura, o `<br />` da Location. Escrita a regra "o que o olho lê e o que a máquina lê têm de ser a mesma frase" na 5.2.1. |
 | 3.4 | 05/09/2026 | Pin de Dublin entregue (M-23, D-25) — o inventário de movimento fecha em M-1 a M-25, faltando só M-26 e M-27. Acrescentada à 5.2.1 a regra "medição vazia não é prova de código quebrado", tirada de dois diagnósticos falsos seguidos. |
 | 3.3 | 05/09/2026 | Memoji centralizado (D-43 entregue). **D-44 — modo escuro entra na v1**, por pedido repetido, com o custo escrito e posição de último na fila; a seção 6 deixa de proibi-lo. Acrescentada à fila a auditoria de foco e a página 404. |
 | 3.2 | 05/09/2026 | D-41 (alinhamento do hero) e D-42 (nav centrada com CTA) entregues. Escritas as decisões que só existiam na fila: D-40 (lead do About), M-26 e M-27. Adicionada a D-43 — o Memoji volta ao centro, e o experimento de alinhá-lo à direita fica registrado como descartado, com as três razões. |
@@ -88,6 +90,7 @@ Repositório: <https://github.com/RaulRodriguexz/portfolio-3d-v2> · Deploy auto
 | **Ritmo e densidade** | D-32 a D-35 e M-24 entregues — coluna de metadados por seção, numeração derivada do `id`, faixa de impacto, marcador `BR → IE` |
 | **Ênfase e material** | D-38 e D-36 entregues — cinco destaques em `primary-deep`, um por parágrafo; grão a 2,8% com contraste medido em 7,48:1 no pior caso |
 | **Fio roxo** | D-37 e M-25 entregues — caminho gerado da geometria medida dos rótulos, `ResizeObserver`, confirmado por A/B de pixel em três posições de scroll |
+| **Texto legível por máquina** | Varredura da página inteira: os 14 títulos (`h1`, `h2`, `h3`) leem como frases corretas; `<br />` da Location corrigido — `"Dublin, Ireland"` |
 | **`WordReveal`** | Espaço real fora do recorte — `textContent` do `h1` e da frase de posicionamento voltam a ter espaços; larguras caíram 5,6 px e 24,7 px |
 | **Pin de Dublin** | M-23 e D-25 entregues — `Marker` em arquivo próprio, haste e cabeça, oclusão confirmada por arrasto real; `Globe.tsx` de 226 para 195 linhas |
 | **Header** | D-42 entregue — nav centrada, `Get in touch` à direita, e a mesma largura de container do hero; tinta alinhada com 0 px à esquerda e −1 px à direita |
@@ -98,9 +101,9 @@ Repositório: <https://github.com/RaulRodriguexz/portfolio-3d-v2> · Deploy auto
 
 | Ordem | Item | Onde | Estado |
 |---|---|---|---|
-| 1 | `WordReveal`: `h1.textContent` sem espaço | `ui/WordReveal.tsx` | ✅ feito em 04/09 |
+| 1 | `<br />` da Location (`Dublin,Ireland`) + varredura de texto visual × `textContent` | `sections/Location.tsx`, global | a fazer — commit próprio |
 | 2 | Diagnóstico do `WORKFLOW.md` e do `ARCHITECTURE.md` | `docs/` | a fazer — **apontar, não corrigir** |
-| 3 | Reveal palavra a palavra nos `h2` (M-26) | `layout/Section.tsx` | a fazer — **depende do item 1** |
+| 3 | Reveal palavra a palavra nos `h2` (M-26) | `layout/Section.tsx` | a fazer |
 | 4 | Links e botões magnéticos (M-27) | CTAs do Statement, copiar e-mail, baixar CV | a fazer |
 | 5 | Parágrafo de abertura do About em corpo maior (D-40) | `sections/About.tsx` | a fazer |
 | 6 | Auditoria de foco (RNF-06) e página 404 própria | global, `vercel.json` ou `404.html` | a fazer |
@@ -108,20 +111,12 @@ Repositório: <https://github.com/RaulRodriguexz/portfolio-3d-v2> · Deploy auto
 
 Um commit por item, com confirmação do Raul entre eles.
 
-**Dependência entre itens 1 e 3:** aplicar o reveal aos `h2` antes de corrigir o
-espaço do `WordReveal` transforma um defeito num `h1` em seis — `SelectedWork`,
-`HowIwork` e os demais. O item 1 vem antes, ou no mesmo commit.
+**Dependência do M-26 com o `WordReveal`:** ✅ **resolvida** em `f2e42ab`. O
+reveal dos `h2` só podia entrar depois do conserto do espaço, senão o defeito de
+um `h1` viraria seis títulos colados. Com o conserto no ar, o M-26 está livre.
 
-**Dependência do fio (M-25) com o D-41:** ✅ resolvida — o fio nasce na geometria do hero.
-Como o caminho é **gerado por medição** e não escrito à mão, mudar o hero não o
-quebra — mas o formato da curva muda. Depois do D-41, reconfira o ponto de
-partida e a forma do traço.
-
-**Modo escuro: recusado para a v1.** Pedido em 04/09. As duas cenas 3D, o grão e
-todo o contraste foram calibrados para fundo claro; um segundo tema exige
-recalibrar tudo isso e reverificar AA em cada tom — meia semana a duas semanas
-do prazo, com a revisão do inglês ainda pendente. Continua no `BACKLOG.md` como
-v2 e na seção 6 como fora de escopo.
+**Dependência do fio (M-25) com o D-41:** ✅ **resolvida**. O caminho é gerado
+por medição e se reajustou sozinho às três mudanças de hero.
 
 **Sob observação:** a medição cobre largura, overflow, fallback de mobile,
 caracteres por linha e contraste — tudo verificado. O arrasto do globo foi
@@ -350,6 +345,19 @@ que é o que a GPU compõe de graça. Nenhuma biblioteca nova.
   da tinta, o que quase provocou a "correção" de um alinhamento correto (D-42).
   Antes de aceitar um número, pergunte se ele descreve o que aparece na tela ou
   só o que a API devolve mais fácil.
+- **O que o olho lê e o que a máquina lê têm de ser a mesma frase.** Já
+  apareceu por três caminhos diferentes, todos com build verde: no `h1`, onde a
+  separação entre palavras era `margin` e não espaço, devolvendo
+  `"RaulRodrigues"`; na frase do Statement (M-7), pela mesma causa, onde uma
+  sentença de 56 caracteres virava **uma palavra só** — e é a frase da D-12,
+  escrita pelo Raul, a que o Google indexa junto do `h1`; e no título da
+  Location, onde um `<br />` sem espaço produzia `"Dublin,Ireland"`. Não é um
+  bug, é uma classe: **separação visual não é separação textual.** `margin`,
+  `<br>`, `position`, `flex gap` e pseudo-elementos separam pixels e não
+  separam texto. Regra: qualquer componente que quebre uma frase em pedaços —
+  para animar, para quebrar linha, para estilizar — é aceito só depois de
+  conferir o `textContent` renderizado. Vale para leitor de tela, indexação e
+  copiar-colar, ou seja, RNF-06 e RNF-07 ao mesmo tempo.
 - **Medição vazia não é prova de código quebrado — desconfie primeiro do
   instrumento.** Aconteceu duas vezes, do mesmo jeito: o teste devolvia nada e
   a conclusão fácil era "não renderiza". No fio (M-25), o recorte da captura

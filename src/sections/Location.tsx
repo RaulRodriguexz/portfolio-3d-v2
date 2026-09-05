@@ -77,7 +77,10 @@ export function Location() {
             {sectionNumber('location')} / Based in
           </p>
           <h2 className="text-[2.4rem] font-bold leading-[1.05] tracking-tight sm:text-[3.2rem]">
-            Dublin,
+            {/* o espaço é explícito: `<br>` quebra a linha mas não separa as
+                palavras no texto, e sem ele o textContent vira "Dublin,Ireland"
+                — que é justamente o que um recrutador de Dublin procura */}
+            Dublin,{' '}
             <br />
             Ireland
           </h2>
