@@ -15,8 +15,6 @@ const PRIMARY = '#8c62ac'
 
 const RADIUS = 1.6
 
-/** Inclinação vertical máxima: ±60°, para o globo nunca virar de cabeça para baixo. */
-const MAX_TILT = Math.PI / 3
 /** Tempo sem rolagem nem arrasto, em ms, até o globo assentar em Dublin (D-28). */
 const REST_DELAY = 1500
 /** Velocidade do giro contínuo, em rad/s — uma volta a cada ~31 s (D-28). */
@@ -133,7 +131,13 @@ export function Globe({ progress, drag }: Props) {
         // desenrolaria várias voltas para trás em vez de no máximo meia
         const turns = Math.round((base.current.y - target.y) / (Math.PI * 2))
         base.current.y += (target.y + turns * Math.PI * 2 - base.current.y) * k
-        base.current.x += (target.x - base.current.x) * k
+
+        // D-54 — o eixo X passa a precisar do MESMO tratamento. Enquanto havia
+        // teto de ±60° ele nunca dava volta, e perseguir `target.x` cru era
+        // inofensivo; sem teto, algumas cambalhotas põem `base.x` a várias
+        // voltas do alvo e o globo rebobinaria para trás na cara de quem olha.
+        const voltasX = Math.round((base.current.x - target.x) / (Math.PI * 2))
+        base.current.x += (target.x + voltasX * Math.PI * 2 - base.current.x) * k
         spinVel.current = -SPIN_SPEED
         tiltVel.current = 0
       } else {
@@ -149,17 +153,13 @@ export function Globe({ progress, drag }: Props) {
     const wantScale = 1 + eased * 0.42
     g.scale.setScalar(g.scale.x + (wantScale - g.scale.x) * k)
 
-    // o limite vale sobre o valor composto, não só sobre o offset; corrigir o
-    // offset na parede evita que ele acumule um crédito invisível de rotação
-    const composedX = base.current.x + d.offset.x
-    const clampedX = Math.min(MAX_TILT, Math.max(-MAX_TILT, composedX))
-    if (clampedX !== composedX) {
-      d.offset.x = clampedX - base.current.x
-      d.velocity.x = 0
-    }
-
+    // D-54 — sem teto: o globo dá volta completa nos dois eixos, inclusive de
+    // cabeça para baixo. `rotation.x` e `rotation.y` são ângulos de Euler, então
+    // passando de ±90° em X o arrasto horizontal inverte a sensação; é inerente
+    // a rotação turntable e sair disso exigiria quaternião, ou seja, reescrever
+    // o núcleo que custou o D-28 e o D-30. Consequência assumida, não defeito.
     g.rotation.y = base.current.y + d.offset.y
-    g.rotation.x = clampedX
+    g.rotation.x = base.current.x + d.offset.x
   })
 
   return (

@@ -47,7 +47,8 @@ export function Location() {
   // o arrasto escuta a seção inteira (D-29), não só o canvas
   const progress = useElementProgress(section)
   const canRender3D = useCanRender3D()
-  const [attachDrag, drag] = useGlobeDrag<HTMLElement>()
+  const zonaDoGlobo = useRef<HTMLDivElement>(null)
+  const [attachDrag, drag] = useGlobeDrag<HTMLElement>(zonaDoGlobo)
   const textRef = useReveal<HTMLDivElement>(0.3)
 
   return (
@@ -61,7 +62,8 @@ export function Location() {
     >
       {/* o globo ocupa a metade direita no desktop e o fundo no mobile */}
       <div
-        className="pointer-events-none absolute inset-y-0 right-0 w-full cursor-grab opacity-60 sm:w-[56%] sm:opacity-100"
+        ref={zonaDoGlobo}
+        className="pointer-events-none absolute inset-y-0 right-0 w-full opacity-60 sm:w-[56%] sm:opacity-100"
         aria-hidden="true"
       >
         {canRender3D && (

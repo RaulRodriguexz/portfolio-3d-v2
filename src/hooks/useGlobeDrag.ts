@@ -6,6 +6,8 @@ const SENSITIVITY = 0.005
 const MAX_VELOCITY = 4
 /** Quanto o gesto precisa andar, em px, antes de ser classificado. */
 const DECISION_THRESHOLD = 8
+/** Folga em volta do quadrado do planeta, em px (D-54). */
+const MARGEM_DA_ZONA = 40
 /**
  * O quanto o eixo horizontal precisa dominar o vertical para virar arrasto
  * (D-29). Vale 1 — 45° cravados. Antes eram 1,4, o que matava qualquer puxão
@@ -56,14 +58,21 @@ export type GlobeDragState = {
  *    chega. Nada precisa mexer em `pointer-events`: um filho com
  *    `pointer-events: none` só deixa o evento cair na seção, que é quem escuta.
  *
+ * 5. **A zona limita onde o gesto COMEÇA, nunca onde ele continua** (D-54).
+ *    Um `pointerdown` nascido longe do planeta é ignorado; um arrasto já em
+ *    curso segue valendo mesmo com o cursor longe da bola. Limitar a
+ *    continuação faria o globo escapar da mão no meio do movimento, o que é
+ *    pior que o problema original. Os listeners **continuam na `<section>`**:
+ *    tirá-los de lá reintroduziria o defeito do canvas menor que a área
+ *    aparente, que é o que o D-29 consertou.
+ *
  * Devolve um **callback ref**, não um ref comum: o canvas nasce depois, quando
  * o chunk lazy do `GlobeScene` resolve. Com `useRef` o efeito rodava uma única
  * vez, com o elemento ainda `null`, e os listeners nunca chegavam a ser presos.
  */
-export function useGlobeDrag<T extends HTMLElement>(): [
-  (node: T | null) => void,
-  RefObject<GlobeDragState>,
-] {
+export function useGlobeDrag<T extends HTMLElement>(
+  zona?: RefObject<HTMLElement | null>,
+): [(node: T | null) => void, RefObject<GlobeDragState>] {
   const [element, setElement] = useState<T | null>(null)
   const state = useRef<GlobeDragState>({
     offset: { x: 0, y: 0 },
@@ -81,6 +90,22 @@ export function useGlobeDrag<T extends HTMLElement>(): [
     // `pinch-zoom` explícito: `pan-y` sozinho desliga o zoom de pinça, e isso
     // seria uma regressão de acessibilidade numa seção inteira (D-29)
     el.style.touchAction = 'pan-y pinch-zoom'
+
+    /**
+     * Quadrado centrado na caixa da cena, com folga. A caixa é bem mais larga
+     * que alta no desktop e o planeta é redondo: usar o retângulo inteiro
+     * deixaria o gesto começar onde não há globo nenhum.
+     */
+    const naZona = (e: PointerEvent) => {
+      const z = zona?.current
+      if (!z) return true
+      const r = z.getBoundingClientRect()
+      if (!r.width || !r.height) return true
+      const lado = Math.min(r.width, r.height) / 2 + MARGEM_DA_ZONA
+      const cx = r.left + r.width / 2
+      const cy = r.top + r.height / 2
+      return Math.abs(e.clientX - cx) <= lado && Math.abs(e.clientY - cy) <= lado
+    }
 
     let pointerId: number | null = null
     let mode: 'undecided' | 'drag' | 'scroll' = 'undecided'
@@ -106,6 +131,8 @@ export function useGlobeDrag<T extends HTMLElement>(): [
 
     const onDown = (e: PointerEvent) => {
       if (pointerId !== null) return
+      // D-54 — só a ORIGEM é restrita
+      if (!naZona(e)) return
       pointerId = e.pointerId
       allowVertical = e.pointerType === 'mouse'
       startX = lastX = e.clientX
@@ -123,6 +150,13 @@ export function useGlobeDrag<T extends HTMLElement>(): [
     }
 
     const onMove = (e: PointerEvent) => {
+      // D-54 — a mão só aparece onde o gesto pode começar, e é ela que ENSINA
+      // onde pegar. Vive aqui e não no `<div>` da cena porque aquele elemento é
+      // `pointer-events: none` e nunca recebe ponteiro: um `cursor-grab` ali é
+      // inerte, e era exatamente o que estava no código.
+      if (pointerId === null && e.pointerType === 'mouse') {
+        el.style.cursor = naZona(e) ? 'grab' : ''
+      }
       if (e.pointerId !== pointerId || mode === 'scroll') return
       const s = state.current
 

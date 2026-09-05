@@ -108,6 +108,7 @@ Repositório: <https://github.com/RaulRodriguexz/portfolio-3d-v2> · Deploy auto
 | **Arrasto do globo** | D-29 e D-30 entregues — captura na `<section>`, critério a 45°, `touch-action: pan-y pinch-zoom`, inércia dobrada na `base` |
 | **Largura e leitura** | D-31 e D-39 entregues — Container 96 rem, hero 104 rem, prosa em `rem` com máximo medido de 74 caracteres por linha |
 | **Ritmo e densidade** | D-32 a D-35 e M-24 entregues — coluna de metadados por seção, numeração derivada do `id`, faixa de impacto, marcador `BR → IE` |
+| **Globo: volta completa e zona de arrasto** | D-54 entregue — teto de ±60° removido com assentamento congruente no eixo X (sem ele o percurso chegava a 6π para trás), gesto só **começa** perto do planeta, e o `cursor-grab` que era inerte passou a funcionar |
 | **Hierarquia na Stack e rodapé** | D-53 entregue — títulos em 20 px/700 com 20,12:1, uma ênfase por grupo **sem fundo** (5 em prosa com, 4 em grade sem), rodapé em 700 contra 400 |
 | **Foco e 404** | RNF-06 auditado com **Tab real** em 1440 e 360 px — dois defeitos achados no `CopyEmail`, os **dois únicos controles do caminho de contato**: anel cortado pelo `overflow-hidden` e a 1,79:1. Depois: 0 de 23 e 0 de 25 paradas, contraste de 8,3 a 8,9:1. Página 404 própria, autocontida, 3,4 KB, respondendo **HTTP 404 de verdade** — soft-404 seria indexado como página válida |
 | **Contraste entre blocos** | D-52 entregue — citação de abertura no About em 24 px, marca-texto com `box-decoration-clone` medido em **6,9:1**, subtítulo do hero em dois parágrafos. Máximo real de leitura: 75 caracteres por linha |
@@ -138,7 +139,7 @@ Repositório: <https://github.com/RaulRodriguexz/portfolio-3d-v2> · Deploy auto
 | 6 | **Contraste entre blocos (D-52)** — citação de abertura, marca-texto, subtítulo em dois | `sections/About.tsx`, `ui/Emphasis.tsx`, `data/profile.ts` | ✅ feito em 05/09 |
 | 7 | **Hierarquia na Stack e no rodapé (D-53)** | `sections/Stack.tsx`, `layout/Footer.tsx`, `data/stack.ts` | ✅ feito em 05/09 |
 | 8 | Auditoria de foco (RNF-06) e página 404 própria | global, `vercel.json` ou `404.html` | ✅ feito em 05/09 |
-| 9 | **Globo: volta completa e arrasto que começa perto (D-54)** | `three/Globe.tsx` (`MAX_TILT` e o clamp), `hooks/useGlobeDrag.ts`, `sections/Location.tsx` | a fazer — **antes do modo escuro, que vai repintar esta cena** |
+| 9 | **Globo: volta completa e arrasto que começa perto (D-54)** | `three/Globe.tsx` (`MAX_TILT` e o clamp), `hooks/useGlobeDrag.ts`, `sections/Location.tsx` | ✅ feito em 05/09 |
 | 10 | **Modo escuro com botão de alternância (D-44)** | `index.css`, as duas cenas 3D, `Grain`, `Thread`, `Header` | a fazer — **último; é o item que se corta se o calendário apertar. Ler a D-49 antes de escrever qualquer linha** |
 
 Um commit por item, com confirmação do Raul entre eles.
