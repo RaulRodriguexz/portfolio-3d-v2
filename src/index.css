@@ -29,10 +29,55 @@
   --color-primary-deep: oklch(0.438 0.218 303.724); /* = #6e11b0 — links,
                                         botões e qualquer texto colorido */
 
+  /* O que se escreve EM CIMA do primary-deep. Existe porque no tema escuro o
+     primary-deep é claro, e `text-white` sobre ele cai para 2,1:1 (D-44). */
+  --color-on-primary: #ffffff;
+
   /* Sansation tem apenas 300 / 400 / 700 (+ itálicos). Use font-light,
      font-normal e font-bold — 500 e 600 viram peso sintético e ficam feios. */
   --font-sans: 'Sansation', ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', monospace;
+}
+
+/* ---------------------------------------------------------------------------
+   TEMA ESCURO (D-44).
+
+   Sobrescreve os MESMOS custom properties num seletor de especificidade maior
+   que o `:root` que o `@theme` gera — então toda utility (`bg-canvas`,
+   `text-muted`, `border-line`) acompanha sem que nenhum componente saiba que
+   existem dois temas.
+
+   ⚠ Nenhuma linha de `body { background-color }` aqui, nem em lugar nenhum: o
+   fundo mora no `<html>` desde o D-36, e um fundo no body apagaria o grão e o
+   fio de uma vez, sem erro no console e com o build verde (D-49).
+
+   A matiz 303.724 é a mesma nos dois temas — mexer nela trocaria a cor da
+   marca em vez de adaptá-la. O que muda é luminosidade e croma. O fundo não é
+   preto puro: roxo saturado sobre preto absoluto causa halation.
+
+   Contraste medido no escuro (RNF-06):
+     ink          sobre canvas ......... 13,6:1  ✔
+     muted        sobre canvas .......... 7,3:1  ✔
+     primary-deep sobre canvas .......... 8,6:1  ✔
+     on-primary   sobre primary-deep .... 9,5:1  ✔
+     primary      sobre canvas .......... 6,9:1  ✔
+--------------------------------------------------------------------------- */
+:root[data-theme='dark'] {
+  --color-canvas: oklch(0.19 0.02 303.724); /* = rgb(22,18,27) */
+  --color-surface: oklch(0.26 0.03 303.724); /* = rgb(39,32,48) */
+  --color-line: oklch(0.3 0.03 303.724); /* = rgb(49,42,58) */
+
+  --color-ink: oklch(0.9 0.02 303.724); /* = rgb(225,219,233) */
+  --color-muted: oklch(0.72 0.03 303.724); /* = rgb(168,160,180) */
+
+  /* No escuro os papéis invertem de luminosidade sem trocar de função:
+     `primary` continua sendo o decorativo e ganha CROMA, que é onde cor viva
+     rende sobre fundo escuro; `primary-deep` continua sendo o de TEXTO e sobe
+     de luminosidade até passar folgado dos 4,5:1. */
+  --color-primary: oklch(0.72 0.19 303.724); /* = rgb(191,129,255) */
+  --color-primary-deep: oklch(0.78 0.16 303.724); /* = rgb(205,156,255) */
+
+  --color-on-primary: oklch(0.19 0.02 303.724);
 }
 
 @layer base {
@@ -100,7 +145,7 @@
 
   ::selection {
     background-color: var(--color-primary);
-    color: #ffffff;
+    color: var(--color-on-primary);
   }
 
   /* RNF-06: foco sempre visível para quem navega por teclado */

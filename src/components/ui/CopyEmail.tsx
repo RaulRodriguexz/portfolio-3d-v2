@@ -37,18 +37,18 @@ export function CopyEmail({ email }: { email: string }) {
   return (
     <div
       ref={magnetico}
-      className="inline-flex items-stretch overflow-hidden rounded-full bg-primary-deep text-white transition-transform duration-200"
+      className="inline-flex items-stretch overflow-hidden rounded-full bg-primary-deep text-on-primary transition-transform duration-200"
     >
       <a
         href={`mailto:${email}`}
-        className="px-6 py-3 text-sm transition-colors duration-200 hover:bg-primary focus-visible:outline-white focus-visible:[outline-offset:-3px]"
+        className="px-6 py-3 text-sm transition-colors duration-200 hover:bg-primary focus-visible:outline-on-primary focus-visible:[outline-offset:-3px]"
       >
         {email}
       </a>
       <button
         type="button"
         onClick={copy}
-        className="relative border-l border-white/25 px-4 text-sm transition-colors duration-200 hover:bg-primary focus-visible:outline-white focus-visible:[outline-offset:-3px]"
+        className="relative border-l border-white/25 px-4 text-sm transition-colors duration-200 hover:bg-primary focus-visible:outline-on-primary focus-visible:[outline-offset:-3px]"
         aria-label={copied ? 'Email copied' : 'Copy email address'}
       >
         <span

@@ -9,7 +9,7 @@ type Props = {
 
 const styles = {
   solid:
-    'bg-primary-deep text-white hover:bg-primary hover:text-white',
+    'bg-primary-deep text-on-primary hover:bg-primary hover:text-on-primary',
   ghost:
     'border border-line text-ink hover:border-primary hover:text-primary-deep',
 }
