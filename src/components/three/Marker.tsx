@@ -1,8 +1,10 @@
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import type { Mesh, Vector3 } from 'three'
+import type { Group, Mesh, Vector3 } from 'three'
 
 const PRIMARY_DEEP = '#6e11b0'
+/** Faixa clara do anel (D-56). Ver o comentário do pulso para o porquê de duas. */
+const CLARO = '#f4f1f8'
 
 /** Haste fina e curta: marcador, não bandeira (D-25). */
 const HASTE_RAIO = 0.006
@@ -26,15 +28,19 @@ const PONTA_RAIO = 0.03
  * superfície**: tudo aqui dentro é posicionado ao longo dele.
  */
 export function Marker({ position }: { position: Vector3 }) {
-  const anel = useRef<Mesh>(null)
+  const anel = useRef<Group>(null)
+  const faixaEscura = useRef<Mesh>(null)
+  const faixaClara = useRef<Mesh>(null)
 
   useFrame((state) => {
     if (!anel.current) return
     // pulso de 2 s: cresce e some, como um sinal de radar
     const t = (state.clock.elapsedTime % 2) / 2
     anel.current.scale.setScalar(1 + t * 2.2)
-    const material = anel.current.material as { opacity: number }
-    material.opacity = (1 - t) * 0.55
+    const opacidade = (1 - t) * 0.55
+    for (const faixa of [faixaEscura.current, faixaClara.current]) {
+      if (faixa) (faixa.material as { opacity: number }).opacity = opacidade
+    }
   })
 
   const paraFora = position.clone().multiplyScalar(2)
@@ -45,11 +51,25 @@ export function Marker({ position }: { position: Vector3 }) {
       position={position}
       onUpdate={(self) => self.lookAt(paraFora)}
     >
-      {/* anel de radar — continua na BASE, rente à superfície */}
-      <mesh ref={anel} position={[0, 0, 0.001]}>
-        <ringGeometry args={[0.032, 0.042, 32]} />
-        <meshBasicMaterial color={PRIMARY_DEEP} transparent opacity={0.5} toneMapped={false} />
-      </mesh>
+      {/*
+        Anel de radar, na BASE e rente à superfície — em DUAS faixas depois do
+        D-56. O pulso cresce 2,2× e atravessa a costa, então cruza as duas
+        superfícies do globo novo, e medindo elas não têm cor comum: sobre o
+        oceano `rgb(154,103,183)` o `primary-deep` dá 2,11:1 e some; sobre o
+        continente `rgb(237,231,244)` o branco dá 1,21:1 e some. Nenhuma cor
+        única resolve. Com uma faixa clara e uma escura, uma das duas sempre
+        contrasta, seja onde for que o pulso esteja passando.
+      */}
+      <group ref={anel} position={[0, 0, 0.001]}>
+        <mesh ref={faixaEscura}>
+          <ringGeometry args={[0.032, 0.038, 32]} />
+          <meshBasicMaterial color={PRIMARY_DEEP} transparent opacity={0.5} toneMapped={false} />
+        </mesh>
+        <mesh ref={faixaClara} position={[0, 0, 0.0002]}>
+          <ringGeometry args={[0.038, 0.044, 32]} />
+          <meshBasicMaterial color={CLARO} transparent opacity={0.5} toneMapped={false} />
+        </mesh>
+      </group>
 
       {/* pé da haste, para ela não parecer flutuando */}
       <mesh position={[0, 0, 0.002]}>

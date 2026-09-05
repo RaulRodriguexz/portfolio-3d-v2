@@ -12,6 +12,12 @@ import {
 } from 'three'
 
 const PRIMARY = '#8c62ac'
+/**
+ * Roxo mais claro, só para a malha (D-56). Mesma matiz da marca, um degrau
+ * acima em luminosidade — é decorativo dentro da cena 3D, não texto, então a
+ * regra 6 do CLAUDE.md não se aplica aqui.
+ */
+const MALHA = '#c9a8e2'
 
 const RADIUS = 1.6
 
@@ -170,16 +176,40 @@ export function Globe({ progress, drag }: Props) {
 
   return (
     <group ref={group}>
-      {/* 1 — corpo opaco */}
+      {/*
+        1 — o oceano. D-56 inverteu o globo: o corpo era quase branco e os
+        continentes eram roxos. Agora o corpo é roxo e os continentes são
+        cinza-claros, o que também resolve o tema escuro: partindo de cinza
+        quase branco, `color` (que multiplica) alcança qualquer valor nos dois
+        temas com UMA textura só, sem segundo PNG.
+      */}
       <mesh>
         <sphereGeometry args={[RADIUS * 0.995, 48, 48]} />
-        <meshBasicMaterial color="#fbfafd" />
+        <meshBasicMaterial color={PRIMARY} />
       </mesh>
 
-      {/* 2 — continentes */}
+      {/* 2 — continentes, agora claros */}
       <mesh>
         <sphereGeometry args={[RADIUS, 64, 64]} />
         <meshBasicMaterial map={texture} transparent toneMapped={false} />
+      </mesh>
+
+      {/*
+        3 — a malha. Fica ENTRE os continentes e o marcador: o pin está em
+        RADIUS * 1.005 e ela em 1.003, então o teste de profundidade garante
+        que ela nunca cruze por cima dele. `depthWrite={false}` para ela também
+        não esconder nada que venha depois.
+      */}
+      <mesh>
+        <sphereGeometry args={[RADIUS * 1.003, 18, 12]} />
+        <meshBasicMaterial
+          color={MALHA}
+          wireframe
+          transparent
+          opacity={0.12}
+          depthWrite={false}
+          toneMapped={false}
+        />
       </mesh>
 
       <Marker position={dublin} />
