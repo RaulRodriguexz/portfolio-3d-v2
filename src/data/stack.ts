@@ -13,22 +13,22 @@ export type StackGroup = {
 export const stackGroups: StackGroup[] = [
   {
     label: 'AI & Agents',
-    summary: 'Turning language models into systems that actually do work.',
+    summary: 'Turning language models into systems that **actually do work**.',
     items: ['LLM APIs', 'RAG', 'OpenAI API', 'AI support assistants'],
   },
   {
     label: 'Automation',
-    summary: 'Taking repetitive work off the calendar.',
+    summary: 'Taking repetitive work **off the calendar**.',
     items: ['Python', 'n8n', 'API integrations', 'Document data extraction'],
   },
   {
     label: 'Data',
-    summary: 'Getting from raw records to a decision.',
+    summary: 'Getting from raw records **to a decision**.',
     items: ['pandas', 'scikit-learn', 'Machine learning'],
   },
   {
     label: 'Web',
-    summary: 'Shipping the interface that makes the work visible.',
+    summary: 'Shipping the interface that makes the **work visible**.',
     items: [
       'JavaScript',
       'TypeScript',

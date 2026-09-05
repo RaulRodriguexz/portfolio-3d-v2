@@ -22,11 +22,17 @@ export function Footer() {
       <Container>
         <div className="flex flex-col gap-10 sm:flex-row sm:justify-between">
           <div>
-            <p className="font-mono text-sm text-ink">
+            {/*
+              D-53 (c) — nome e função deixam de ter o mesmo peso. Os dois eram
+              400, e o rodapé lia como um bloco cinza só. Agora 700 contra 400:
+              a diferença é de peso, não de cor, para não acrescentar um terceiro
+              tom ao rodapé.
+            */}
+            <p className="font-mono text-sm font-bold text-ink">
               {profile.name}
               <span className="text-primary-deep">.</span>
             </p>
-            <p className="mt-2 max-w-[30ch] text-sm leading-relaxed text-muted">
+            <p className="mt-2 max-w-[30ch] text-sm font-normal leading-relaxed text-muted">
               {profile.role} · {profile.availability}
             </p>
           </div>
