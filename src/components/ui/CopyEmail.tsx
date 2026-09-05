@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useMagnetic } from '../../hooks/useMagnetic'
 
 /**
  * Botão de e-mail que também copia.
@@ -10,6 +11,8 @@ import { useEffect, useRef, useState } from 'react'
  */
 export function CopyEmail({ email }: { email: string }) {
   const [copied, setCopied] = useState(false)
+  // o ímã pega a pílula inteira, não cada metade (M-27)
+  const magnetico = useMagnetic<HTMLDivElement>()
   const timer = useRef<number | undefined>(undefined)
 
   useEffect(() => () => window.clearTimeout(timer.current), [])
@@ -25,7 +28,10 @@ export function CopyEmail({ email }: { email: string }) {
   }
 
   return (
-    <div className="inline-flex items-stretch overflow-hidden rounded-full bg-primary-deep text-white">
+    <div
+      ref={magnetico}
+      className="inline-flex items-stretch overflow-hidden rounded-full bg-primary-deep text-white transition-transform duration-200"
+    >
       <a
         href={`mailto:${email}`}
         className="px-6 py-3 text-sm transition-colors duration-200 hover:bg-primary"
