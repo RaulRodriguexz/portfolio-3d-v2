@@ -37,7 +37,9 @@ divertido é de construir.
 - Cena 3D reagindo ao scroll
 - Blog técnico curto: 2 ou 3 posts sobre os agentes construídos
 - Alternância de idioma PT/EN
-- Alternância de tema claro/escuro
+- ~~Alternância de tema claro/escuro~~ — **promovido para a v1 em 05/09**, por
+  pedido repetido do Raul. Ver D-44 no PRD: entra por último na fila, com o
+  custo escrito, e é o primeiro item a ser cortado se o prazo apertar.
 
 **Baixo impacto / manutenção**
 

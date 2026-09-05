@@ -2,17 +2,16 @@ import { useMemo, useRef, type RefObject } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useTexture } from '@react-three/drei'
 import type { GlobeDragState } from '../../hooks/useGlobeDrag'
+import { Marker } from './Marker'
 import {
   AdditiveBlending,
   BackSide,
   SRGBColorSpace,
   Vector3,
   type Group,
-  type Mesh,
 } from 'three'
 
 const PRIMARY = '#8c62ac'
-const PRIMARY_DEEP = '#6e11b0'
 
 const RADIUS = 1.6
 
@@ -40,37 +39,6 @@ function latLonToVector3(lat: number, lon: number, r: number) {
     -r * Math.sin(phi) * Math.cos(theta),
     r * Math.cos(phi),
     r * Math.sin(phi) * Math.sin(theta),
-  )
-}
-
-/** Marcador pulsando sobre Dublin. */
-function Marker({ position }: { position: Vector3 }) {
-  const ring = useRef<Mesh>(null)
-
-  useFrame((state) => {
-    if (!ring.current) return
-    // pulso de 2 s: cresce e some, como um sinal de radar
-    const t = (state.clock.elapsedTime % 2) / 2
-    const s = 1 + t * 2.2
-    ring.current.scale.setScalar(s)
-    const material = ring.current.material as { opacity: number }
-    material.opacity = (1 - t) * 0.55
-  })
-
-  // o marcador precisa ficar "de pé" na superfície: olhando para fora do centro
-  const lookAt = position.clone().multiplyScalar(2)
-
-  return (
-    <group position={position} onUpdate={(self) => self.lookAt(lookAt)}>
-      <mesh>
-        <circleGeometry args={[0.024, 24]} />
-        <meshBasicMaterial color={PRIMARY_DEEP} toneMapped={false} />
-      </mesh>
-      <mesh ref={ring} position={[0, 0, 0.001]}>
-        <ringGeometry args={[0.032, 0.042, 32]} />
-        <meshBasicMaterial color={PRIMARY_DEEP} transparent opacity={0.5} toneMapped={false} />
-      </mesh>
-    </group>
   )
 }
 
