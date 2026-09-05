@@ -85,9 +85,13 @@ export function useAmbientTint() {
     apply()
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onScroll)
+    // D-44 frente 7 — sem isto, trocar de tema parado no topo não repinta:
+    // `apply()` só roda em evento, e o botão não gera scroll
+    window.addEventListener('tema:mudou', onScroll)
     return () => {
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onScroll)
+      window.removeEventListener('tema:mudou', onScroll)
       if (frame) cancelAnimationFrame(frame)
       document.documentElement.style.removeProperty('--ambient')
     }

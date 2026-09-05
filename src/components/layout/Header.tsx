@@ -3,6 +3,7 @@ import { Container } from './Container'
 import { navItems } from '../../data/nav'
 import { profile } from '../../data/profile'
 import { useActiveSection } from '../../hooks/useActiveSection'
+import { ThemeToggle } from './ThemeToggle'
 
 /**
  * RF-02 — header fixo.
@@ -162,9 +163,12 @@ export function Header() {
             </span>
           </a>
 
+          {/* depois do CTA na ordem do DOM: a tabulação segue a ordem visual */}
+          <ThemeToggle />
+
           <button
             type="button"
-            className="-mr-2 p-2 text-sm text-muted sm:hidden"
+            className="-mr-2 ml-1 p-2 text-sm text-muted sm:hidden"
             aria-expanded={open}
             aria-controls="mobile-nav"
             onClick={() => setOpen((v) => !v)}
