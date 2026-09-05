@@ -92,9 +92,15 @@ export function ProjectCard({ project }: { project: Project }) {
               href={project.demo}
               target="_blank"
               rel="noreferrer"
-              className="text-primary-deep transition-transform duration-200 hover:translate-x-0.5"
+              className="group inline-flex items-center gap-1.5 text-primary-deep"
             >
-              Live demo →
+              Live demo
+              <span
+                aria-hidden="true"
+                className="transition-transform duration-200 group-hover:translate-x-0.5"
+              >
+                →
+              </span>
             </a>
           )}
           {project.repo && (
@@ -102,9 +108,15 @@ export function ProjectCard({ project }: { project: Project }) {
               href={project.repo}
               target="_blank"
               rel="noreferrer"
-              className="text-muted transition-colors duration-200 hover:text-primary-deep"
+              className="group inline-flex items-center gap-1.5 text-muted transition-colors duration-200 hover:text-primary-deep"
             >
-              Code →
+              Code
+              <span
+                aria-hidden="true"
+                className="transition-transform duration-200 group-hover:translate-x-0.5"
+              >
+                →
+              </span>
             </a>
           )}
         </div>

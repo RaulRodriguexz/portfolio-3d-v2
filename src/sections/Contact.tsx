@@ -31,18 +31,30 @@ export function Contact() {
           href={github}
           target="_blank"
           rel="noreferrer"
-          className="text-muted transition-colors hover:text-primary-deep"
+          className="group inline-flex items-center gap-1.5 text-muted transition-colors hover:text-primary-deep"
         >
-          GitHub →
+          GitHub
+          <span
+            aria-hidden="true"
+            className="transition-transform duration-200 group-hover:translate-x-0.5"
+          >
+            →
+          </span>
         </a>
         {linkedin && (
           <a
             href={linkedin}
             target="_blank"
             rel="noreferrer"
-            className="text-muted transition-colors hover:text-primary-deep"
+            className="group inline-flex items-center gap-1.5 text-muted transition-colors hover:text-primary-deep"
           >
-            LinkedIn →
+            LinkedIn
+            <span
+              aria-hidden="true"
+              className="transition-transform duration-200 group-hover:translate-x-0.5"
+            >
+              →
+            </span>
           </a>
         )}
       </div>
