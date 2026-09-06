@@ -121,6 +121,18 @@ export function useGlobeDrag<T extends HTMLElement>(
 
     let pointerId: number | null = null
     let mode: 'undecided' | 'drag' | 'scroll' = 'undecided'
+    /**
+     * D-59 — o gesto chegou a MOVER alguma coisa?
+     *
+     * Pelo D-29 o mouse pula a classificação de gesto, então `mode` já nasce
+     * `'drag'` no `pointerdown`. Sem esta distinção, um clique simples no globo
+     * era tratado como arrasto e ligava o `livre` do D-55: o planeta girava
+     * para sempre e só voltava a apontar Dublin na próxima rolagem. Medido:
+     * 0,13% de movimento sem tocar no globo, contra 9,74% depois de um clique
+     * parado. No toque nunca aconteceu, porque lá o `mode` só vira `'drag'`
+     * depois dos 8 px de classificação.
+     */
+    let moveu = false
     let allowVertical = false
     let startX = 0
     let startY = 0
@@ -147,6 +159,7 @@ export function useGlobeDrag<T extends HTMLElement>(
       if (!naZona(e)) return
       pointerId = e.pointerId
       allowVertical = e.pointerType === 'mouse'
+      moveu = false
       startX = lastX = e.clientX
       startY = lastY = e.clientY
       lastTime = performance.now()
@@ -193,6 +206,7 @@ export function useGlobeDrag<T extends HTMLElement>(
 
       s.offset.y += moveY
       s.offset.x += moveX
+      moveu = true
       // média exponencial: um quadro isolado não manda na inércia inteira
       s.velocity.y = clamp(s.velocity.y * 0.6 + (moveY / dt) * 0.4)
       s.velocity.x = clamp(s.velocity.x * 0.6 + (moveX / dt) * 0.4)
@@ -208,8 +222,9 @@ export function useGlobeDrag<T extends HTMLElement>(
       if (mode === 'drag') {
         state.current.dragging = false
         state.current.lastInteraction = performance.now()
-        // soltou depois de girar: o globo fica livre até alguém rolar (D-55)
-        state.current.livre = true
+        // soltou depois de GIRAR de fato: o globo fica livre até alguém rolar
+        // (D-55). Clicar sem mover não é brincar, e não suspende nada (D-59).
+        if (moveu) state.current.livre = true
         if (el.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId)
       }
       el.style.cursor = ''
