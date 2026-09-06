@@ -79,6 +79,7 @@
 
   --color-on-primary: oklch(0.19 0.02 303.724);
 
+
   /* barra de rolagem, campos e controles nativos acompanham; sem isto eles
      continuam claros e piscam contra a página escura */
   color-scheme: dark;
@@ -145,6 +146,26 @@
     pointer-events: none;
     opacity: 0.028;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
+  }
+
+  /*
+   * D-44, frente 3 — o grão no escuro.
+   *
+   * A mesma opacidade não dá o mesmo grão: sobre fundo claro o ruído escurece
+   * pixels que já estavam no teto, sobre fundo escuro ele clareia pixels que
+   * estavam no piso, e o olho enxerga a segunda coisa muito melhor. Medido com
+   * o conteúdo escondido, de modo que a variação fosse só da camada de ruído,
+   * pela razão de contraste entre o percentil 1 e o 99 de luminância:
+   *
+   *     claro,  0,028 ....... 1,0174:1   ← o alvo
+   *     escuro, 0,028 ....... 1,0281:1   62% mais forte
+   *     escuro, 0,020 ....... 1,0178:1   ← empata
+   *
+   * Abaixo de 0,016 a medição perde sentido: nessa faixa de luminância o passo
+   * de 8 bits é maior que o efeito, e os números param de cair em ordem.
+   */
+  :root[data-theme='dark'] body::before {
+    opacity: 0.02;
   }
 
   ::selection {
