@@ -1,10 +1,8 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { AdditiveBlending, CanvasTexture, SRGBColorSpace, type Mesh, type Points } from 'three'
-
-/** Tokens da paleta (PRD seção 12). Dentro do canvas não há classe do Tailwind. */
-const PRIMARY = '#8c62ac'
-const PRIMARY_DEEP = '#6e11b0'
+import { useTema } from '../../hooks/useTema'
+import { PALETAS, type Paleta } from './paleta'
 
 /**
  * M-5 do PRD 5.2.1 — o que orbita o Memoji.
@@ -52,7 +50,17 @@ function OrbitRing({
 }
 
 /** Um ponto de luz correndo na órbita — dá direção ao movimento. */
-function OrbitSpark({ radius, tilt, speed }: { radius: number; tilt: [number, number, number]; speed: number }) {
+function OrbitSpark({
+  radius,
+  tilt,
+  speed,
+  color,
+}: {
+  radius: number
+  tilt: [number, number, number]
+  speed: number
+  color: string
+}) {
   const ref = useRef<Mesh>(null)
 
   useFrame((state) => {
@@ -65,7 +73,7 @@ function OrbitSpark({ radius, tilt, speed }: { radius: number; tilt: [number, nu
     <group rotation={tilt} position={[0, -0.45, 0]}>
       <mesh ref={ref}>
         <sphereGeometry args={[0.035, 12, 12]} />
-        <meshBasicMaterial color={PRIMARY_DEEP} />
+        <meshBasicMaterial color={color} />
       </mesh>
     </group>
   )
@@ -76,22 +84,24 @@ function OrbitSpark({ radius, tilt, speed }: { radius: number; tilt: [number, nu
  * É o que faz o recorte parar de flutuar sobre o branco — ele passa a estar
  * sobre alguma coisa.
  */
-function Halo() {
+function Halo({ paleta }: { paleta: Paleta }) {
   const texture = useMemo(() => {
     const size = 256
     const canvas = document.createElement('canvas')
     canvas.width = canvas.height = size
     const ctx = canvas.getContext('2d')!
     const g = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2)
-    g.addColorStop(0, 'rgba(140, 98, 172, 0.30)')
-    g.addColorStop(0.45, 'rgba(140, 98, 172, 0.12)')
-    g.addColorStop(1, 'rgba(140, 98, 172, 0)')
+    g.addColorStop(0, paleta.halo[0])
+    g.addColorStop(0.45, paleta.halo[1])
+    g.addColorStop(1, paleta.halo[2])
     ctx.fillStyle = g
     ctx.fillRect(0, 0, size, size)
     const t = new CanvasTexture(canvas)
     t.colorSpace = SRGBColorSpace
     return t
-  }, [])
+    // a textura é redesenhada quando o tema muda; sem `paleta` nas dependências
+    // o halo ficaria com a cor do tema em que a cena montou
+  }, [paleta])
 
   return (
     <mesh position={[0, 0.1, -1.2]}>
@@ -101,7 +111,7 @@ function Halo() {
   )
 }
 
-function Dust({ count = 380, radius = 3.2 }) {
+function Dust({ paleta, count = 380, radius = 3.2 }: { paleta: Paleta; count?: number; radius?: number }) {
   const ref = useRef<Points>(null)
 
   const positions = useMemo(() => {
@@ -130,9 +140,9 @@ function Dust({ count = 380, radius = 3.2 }) {
       </bufferGeometry>
       <pointsMaterial
         size={0.03}
-        color={PRIMARY}
+        color={paleta.poeira}
         transparent
-        opacity={0.6}
+        opacity={paleta.poeiraOpacidade}
         sizeAttenuation
         depthWrite={false}
         blending={AdditiveBlending}
@@ -142,32 +152,39 @@ function Dust({ count = 380, radius = 3.2 }) {
 }
 
 export function Backdrop() {
+  const paleta = PALETAS[useTema()]
+
   return (
     <>
-      <Halo />
+      <Halo paleta={paleta} />
 
       {/* órbita larga, quase deitada — cruza o Memoji na altura do peito */}
       <OrbitRing
         radius={2.05}
         thickness={0.011}
-        color={PRIMARY_DEEP}
-        opacity={0.55}
+        color={paleta.anelLargo}
+        opacity={paleta.anelLargoOpacidade}
         tilt={[Math.PI * 0.42, 0.18, 0]}
         spin={0.09}
       />
-      <OrbitSpark radius={2.05} tilt={[Math.PI * 0.42, 0.18, 0]} speed={0.32} />
+      <OrbitSpark
+        radius={2.05}
+        tilt={[Math.PI * 0.42, 0.18, 0]}
+        speed={0.32}
+        color={paleta.anelLargo}
+      />
 
       {/* órbita menor, mais inclinada, girando ao contrário */}
       <OrbitRing
         radius={1.62}
         thickness={0.008}
-        color={PRIMARY}
-        opacity={0.5}
+        color={paleta.anelPequeno}
+        opacity={paleta.anelPequenoOpacidade}
         tilt={[Math.PI * 0.56, -0.32, 0.1]}
         spin={-0.14}
       />
 
-      <Dust />
+      <Dust paleta={paleta} />
     </>
   )
 }

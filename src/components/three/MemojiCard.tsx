@@ -2,6 +2,8 @@ import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useTexture } from '@react-three/drei'
 import { CanvasTexture, SRGBColorSpace, type Group } from 'three'
+import { useTema } from '../../hooks/useTema'
+import { PALETAS, type Paleta } from './paleta'
 
 /** Proporção real do arquivo: 694 × 781. */
 const WIDTH = 2.55
@@ -12,22 +14,22 @@ const HEIGHT = WIDTH * (781 / 694)
  * usado como textura. Um PNG de sombra custaria mais um download; isto custa
  * alguns kilobytes de memória e nada de rede.
  */
-function useShadowTexture() {
+function useShadowTexture(paleta: Paleta) {
   return useMemo(() => {
     const size = 128
     const canvas = document.createElement('canvas')
     canvas.width = canvas.height = size
     const ctx = canvas.getContext('2d')!
     const gradient = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2)
-    gradient.addColorStop(0, 'rgba(110, 17, 176, 0.42)')
-    gradient.addColorStop(0.5, 'rgba(110, 17, 176, 0.16)')
-    gradient.addColorStop(1, 'rgba(110, 17, 176, 0)')
+    gradient.addColorStop(0, paleta.sombra[0])
+    gradient.addColorStop(0.5, paleta.sombra[1])
+    gradient.addColorStop(1, paleta.sombra[2])
     ctx.fillStyle = gradient
     ctx.fillRect(0, 0, size, size)
     const texture = new CanvasTexture(canvas)
     texture.colorSpace = SRGBColorSpace
     return texture
-  }, [])
+  }, [paleta])
 }
 
 /**
@@ -44,7 +46,7 @@ function useShadowTexture() {
 export function MemojiCard() {
   const group = useRef<Group>(null)
   const texture = useTexture('/images/memoji.png')
-  const shadow = useShadowTexture()
+  const shadow = useShadowTexture(PALETAS[useTema()])
 
   texture.colorSpace = SRGBColorSpace
 

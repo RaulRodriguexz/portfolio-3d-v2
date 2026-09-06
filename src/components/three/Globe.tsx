@@ -2,6 +2,8 @@ import { useMemo, useRef, type RefObject } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useTexture } from '@react-three/drei'
 import type { GlobeDragState } from '../../hooks/useGlobeDrag'
+import { useTema } from '../../hooks/useTema'
+import { PALETAS } from './paleta'
 import { Marker } from './Marker'
 import {
   AdditiveBlending,
@@ -10,14 +12,6 @@ import {
   Vector3,
   type Group,
 } from 'three'
-
-const PRIMARY = '#8c62ac'
-/**
- * Roxo mais claro, só para a malha (D-56). Mesma matiz da marca, um degrau
- * acima em luminosidade — é decorativo dentro da cena 3D, não texto, então a
- * regra 6 do CLAUDE.md não se aplica aqui.
- */
-const MALHA = '#c9a8e2'
 
 const RADIUS = 1.6
 
@@ -68,6 +62,12 @@ type Props = {
  * foto de satélite brigaria com o roxo.
  */
 export function Globe({ progress, drag }: Props) {
+  /*
+   * D-44, frente 2 — as cores saem da paleta por tema. A geometria, o giro, o
+   * arrasto e a oclusão não sabem que existem dois temas: material não toca em
+   * `g.rotation`, então D-28, D-30, D-54, D-55 e D-59 seguem iguais.
+   */
+  const paleta = PALETAS[useTema()]
   const group = useRef<Group>(null)
   /** Rotação de repouso/giro, guardada à parte do que o arrasto soma. */
   const base = useRef({ x: 0, y: 0 })
@@ -185,13 +185,18 @@ export function Globe({ progress, drag }: Props) {
       */}
       <mesh>
         <sphereGeometry args={[RADIUS * 0.995, 48, 48]} />
-        <meshBasicMaterial color={PRIMARY} />
+        <meshBasicMaterial color={paleta.oceano} />
       </mesh>
 
       {/* 2 — continentes, agora claros */}
       <mesh>
         <sphereGeometry args={[RADIUS, 64, 64]} />
-        <meshBasicMaterial map={texture} transparent toneMapped={false} />
+        <meshBasicMaterial
+          map={texture}
+          color={paleta.continentes}
+          transparent
+          toneMapped={false}
+        />
       </mesh>
 
       {/*
@@ -203,24 +208,24 @@ export function Globe({ progress, drag }: Props) {
       <mesh>
         <sphereGeometry args={[RADIUS * 1.003, 18, 12]} />
         <meshBasicMaterial
-          color={MALHA}
+          color={paleta.malha}
           wireframe
           transparent
-          opacity={0.12}
+          opacity={paleta.malhaOpacidade}
           depthWrite={false}
           toneMapped={false}
         />
       </mesh>
 
-      <Marker position={dublin} />
+      <Marker position={dublin} paleta={paleta} />
 
       {/* 3 — atmosfera */}
       <mesh>
         <sphereGeometry args={[RADIUS * 1.14, 48, 48]} />
         <meshBasicMaterial
-          color={PRIMARY}
+          color={paleta.oceano}
           transparent
-          opacity={0.11}
+          opacity={paleta.atmosferaOpacidade}
           side={BackSide}
           blending={AdditiveBlending}
           depthWrite={false}

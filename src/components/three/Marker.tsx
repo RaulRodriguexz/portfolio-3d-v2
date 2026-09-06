@@ -1,10 +1,7 @@
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import type { Group, Mesh, Vector3 } from 'three'
-
-const PRIMARY_DEEP = '#6e11b0'
-/** Faixa clara do anel (D-56). Ver o comentário do pulso para o porquê de duas. */
-const CLARO = '#f4f1f8'
+import type { Paleta } from './paleta'
 
 /** Haste fina e curta: marcador, não bandeira (D-25). */
 const HASTE_RAIO = 0.006
@@ -27,7 +24,7 @@ const PONTA_RAIO = 0.03
  * O grupo olha para fora do centro, então o **+Z local é a normal da
  * superfície**: tudo aqui dentro é posicionado ao longo dele.
  */
-export function Marker({ position }: { position: Vector3 }) {
+export function Marker({ position, paleta }: { position: Vector3; paleta: Paleta }) {
   const anel = useRef<Group>(null)
   const faixaEscura = useRef<Mesh>(null)
   const faixaClara = useRef<Mesh>(null)
@@ -63,31 +60,31 @@ export function Marker({ position }: { position: Vector3 }) {
       <group ref={anel} position={[0, 0, 0.001]}>
         <mesh ref={faixaEscura}>
           <ringGeometry args={[0.032, 0.038, 32]} />
-          <meshBasicMaterial color={PRIMARY_DEEP} transparent opacity={0.5} toneMapped={false} />
+          <meshBasicMaterial color={paleta.pin} transparent opacity={0.5} toneMapped={false} />
         </mesh>
         <mesh ref={faixaClara} position={[0, 0, 0.0002]}>
           <ringGeometry args={[0.038, 0.044, 32]} />
-          <meshBasicMaterial color={CLARO} transparent opacity={0.5} toneMapped={false} />
+          <meshBasicMaterial color={paleta.anelClaro} transparent opacity={0.5} toneMapped={false} />
         </mesh>
       </group>
 
       {/* pé da haste, para ela não parecer flutuando */}
       <mesh position={[0, 0, 0.002]}>
         <circleGeometry args={[0.018, 20]} />
-        <meshBasicMaterial color={PRIMARY_DEEP} toneMapped={false} />
+        <meshBasicMaterial color={paleta.pin} toneMapped={false} />
       </mesh>
 
       {/* haste: o cilindro nasce deitado no eixo Y, então gira 90° para subir
           pelo +Z local, que é a normal da esfera neste ponto */}
       <mesh position={[0, 0, HASTE_ALTURA / 2]} rotation={[Math.PI / 2, 0, 0]}>
         <cylinderGeometry args={[HASTE_RAIO, HASTE_RAIO, HASTE_ALTURA, 8]} />
-        <meshBasicMaterial color={PRIMARY_DEEP} toneMapped={false} />
+        <meshBasicMaterial color={paleta.pin} toneMapped={false} />
       </mesh>
 
       {/* a cabeça do pin */}
       <mesh position={[0, 0, HASTE_ALTURA]}>
         <sphereGeometry args={[PONTA_RAIO, 16, 16]} />
-        <meshBasicMaterial color={PRIMARY_DEEP} toneMapped={false} />
+        <meshBasicMaterial color={paleta.pin} toneMapped={false} />
       </mesh>
     </group>
   )
