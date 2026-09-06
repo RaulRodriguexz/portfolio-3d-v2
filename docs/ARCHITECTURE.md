@@ -39,7 +39,10 @@ portfolio-3d-v2/
 │   │   ├── projects/             capas dos projetos, 1200×630
 │   │   ├── memoji.png            o Memoji, textura da cena do hero
 │   │   ├── memoji.webp           o mesmo, para o fallback sem WebGL
-│   │   └── world-dots.png        continentes do globo, 11 KB (D-19)
+│   │   └── world-dots.png        continentes do globo, 15,6 KB (D-19, D-56,
+│   │                             D-58a). O nome é de quando eram pontos; desde
+│   │                             o D-58a a terra é maciça. Proveniência e as duas
+│   │                             armadilhas de regeração no README da pasta
 │   ├── cv.pdf                    seu currículo (você coloca)
 │   ├── og.png                    imagem de preview em redes sociais
 │   ├── favicon.svg
@@ -66,20 +69,23 @@ portfolio-3d-v2/
     ├── components/
     │   ├── layout/               a casca da página e as camadas de fundo:
     │   │                         Container, Section, Header, Footer, Intro,
-    │   │                         Thread (o fio do D-37)
+    │   │                         Thread (o fio do D-37), ThemeToggle (D-44)
     │   ├── ui/                   peças reutilizáveis, usadas mais de uma vez
     │   │                         ou parametrizadas por dado: Button, Tag,
     │   │                         ProjectCard, WordReveal, Emphasis, Marquee,
     │   │                         CopyEmail, ImpactBand, EmptyState
     │   └── three/                TUDO de 3D fica isolado aqui: HeroScene,
     │                             HeroVisual, MemojiCard, Backdrop,
-    │                             GlobeScene, Globe, Marker
+    │                             GlobeScene, Globe, Marker, e paleta.ts — as
+    │                             cores das cenas por tema (D-44, frente 2), que
+    │                             existem porque material de WebGL recebe valor
+    │                             e não enxerga `var(--color-*)`
     │
     └── hooks/                    comportamentos reaproveitáveis:
                                   useReveal, useScrollProgress,
                                   useElementProgress, useActiveSection,
                                   useAmbientTint, useCanRender3D,
-                                  useGlobeDrag, useSmoothScroll
+                                  useGlobeDrag, useSmoothScroll, useTema
 ```
 
 ---
