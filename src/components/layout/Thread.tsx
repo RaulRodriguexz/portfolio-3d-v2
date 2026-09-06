@@ -150,13 +150,25 @@ export function Thread() {
       height={altura}
       fill="none"
     >
+      {/*
+        D-44, frente 5 — a opacidade do traço vem do tema, não daqui.
+
+        O `stroke` já acompanhava o tema sozinho, porque é um token; a
+        opacidade não, e no escuro o mesmo 0,5 deixa o fio 35% mais presente:
+        contra o próprio fundo ele dá 2,63:1 no escuro contra 1,95:1 no claro.
+        A conta é a de sempre em fundo escuro — a mistura sobe de um piso muito
+        baixo, então cada ponto de opacidade rende mais.
+
+        Vai por `style` e não por atributo de apresentação porque `var()` só
+        funciona em propriedade CSS; atributo de SVG não resolve variável.
+      */}
       <path
         ref={caminho}
         d={d}
         stroke="var(--color-primary)"
         strokeWidth="1.5"
         strokeLinecap="round"
-        strokeOpacity="0.5"
+        style={{ strokeOpacity: 'var(--thread-opacity)' }}
       />
 
       {/*

@@ -39,6 +39,23 @@
   --font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', monospace;
 }
 
+/*
+ * Opacidade do fio do D-37 / M-25 (D-44, frente 5).
+ *
+ * Fica fora do `@theme` de propósito: `@theme` é a mesa de tokens do Tailwind e
+ * gera utilities. Isto não é uma utility — é um número que um componente lê, e
+ * que precisa de valor por tema.
+ *
+ * Medido, traço contra o próprio fundo: no claro 0,5 dá 1,948:1. No escuro o
+ * mesmo 0,5 daria 2,630:1 — 35% mais presente —, e 0,36 devolve 1,946:1. O
+ * ponto de luz da ponta (M-28) NÃO precisou de par: halo 1,216 no claro contra
+ * 1,280 no escuro, núcleo 6,389 contra 6,514. Ele já nasce parelho porque as
+ * duas pontas da mistura mudam juntas.
+ */
+:root {
+  --thread-opacity: 0.5;
+}
+
 /* ---------------------------------------------------------------------------
    TEMA ESCURO (D-44).
 
@@ -79,6 +96,9 @@
 
   --color-on-primary: oklch(0.19 0.02 303.724);
 
+  /* ver o comentário do token, acima: 0,5 no escuro deixaria o fio 35% mais
+     presente que no claro */
+  --thread-opacity: 0.36;
 
   /* barra de rolagem, campos e controles nativos acompanham; sem isto eles
      continuam claros e piscam contra a página escura */
