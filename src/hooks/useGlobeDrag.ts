@@ -15,6 +15,27 @@ const MARGEM_DA_ZONA = 40
  * vertical nunca é roubada passa a vir do `touch-action` nativo, não daqui.
  */
 const HORIZONTAL_BIAS = 1
+/**
+ * Prazo de validade do `livre` do D-55, em ms (adendo de 07/09).
+ *
+ * O D-55 deu ao arrasto o direito de suspender o assentamento, mas **não deu
+ * prazo**: só uma rolagem desligava a flag. Quem arrasta e continua olhando a
+ * seção nunca rola, então o globo girava para sempre e o assentamento do D-28
+ * **nunca rodava** — na prática o D-55 comia o D-28. Não era regressão: era
+ * especificação faltando.
+ *
+ * 10 s é escolhido entre dois limites: grande o bastante para o giro livre
+ * ainda ser sentido como "ele continua rodando", que era o pedido original do
+ * D-55, e pequeno o bastante para a pessoa ver a volta a Dublin antes de sair
+ * da seção. São ~6,7× o `REST_DELAY` de 1,5 s, então os dois prazos não se
+ * confundem.
+ *
+ * **Não é um segundo temporizador.** Ele se mede contra o mesmo
+ * `lastInteraction` que já governa o repouso do D-28 — um carimbo só, como
+ * aquela decisão exigiu. Um `setTimeout` daria o mesmo resultado hoje e
+ * criaria o relógio paralelo que o D-28 evitou de propósito.
+ */
+export const LIVRE_TIMEOUT = 10_000
 
 export type GlobeDragState = {
   /** Rotação que o usuário somou por cima da que o scroll comanda. */
@@ -36,7 +57,10 @@ export type GlobeDragState = {
    * resolve. Rolar é ler, e quem lê merece Dublin de frente; arrastar é
    * brincar, e quem brinca não quer que o brinquedo se arrume sozinho.
    * Enquanto for verdadeiro, o assentamento automático fica suspenso e o globo
-   * gira livre por tempo indeterminado — até a próxima rolagem.
+   * gira livre — até a próxima rolagem, que limpa na hora, **ou até vencer o
+   * `LIVRE_TIMEOUT`**, que limpa sozinho. Quem apaga a flag pelo prazo é o
+   * `Globe`, no mesmo quadro em que decide o repouso, porque é lá que existe
+   * um relógio por quadro; aqui só chegam eventos.
    */
   livre: boolean
 }
@@ -223,7 +247,8 @@ export function useGlobeDrag<T extends HTMLElement>(
         state.current.dragging = false
         state.current.lastInteraction = performance.now()
         // soltou depois de GIRAR de fato: o globo fica livre até alguém rolar
-        // (D-55). Clicar sem mover não é brincar, e não suspende nada (D-59).
+        // (D-55) ou até vencer o LIVRE_TIMEOUT (adendo de 07/09). Clicar sem
+        // mover não é brincar, e não suspende nada (D-59).
         if (moveu) state.current.livre = true
         if (el.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId)
       }

@@ -1,7 +1,7 @@
 import { useMemo, useRef, type RefObject } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useTexture } from '@react-three/drei'
-import type { GlobeDragState } from '../../hooks/useGlobeDrag'
+import { LIVRE_TIMEOUT, type GlobeDragState } from '../../hooks/useGlobeDrag'
 import { useTema } from '../../hooks/useTema'
 import { PALETAS } from './paleta'
 import { Marker } from './Marker'
@@ -114,8 +114,15 @@ export function Globe({ progress, drag }: Props) {
     // número foi exatamente o erro que o D-27 cometeu.
     // carimbo só (`lastInteraction`) recebe rolagem e arrasto, então "parou de
     // rolar" e "soltou o globo" são o mesmo evento, e não há dois prazos.
-    const resting =
-      !d.dragging && !d.livre && performance.now() - d.lastInteraction > REST_DELAY
+    // D-55, adendo de 07/09 — o `livre` VENCE. Sem prazo, só a rolagem o
+    // desligava, e quem arrasta e fica olhando a seção nunca rola: o globo
+    // girava para sempre e o assentamento acima nunca acontecia. A flag é
+    // apagada de verdade, e não só ignorada, para o estado não passar a mentir
+    // para quem o ler depois.
+    const agora = performance.now()
+    if (d.livre && agora - d.lastInteraction > LIVRE_TIMEOUT) d.livre = false
+
+    const resting = !d.dragging && !d.livre && agora - d.lastInteraction > REST_DELAY
 
     const k = 1 - Math.pow(0.002, delta)
 
