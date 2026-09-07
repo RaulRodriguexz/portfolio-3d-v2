@@ -50,13 +50,16 @@ type Props = {
 /**
  * O globo. Três camadas, nesta ordem de dentro para fora:
  *
- *  1. uma esfera sólida quase branca, que faz o papel de "oceano" e impede que
- *     os pontos do outro lado da bola vazem através dela;
- *  2. a malha de continentes, como textura pontilhada com fundo transparente;
+ *  1. uma esfera opaca que faz o papel de OCEANO e impede que a face de trás
+ *     da bola vaze através dela. A cor vem do tema e inverte entre os dois
+ *     (D-56, D-60), então ela não é "quase branca": é no tema claro;
+ *  2. os CONTINENTES — textura de massa sólida com fundo transparente,
+ *     multiplicada pela cor do material. Sólida desde o D-58a: antes era
+ *     pontilhada, e o arquivo ainda se chama `world-dots.png` por isso;
  *  3. uma casca maior renderizada pelo lado de dentro (`BackSide`), que produz
  *     o brilho de atmosfera na borda.
  *
- * A textura tem 11 KB: os continentes foram rasterizados a partir dos contornos
+ * A textura tem 15 KB: os continentes foram rasterizados a partir dos contornos
  * do Natural Earth (domínio público) já na cor da marca, em vez de usar uma
  * fotografia da Terra de 1 a 2 MB. Além de leve, combina com a paleta — uma
  * foto de satélite brigaria com o roxo.
@@ -190,13 +193,13 @@ export function Globe({ progress, drag }: Props) {
         quase branco, `color` (que multiplica) alcança qualquer valor nos dois
         temas com UMA textura só, sem segundo PNG.
       */}
-      <mesh>
+            <mesh>
         <sphereGeometry args={[RADIUS * 0.995, 48, 48]} />
         <meshBasicMaterial color={paleta.oceano} />
       </mesh>
 
       {/* 2 — continentes, agora claros */}
-      <mesh>
+            <mesh>
         <sphereGeometry args={[RADIUS, 64, 64]} />
         <meshBasicMaterial
           map={texture}
@@ -211,7 +214,7 @@ export function Globe({ progress, drag }: Props) {
       {/* 3 — atmosfera. A cor vem de token próprio desde o D-60: lida de
           `oceano`, ela viraria um halo branco somado sobre página branca no
           tema claro invertido, ou seja sumiria */}
-      <mesh>
+            <mesh>
         <sphereGeometry args={[RADIUS * 1.14, 48, 48]} />
         <meshBasicMaterial
           color={paleta.atmosfera}

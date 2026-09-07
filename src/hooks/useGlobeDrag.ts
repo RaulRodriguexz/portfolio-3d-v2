@@ -246,11 +246,26 @@ export function useGlobeDrag<T extends HTMLElement>(
       if (mode === 'drag') {
         state.current.dragging = false
         state.current.lastInteraction = performance.now()
-        // soltou depois de GIRAR de fato: o globo fica livre até alguém rolar
-        // (D-55) ou até vencer o LIVRE_TIMEOUT (adendo de 07/09). Clicar sem
-        // mover não é brincar, e não suspende nada (D-59).
-        if (moveu) state.current.livre = true
+        // D-65 (c) — soltou depois de GIRAR: fica livre até alguém rolar (D-55)
+        // ou até vencer o LIVRE_TIMEOUT. Soltou SEM girar: é um clique, e
+        // clicar passa a SIGNIFICAR "volta a apontar Dublin" — a mesma frase
+        // que a rolagem já dizia no D-55, em vez de uma que ajuda e outra que
+        // atrapalha. Antes disto o `livre` só não era LIGADO por um clique
+        // (D-59); ele continuava ligado, e o carimbo abaixo empurrava o prazo
+        // de 10 s para 10 s depois do clique. Medido: dois cliques parados
+        // adiavam o assentamento de 10,1 s para 16,1 s.
+        //
+        // O carimbo FICA de propósito: com ele o globo assenta 1,5 s depois do
+        // clique, pelo REST_DELAY, e essa folga faz a volta parecer decidida.
+        // Sem ele o retorno começaria no mesmo quadro do clique, seco.
+        state.current.livre = moveu
         if (el.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId)
+      } else if (!moveu) {
+        // No toque um toque seco nunca chega a virar `drag` — `mode` fica em
+        // `undecided`, ou vira `scroll` num arrasto vertical. Nos dois casos o
+        // gesto também é "clique", e diz a mesma coisa.
+        state.current.livre = false
+        state.current.lastInteraction = performance.now()
       }
       el.style.cursor = ''
       el.style.userSelect = ''
