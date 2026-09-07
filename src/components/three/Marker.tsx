@@ -23,6 +23,25 @@ const HASTE_ALTURA = 0.22
  * o raio da haste; encostar em HASTE_RAIO transformaria o pin num palito.
  */
 const PONTA_RAIO = 0.015
+/**
+ * O pé é menor que a cabeça, e agora isso é verificável.
+ *
+ * Era 0.018, e quando a cabeça caiu para 0.015 ele passou a ser **maior que
+ * ela**: 16,6 px contra 14,5 px, ou seja 115%. Passou despercebido porque no
+ * tema claro de então o pé era escuro sobre continente branco e lia como sombra
+ * da haste. Com a inversão do D-60 ele virou **claro sobre a Irlanda roxa**, e
+ * um disco claro de 16,6 px sobre uma ilha de ~20×22 px apaga a ilha em vez de
+ * marcar um ponto nela.
+ *
+ * A 0.011 ele dá 10,2 px: **70% da cabeça**, ainda 1,8× a largura da haste — o
+ * bastante para continuar lendo como base e não como emenda — e metade do lado
+ * estreito da ilha, contra os 83% de antes.
+ *
+ * O teto é 0.0157, que é onde o pé empataria com a cabeça. Quem mexer em
+ * `PONTA_RAIO` mexe neste teto junto: os dois são projetados pela mesma câmera,
+ * e a única diferença é o pé estar ~4,4% mais longe dela.
+ */
+const PE_RAIO = 0.011
 
 /**
  * O marcador de Dublin (M-23 / D-25).
@@ -96,7 +115,7 @@ export function Marker({ position, paleta }: { position: Vector3; paleta: Paleta
         Irlanda roxa do tema claro.
       */}
       <mesh position={[0, 0, 0.002]}>
-        <circleGeometry args={[0.018, 20]} />
+        <circleGeometry args={[PE_RAIO, 20]} />
         <meshBasicMaterial color={paleta.pinNaSuperficie} toneMapped={false} />
       </mesh>
 
