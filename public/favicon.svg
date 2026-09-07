@@ -1,4 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Raul Rodrigues">
-  <rect width="64" height="64" rx="15" fill="#6e11b0"/>
-  <path d="M20 47V17h12.6c6.6 0 10.6 3.4 10.6 9 0 4.2-2.2 7.1-6 8.3L45 47h-7.6l-6.9-11.6h-3.6V47H20zm6.9-17h5.1c3 0 4.7-1.4 4.7-3.9s-1.7-3.9-4.7-3.9h-5.1V30z" fill="#fbfbfe"/>
+  <style>
+    /* a marca acompanha o tema do sistema, como o resto do site (D-44).
+       A matiz é 303.724 nos dois — muda luminosidade, não identidade. */
+    .m { fill: #6e11b0 }
+    @media (prefers-color-scheme: dark) { .m { fill: #bf81ff } }
+  </style>
+  <path class="m" d="M32 1 C36.5 20 44 27.5 63 32 C44 36.5 36.5 44 32 63 C27.5 44 20 36.5 1 32 C20 27.5 27.5 20 32 1Z"/>
 </svg>
