@@ -8,50 +8,34 @@ meu está marcado.
 **Status:** ✅ **aprovado em 03/09/2026.** Headline, e-mail e estratégia de
 projetos decididos. Este texto está pronto para ir para `src/data/` no Passo 2.
 
+> ## ⚠️ Status: HISTÓRICO. A verdade do texto é `src/data/`
+>
+> Aprovado em 03/09/2026 e **superado pelo código**. Medido em 07/09: seis
+> campos que estão no ar **nunca existiram aqui** — `role`, `ctaLabel`, `route`,
+> o sufixo da faixa de impacto e os dois blocos de metadados de seção — mais os
+> quatro rótulos do menu; e **três passagens foram reescritas depois da
+> aprovação** (a citação de abertura do About saiu de dentro do parágrafo 2 na
+> D-52, o parágrafo 2 foi emendado por causa disso, e o subtítulo do hero virou
+> dois períodos). Há ainda duas divergências sistemáticas: o apóstrofo é reto
+> aqui e tipográfico no código, e as quatro linhas da Stack ganharam ênfase
+> `**…**` que não existe aqui.
+>
+> **Consequência prática, e é a que importa:** qualquer pacote de revisão de
+> texto — a D-64 inclusive — sai de **`src/data/`**, dos componentes, do
+> `index.html` e do `404.html`. Saindo daqui, o revisor não veria dez trechos
+> que estão no ar e revisaria três que já não estão.
+>
+> **Este arquivo continua valendo para uma coisa:** o *porquê* de cada texto —
+> de onde veio, o que foi descartado e com que motivo. Isso o código não
+> guarda. O andaime de decisão (conflitos e opções de headline) foi para o
+> `DECISOES-ARQUIVADAS.md` em 07/09, já resolvido.
+
 **Convenção de ênfase (D-38):** um par de `**` marca o único trecho destacado
 do parágrafo. O site o renderiza em `primary-deep` pelo componente `Emphasis`.
 Um por parágrafo — dois destaques na mesma frase anulam um ao outro.
 
 Idioma do site: **inglês**. A tradução embaixo de cada bloco é só para
 conferência.
-
----
-
-## Conflitos — dois resolvidos, dois abertos
-
-**1. Qual e-mail vai no site?** ✅ **decidido**
-`raulrodrigues.mldev@gmail.com`. É o que já está no seu CV.
-→ *Pendência de 2 minutos: confira se é o mesmo no "Contact info" do LinkedIn.
-Site, CV e LinkedIn apontando para e-mails diferentes é o tipo de detalhe que
-faz um recrutador desistir de te achar.*
-
-**2. Qual LinkedIn?** ✅ **resolvido pelo print**
-`linkedin.com/in/raulrodriguexz` — é o que aparece em "Public profile & URL".
-A URL do v1 (`/in/raul-rodrigues-6744043b1`) está **desatualizada** e
-provavelmente quebrada. Corrija também no site antigo e no CV, se estiver lá.
-
-**3. Dublin: presente ou futuro?** ⚠️ **decisão sua**
-Seu LinkedIn já diz **"Greater Dublin"** e **"Open to work · Greater Dublin ·
-On-site · Hybrid · Remote"**. O v1 dizia *"I'm now in Dublin"*. Mas você embarca
-em 26/10 e o site publica em 10/10.
-
-Os dois caminhos são defensáveis:
-
-- **Manter "Dublin" no LinkedIn** faz sentido: ali o campo de localização é o
-  filtro de busca do recrutador, não uma declaração. Sem ele, você simplesmente
-  não aparece nas vagas de Dublin.
-- **No site, escrever "Dublin — from October 2026"** é mais seguro: o site é
-  onde a pessoa lê com calma, e ali uma data explícita passa organização, não
-  falta de compromisso.
-
-→ *Recomendo essa combinação. O que não pode é o site afirmar que você já está
-lá.* Deixei tudo no futuro assumido; se preferir o presente, é uma linha de
-mudança.
-
-**4. C++, C# e Java na stack?** ⚠️ **decisão sua**
-São reais. Mas o site inteiro fala de IA e automação, e uma lista longa dilui o
-foco.
-→ *Recomendo uma linha só no rodapé da seção: "Also studied: Java, C++, C#".*
 
 ---
 
@@ -254,18 +238,3 @@ reais te pagam, sem precisar expor cliente nem inventar número.
   `schema.org/Person`, robots, sitemap, Open Graph).
 
 ---
-
-## Fora do site — três consertos rápidos no LinkedIn
-
-Não fazem parte do PRD, mas afetam o mesmo objetivo: o site vai mandar gente
-para o seu LinkedIn, e o que a pessoa encontra lá fecha ou abre a porta.
-
-1. **O campo "Services" está como `Computer Networking`.** Isso não é o que você
-   faz e aparece logo abaixo do About. Troque por AI automation, workflow
-   automation, integração de APIs.
-2. **Featured aponta para o portfólio antigo.** Quando o site novo estiver no
-   ar, troque o link.
-3. **19 conexões, 18 seguidores, nenhum post.** Seu headline diz *"Building AI
-   tools in public"* — mas o perfil não mostra nada em público. Um post por
-   projeto entregue, mesmo curto, resolve isso antes de outubro. É a diferença
-   entre um perfil que confirma o site e um que enfraquece.

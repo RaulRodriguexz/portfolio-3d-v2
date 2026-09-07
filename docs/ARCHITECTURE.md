@@ -38,12 +38,15 @@ portfolio-3d-v2/
 │                                 esboços. Serve para você mostrar ao Claude
 │                                 "quero algo assim".
 │
-├── index.html                 ← Não é só a casca. Carrega, nesta ordem: o
-│                                 script anti-flash do tema (frente 6 do D-44),
-│                                 que roda ANTES da folha de estilo; o preload
-│                                 das duas faces da fonte; o `canonical`; e o
-│                                 JSON-LD. Mexer na ordem aqui é mexer em
-│                                 comportamento medido
+├── index.html                 ← Não é só a casca. A ordem REAL do `<head>`,
+│                                 medida em 07/09, é: script anti-flash do tema
+│                                 (l. 20, frente 6 do D-44) → `<title>` (43) →
+│                                 `canonical` (66) → JSON-LD (81) → preload das
+│                                 duas faces da fonte (133 e 140). O anti-flash
+│                                 tem de continuar ANTES da folha de estilo; o
+│                                 preload é o ÚLTIMO do `<head>`, e é essa
+│                                 ordem que deu os 94 no celular. Mexer aqui é
+│                                 mexer em comportamento medido
 │
 ├── vite.config.ts             ← Os grupos de chunk. O grupo `react` vem ANTES
 │                                 dos grupos `three` e `r3f`, e essa ordem é o
@@ -63,6 +66,9 @@ portfolio-3d-v2/
 │   │                             D-58a). O nome é de quando eram pontos; desde
 │   │                             o D-58a a terra é maciça. Proveniência e as duas
 │   │                             armadilhas de regeração no README da pasta
+│   ├── images/README.md          proveniência das imagens — leia antes de
+│   │                             regerar o `world-dots.png`
+│   └── fonts/README.md           de onde vieram os `.woff2` e por que só duas
 │   ├── cv.pdf                    seu currículo (você coloca)
 │   ├── og.png                    imagem de preview em redes sociais
 │   ├── favicon.svg
@@ -101,11 +107,12 @@ portfolio-3d-v2/
     │                             existem porque material de WebGL recebe valor
     │                             e não enxerga `var(--color-*)`
     │
-    └── hooks/                    comportamentos reaproveitáveis:
+    └── hooks/                    comportamentos reaproveitáveis, os dez:
                                   useReveal, useScrollProgress,
                                   useElementProgress, useActiveSection,
                                   useAmbientTint, useCanRender3D,
-                                  useGlobeDrag, useSmoothScroll, useTema
+                                  useGlobeDrag, useMagnetic (o ímã do M-27),
+                                  useSmoothScroll, useTema
 ```
 
 ---

@@ -250,3 +250,143 @@ lançamento.
 permissão do conector, não do projeto. Enquanto durar, a confirmação de deploy
 sai pela API do GitHub, que registra os deployments criados pela Vercel.
 
+
+---
+
+## Andaime do CONTENT.md — conflitos e consertos de LinkedIn (03/09)
+
+Saiu do `CONTENT.md` em 07/09. Eram decisões de redação já resolvidas — duas
+delas ainda marcadas "⚠️ decisão sua" dias depois de decididas, o que é pior
+que estar desatualizado: é pedir uma decisão que já foi tomada. O Dublin no
+futuro está no ar desde o Passo 2, e o `alsoStudied` com Java, C++ e C# existe
+em `stack.ts`.
+
+## Conflitos — dois resolvidos, dois abertos
+
+**1. Qual e-mail vai no site?** ✅ **decidido**
+`raulrodrigues.mldev@gmail.com`. É o que já está no seu CV.
+→ *Pendência de 2 minutos: confira se é o mesmo no "Contact info" do LinkedIn.
+Site, CV e LinkedIn apontando para e-mails diferentes é o tipo de detalhe que
+faz um recrutador desistir de te achar.*
+
+**2. Qual LinkedIn?** ✅ **resolvido pelo print**
+`linkedin.com/in/raulrodriguexz` — é o que aparece em "Public profile & URL".
+A URL do v1 (`/in/raul-rodrigues-6744043b1`) está **desatualizada** e
+provavelmente quebrada. Corrija também no site antigo e no CV, se estiver lá.
+
+**3. Dublin: presente ou futuro?** ⚠️ **decisão sua**
+Seu LinkedIn já diz **"Greater Dublin"** e **"Open to work · Greater Dublin ·
+On-site · Hybrid · Remote"**. O v1 dizia *"I'm now in Dublin"*. Mas você embarca
+em 26/10 e o site publica em 10/10.
+
+Os dois caminhos são defensáveis:
+
+- **Manter "Dublin" no LinkedIn** faz sentido: ali o campo de localização é o
+  filtro de busca do recrutador, não uma declaração. Sem ele, você simplesmente
+  não aparece nas vagas de Dublin.
+- **No site, escrever "Dublin — from October 2026"** é mais seguro: o site é
+  onde a pessoa lê com calma, e ali uma data explícita passa organização, não
+  falta de compromisso.
+
+→ *Recomendo essa combinação. O que não pode é o site afirmar que você já está
+lá.* Deixei tudo no futuro assumido; se preferir o presente, é uma linha de
+mudança.
+
+**4. C++, C# e Java na stack?** ⚠️ **decisão sua**
+São reais. Mas o site inteiro fala de IA e automação, e uma lista longa dilui o
+foco.
+→ *Recomendo uma linha só no rodapé da seção: "Also studied: Java, C++, C#".*
+
+---
+
+
+---
+
+## Fora do site — três consertos rápidos no LinkedIn
+
+Não fazem parte do PRD, mas afetam o mesmo objetivo: o site vai mandar gente
+para o seu LinkedIn, e o que a pessoa encontra lá fecha ou abre a porta.
+
+1. **O campo "Services" está como `Computer Networking`.** Isso não é o que você
+   faz e aparece logo abaixo do About. Troque por AI automation, workflow
+   automation, integração de APIs.
+2. **Featured aponta para o portfólio antigo.** Quando o site novo estiver no
+   ar, troque o link.
+3. **19 conexões, 18 seguidores, nenhum post.** Seu headline diz *"Building AI
+   tools in public"* — mas o perfil não mostra nada em público. Um post por
+   projeto entregue, mesmo curto, resolve isso antes de outubro. É a diferença
+   entre um perfil que confirma o site e um que enfraquece.
+
+
+---
+
+## A fila numerada da seção 0 (05–07/09)
+
+Saiu do PRD em 07/09: os 13 itens tinham sido todos entregues ou absorvidos
+pelo plano de encerramento, e dois deles apareciam em duas listas ao mesmo
+tempo. Fica como registro da ordem em que o trabalho aconteceu.
+
+### 🔨 Em andamento
+
+| Ordem | Item | Onde | Estado |
+|---|---|---|---|
+| 1 | **Globo: `livre` sem prazo** — arrastar e não rolar trava o assentamento para sempre (adendo do D-55) | `hooks/useGlobeDrag.ts`, `three/Globe.tsx` | ✅ **feito** — `4ffa808` |
+| 2 | **Pin com as duas polaridades** (D-60) — haste e cabeça brancas no escuro; pé e faixa escura seguem escuros | `three/paleta.ts`, `three/Marker.tsx` | ✅ **feito** — `885881f` |
+| 3 | **Inversão por tema, que nunca foi feita** (D-60) — o tema claro tem de ter **oceano branco e continentes roxos** | `three/paleta.ts` | ✅ **feito** — `885881f`, junto com o item 2 |
+| 4 | **Publicar o que está local** — `3e060fc` (analytics), `5431c38` (pin) e `91cd9fb` (docs) | — | ✅ **publicado** — produção em `79eb442` |
+| 5 | **`<link rel="canonical">`** | `index.html` | ✅ **feito** — `79eb442`, e conferido no ar |
+| 6 | Lighthouse em produção (RNF-01), em `raulrodrigues.dev` | — | ✅ **rodado** — 7 das 8 notas passam; **performance mobile 68** fica em aberto, com causa medida |
+| 7 | ⚠ **Performance mobile (RNF-01)** — 68 contra a meta de 80 | `index.html`, empacotamento | ✅ **resolvido** — **82** no aceite de 07/09, entregue pela (a) sozinha |
+| 8 | **D-62 (a)** — self-hospedar a fonte e cortar de seis faces para as usadas | `index.html`, `index.css`, `public/fonts/` | ✅ **feito** — `9d8d99c`. Duas faces, subset `latin`, 13,9 KB; `404.html` foi junto |
+| 9 | **D-62 (b)** — `modulePreload.resolveDependencies` filtrando `three` e `r3f` | `vite.config.ts` | ⚠ **feito e insuficiente** — `fc96578`. As dicas sumiram, os 237,5 KB **continuam baixando**. Causa medida no bloco acima |
+| 10 | **Pé do pin grande demais no tema claro** — ~16,6 px contra uma ilha de ~20×22 | `three/Marker.tsx` | ✅ **feito** — `72b39fd`. Raio 0.018 → 0.011, **10,2 px = 70% da cabeça** |
+| 11 | **Domínio principal: apex × www** — o apex responde **308 para www**, mas `canonical`, `og:url`, `sitemap` e `robots` apontam todos para o apex. Conserto é **no painel da Vercel**, do Raul | painel | a fazer |
+| 12 | ⚠ **RNF-02 continua descumprido** — `three` e `r3f` baixam no celular por **import estático** | `vite.config.ts` | ✅ **resolvido pela D-63** — 0 KB na rede a 412 px |
+| 13 | **D-63** — grupo próprio para `react`/`react-dom`/`scheduler`, antes dos grupos 3D | `vite.config.ts` | ✅ **feito** — `8833165`. **Último item de código do projeto** |
+| — | ✅ **A FILA DE CÓDIGO FECHOU EM 07/09.** Itens 1 a 10, 12 e 13 entregues; o 11 é do painel, não do teclado. O que falta para publicar **não é código** — está em §9 e §10 | — | — |
+| último | **Site bilíngue (D-61)** — depois da revisão do inglês, e **depois do lançamento de 10/10** | textos, roteamento, header | a fazer |
+
+
+### 🏁 A fila de código está encerrada
+
+O `8833165` é o **último item de código do projeto**. Os dez passos estão
+fechados, os dois requisitos que estavam descumpridos — RNF-01 e RNF-02 —
+passaram pelos seus próprios critérios, e não sobrou item de produto em aberto.
+
+**O que falta para lançar não é código. São seis linhas, e esta tabela é a lista
+completa** — até a v7.4 ela tinha quatro, porque a releitura da aba Application e
+a passada final de Tab viviam só na §10 e não subiam para cá, que é o painel.
+Quem lesse só a §0 não ficava sabendo delas. Ordem por **tempo de espera**, não
+por importância:
+
+| # | O quê | De quem | Trava o lançamento? |
+|---|---|---|---|
+| 1 | **Revisão do inglês** por pessoa fluente (RNF-09) — o pacote que o revisor recebe sai pela **D-64** | o Raul achar o revisor | **sim — é o único bloqueante** |
+| 2 | **Passada final de Tab** no site inteiro (RNF-06) — a auditoria é de 05/09 e o **botão de tema entrou depois** dela | Claude Code audita, o Raul confirma na tela | não, **mas é a única que ainda pode reabrir a fila de código** |
+| 3 | **Aba Application → Cookies vazia** (RNF-10) — a conferência de 07/09 é **anterior** a o Web Analytics ser ligado no painel | o Raul, no navegador | não |
+| 4 | **Domínio principal no painel** da Vercel: o apex responde 308 para `www`, e `canonical`, `og:url`, `sitemap` e `robots` apontam para o apex | o Raul, no painel | não, mas é sinal torto para o buscador |
+| 5 | **Teste do arrasto com dedo** num celular real (D-29) | o Raul, num aparelho | não |
+| 6 | **D-61, site bilíngue** | depois da revisão do inglês **e depois do lançamento de 10/10** | não — é v2 |
+
+**A ordem tem dois motivos, e nenhum deles é "importância".** A **1** é a única
+com dependência externa: ela espera a agenda de outra pessoa, então cada dia sem
+o pacote pronto é um dia em que o revisor **não pode nem começar** — é o caminho
+crítico do 10/10, e é por isso que a D-64 é o próximo passo. A **2** é a única
+que ainda pode **reabrir a fila de código**: se o anel de foco do botão de tema
+estiver cortado ou com contraste baixo — que foram exatamente os dois defeitos
+achados no `CopyEmail` em 05/09, nos dois únicos controles do caminho de contato
+— isso vira conserto. Achar agora não custa nada; achar em 09/10 custa. As **3**,
+**4** e **5** são minutos do Raul e não dependem de mais ninguém.
+
+**Próximo passo: a D-64**, o pacote de revisão. E junto dela, uma dívida de
+estado que a sessão anterior deixou: **o PRD v7.4 nunca foi commitado** — ficou
+modificado no disco, com o último commit ainda no v7.3.
+
+**Se alguém for mexer em código depois disto, o aviso é um só:** o RNF-02 agora
+é medido por **comportamento** (ninguém baixa o chunk) e não por **artefato** (o
+chunk existe e tem tal tamanho). Rodar `npm run build` e ver os tamanhos **não**
+é conferir o RNF-02 — foi exatamente assim que 237 KB passaram por quatro
+passos. A medição é carga real em largura de celular.
+
+---
+
