@@ -111,12 +111,37 @@
 
     <meta name="theme-color" content="#fbfbfe" />
 
-    <!-- Tipografia. Para self-hospedar depois, veja public/fonts/README.md -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!--
+      Tipografia self-hospedada (D-62 a). Antes havia dois `preconnect` e uma
+      folha do Google Fonts aqui, e a folha bloqueava a pintura por 825 ms —
+      medido, e era a maior parcela do caminho crítico da primeira pintura no
+      celular. Os `preconnect` saíram junto: eles serviam para abrir a conexão
+      com um domínio que não é mais visitado.
+
+      O `@font-face` mora no `src/index.css`, junto do resto do tema. Aqui fica
+      só o `preload`, porque a fonte é referenciada de dentro do CSS e o
+      navegador só descobriria os `.woff2` depois de baixar e interpretar a
+      folha — o `preload` corta esse salto.
+
+      **Só as duas faces que o site usa**, 400 e 700 normais, conferidas no
+      código antes de escolher: 13,9 KB somados, contra as seis faces que o
+      `<link>` antigo pedia. `crossorigin` é obrigatório mesmo sendo o mesmo
+      domínio, porque fonte sempre viaja em modo CORS — sem ele o navegador
+      baixa duas vezes e o preload vira peso morto.
+    -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      href="/fonts/sansation-400.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/sansation-700.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
   </head>
   <body>

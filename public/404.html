@@ -7,11 +7,17 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>Page not found — Raul Rodrigues</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Fonte self-hospedada (D-62 a). Esta página também chamava o Google
+      Fonts, e deixá-la assim faria a promessa de "nenhuma chamada a serviço do
+      Google" ser falsa justamente na página de erro. Ela é autocontida por
+      decisão, então o @font-face vem inline logo abaixo, com as mesmas duas
+      faces do site. -->
     <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Sansation:wght@300;400;700&display=swap"
+      rel="preload"
+      href="/fonts/sansation-400.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
 
     <!--
@@ -23,6 +29,20 @@
       Sem cena 3D e sem fio: é uma dobra, não um projeto.
     -->
     <style>
+      @font-face {
+        font-family: 'Sansation';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url('/fonts/sansation-400.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Sansation';
+        font-style: normal;
+        font-weight: 700;
+        font-display: swap;
+        src: url('/fonts/sansation-700.woff2') format('woff2');
+      }
       :root {
         --canvas: #fbfbfe;
         --ink: #000000;
