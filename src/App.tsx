@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react'
 import { useAmbientTint } from './hooks/useAmbientTint'
 import { useSmoothScroll } from './hooks/useSmoothScroll'
 import { Intro } from './components/layout/Intro'
@@ -44,6 +45,16 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
+
+      {/*
+        Medição de audiência (RF-09 / D-05). Sem cookie e sem banner, que é o
+        que o RNF-10 exige: o pacote não toca em `document.cookie` nem em
+        `localStorage`, e o script que a Vercel serve só cria cookie se alguém
+        chamar `va('enableCookie')` — comando que não existe dentro do pacote e
+        que este projeto não chama. **Não chamar:** é o único jeito de este
+        componente passar a criar cookie e derrubar o RNF-10.
+      */}
+      <Analytics />
     </>
   )
 }
