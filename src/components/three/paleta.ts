@@ -38,9 +38,6 @@ export type Paleta = {
   oceano: string
   /** Globo — multiplicador da textura dos continentes (o material multiplica). */
   continentes: string
-  /** Globo — a malha de triângulos por cima da esfera (D-56). */
-  malha: string
-  malhaOpacidade: number
   /**
    * Globo — a cor da casca de atmosfera, em `AdditiveBlending`.
    *
@@ -116,8 +113,6 @@ export const PALETAS: Record<Tema, Paleta> = {
      */
     oceano: '#fbfafd',
     continentes: '#8c62ac',
-    malha: '#c9a8e2',
-    malhaOpacidade: 0.12,
     /* o halo roxo do pré-D-56, agora que o oceano não serve mais de cor dele */
     atmosfera: '#8c62ac',
     atmosferaOpacidade: 0.11,
@@ -206,8 +201,6 @@ export const PALETAS: Record<Tema, Paleta> = {
      * virar lâmpada, e o par continente/oceano mantém a leitura do D-56.
      */
     continentes: '#e6e0ee',
-    malha: '#d9c2f2',
-    malhaOpacidade: 0.1,
     /* segue valendo o roxo do oceano: aqui a cor não muda, só deixou de ser
        lida de `oceano` para o claro poder inverter sem levar o halo junto */
     atmosfera: '#754ba3',

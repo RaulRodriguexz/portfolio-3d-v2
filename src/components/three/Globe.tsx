@@ -206,24 +206,6 @@ export function Globe({ progress, drag }: Props) {
         />
       </mesh>
 
-      {/*
-        3 — a malha. Fica ENTRE os continentes e o marcador: o pin está em
-        RADIUS * 1.005 e ela em 1.003, então o teste de profundidade garante
-        que ela nunca cruze por cima dele. `depthWrite={false}` para ela também
-        não esconder nada que venha depois.
-      */}
-      <mesh>
-        <sphereGeometry args={[RADIUS * 1.003, 18, 12]} />
-        <meshBasicMaterial
-          color={paleta.malha}
-          wireframe
-          transparent
-          opacity={paleta.malhaOpacidade}
-          depthWrite={false}
-          toneMapped={false}
-        />
-      </mesh>
-
       <Marker position={dublin} paleta={paleta} />
 
       {/* 3 — atmosfera. A cor vem de token próprio desde o D-60: lida de
