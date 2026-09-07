@@ -43,7 +43,38 @@ export default defineConfig({
     rollupOptions: {
       output: {
         codeSplitting: {
+          /**
+           * D-63 — a ORDEM destes grupos é o conserto, não a existência deles.
+           *
+           * O `react` vem primeiro de propósito. Antes havia só `three` e
+           * `r3f`, e o agrupador varreu **`react-dom` e `scheduler` para dentro
+           * do grupo do 3D** — o chunk chamado `r3f` não continha só
+           * `@react-three`. Como o `main.tsx` precisa de `react-dom` para o
+           * `createRoot`, a **entrada passou a importar estaticamente o chunk
+           * `r3f`**, que por sua vez importa o `three`. Resultado medido a
+           * 412 px: 237,5 KB de 3D baixados num aparelho onde o
+           * `useCanRender3D` nunca monta a cena.
+           *
+           * **Import estático não se resolve com dica de preload**, e foi por
+           * isso que a D-62 (b) não bastou: tirar o `modulepreload` mudou a
+           * prioridade do download, não a existência dele. O que quebra a
+           * aresta é dar à família do React um destino próprio, para o grupo 3D
+           * voltar a conter só 3D.
+           *
+           * Os três pacotes andam juntos porque são um só grafo: o `react-dom`
+           * depende de `scheduler` e de `react`, e separá-los criaria a mesma
+           * aresta noutro lugar.
+           *
+           * **Custo assumido:** mudar fronteira de chunk troca o hash de todos
+           * os arquivos afetados e invalida o cache do site inteiro. Aqui isso
+           * é de graça — o site ainda não tem público. Em novembro custaria uma
+           * visita lenta para todo mundo.
+           */
           groups: [
+            {
+              name: 'react',
+              test: /node_modules[\\/](react|react-dom|scheduler)[\\/]/,
+            },
             { name: 'three', test: /node_modules[\\/]three[\\/]/ },
             { name: 'r3f', test: /node_modules[\\/]@react-three[\\/]/ },
           ],
