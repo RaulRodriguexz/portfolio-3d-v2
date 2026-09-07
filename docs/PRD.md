@@ -2,10 +2,10 @@
 
 | | |
 |---|---|
-| **Versão** | 6.4 |
-| **Última revisão** | 05/09/2026 |
+| **Versão** | 6.5 |
+| **Última revisão** | 06/09/2026 |
 | **Responsável** | Raul Rodrigues ([@RaulRodriguexz](https://github.com/RaulRodriguexz)) |
-| **Status** | Aprovado — em execução (Passos 1 a 8 concluídos, 9 parcial) |
+| **Status** | Aprovado — em execução (Passos 1 a 9 concluídos em código; falta ligar o Web Analytics no painel) |
 | **Prazo de publicação** | 10/10/2026 (embarque para Dublin: 26/10/2026) |
 | **Repositório** | `portfolio-3d-v2` |
 
@@ -64,6 +64,7 @@
 
 | Versão | Data | O que mudou |
 |---|---|---|
+| 6.5 | 06/09/2026 | **Sessão de 06/09 publicada:** os seis commits do modo escuro e do globo foram para a `main`, e a produção saiu de `f724e23` para `7797d5c`. **`@vercel/analytics` ligado** (`3e060fc`), fechando o Passo 9 em código — e o **zero cookie do RNF-10 foi conferido em três camadas**, com um achado que vale registro: existe **um** caminho de cookie, o comando opt-in `va('enableCookie')`, que mora só no script remoto e **não existe dentro do pacote npm** — nenhuma atualização de dependência o liga sozinho. **Cabeça do pin reduzida à metade** (`5431c38`): `PONTA_RAIO` de 0.03 para 0.015, de ~29 px para **~14,5 px**, contra uma Irlanda de 20×22 px. Falta um passo que **não é código**: ligar Web Analytics no painel da Vercel. |
 | 6.4 | 06/09/2026 | Acrescentado ao topo o bloco **"como trabalhar sem queimar a sessão"** — o Raul já perdeu quatro sessões por estouro de contexto, e o remédio principal é começar sessão nova a cada bloco, porque este documento é a passagem de bastão. |
 | 6.3 | 06/09/2026 | **Frente 7 entregue** (`f724e23`) — botão medido com a página parada, e a decisão de usar evento próprio em vez de `scroll` sintético **evitou desfazer o D-55**. Aberta a **D-59: regressão — o globo parou de voltar a Dublin**, com três suspeitos e o que instrumentar. **Limpeza:** a seção 9 (Calendário) descrevia os dez passos por semana, todos executados em três dias — reescrita com o que de fato resta, que não é código. A fila "depois disso" foi reordenada por bloqueio e perdeu o item do hero oco, já resolvido. |
 | 6.2 | 06/09/2026 | Aberta a **D-58**, do Raul olhando o tema escuro: os continentes do globo passam a ser **sólidos** — o D-56 trocou a cor mas manteve o pontilhado, e o pedido era massa branca —, e as partículas do hero ficam **brancas no escuro**, por tema e dentro da frente 2. A regeração da textura traz de volta o risco de projeção: **aceite é o pin cair sobre a Irlanda**. |
@@ -130,10 +131,10 @@ Repositório: <https://github.com/RaulRodriguexz/portfolio-3d-v2> · Deploy auto
 | | |
 |---|---|
 | **Passos 1 a 8** | identidade visual, conteúdo, hero, cena 3D, projetos, stack, contato, auditoria |
-| **Passo 9** | parcial — SEO, JSON-LD, robots, sitemap, favicon e og.png prontos; falta o `@vercel/analytics` |
+| **Passo 9** | **concluído em código** — SEO, JSON-LD, robots, sitemap, favicon, og.png e o `@vercel/analytics` ligado (`3e060fc`). Falta **ligar Web Analytics no painel da Vercel**, que é um botão, não código |
 | **Passo 10** | parcial — repositório e deploy feitos; faltam domínio, HTTPS e Lighthouse |
 | **Movimento** | M-1 a M-25 entregues (seção 5.2.1). Faltam apenas **M-26 e M-27** |
-| **Qualidade** | auditoria do Passo 8 sem erros · bundle inicial 70 KB gzip · zero cookies |
+| **Qualidade** | auditoria do Passo 8 sem erros · bundle inicial 70 KB gzip · **zero cookies, agora conferido com o analytics ligado** (ver a linha do RF-09) |
 | **Arrasto do globo** | D-29 e D-30 entregues — captura na `<section>`, critério a 45°, `touch-action: pan-y pinch-zoom`, inércia dobrada na `base` |
 | **Largura e leitura** | D-31 e D-39 entregues — Container 96 rem, hero 104 rem, prosa em `rem` com máximo medido de 74 caracteres por linha |
 | **Ritmo e densidade** | D-32 a D-35 e M-24 entregues — coluna de metadados por seção, numeração derivada do `id`, faixa de impacto, marcador `BR → IE` |
@@ -146,6 +147,8 @@ Repositório: <https://github.com/RaulRodriguexz/portfolio-3d-v2> · Deploy auto
 | **Modo escuro, frente 3 (grão)** | Entregue (`5f3836f`) — medido com o conteúdo escondido, para a variação ser só da camada de ruído: claro a 0,028 dá 1,0174:1; escuro a 0,028 dá 1,0281:1, **62% mais forte**; escuro a 0,020 empata. Texto miúdo remedido no escuro pelo pior pixel de fundo dentro da caixa de cada trecho: de 7,13:1 (coords) a 13,05:1 (prosa), todos acima de 4,5 |
 | **Continentes sólidos (D-58a)** | Entregue (`2894e85`) — textura regerada do mesmo Natural Earth land-110m, mesma projeção, mesmo PNG indexado de 1 bit: 15,6 KB contra 11,4 KB. Projeção provada por comparação com o próprio PNG antigo — 96,90% dos 4.740 centros de ponto caem em terra cravada, 99,56% dentro de meia célula — e por 28 de 30 cidades de controle. **Aceite do D-58 cumprido, com o marcador escondido para poder olhar embaixo:** o centro do globo assentado é continente, na borda leste de uma ilha de 20×22 px com o Mar da Irlanda a leste. A armadilha foi a Antártida, que circunda o polo e cujo anel volta ao início por um salto atravessando o mapa — fechado assim, o preenchimento repartia o continente em faixas |
 | **Globo: regressão do assentamento (D-59)** | Entregue (`6c13caf`) — e não era nenhum dos três suspeitos, que ficam verificados. Era o **clique parado**: pelo D-29 o mouse pula a classificação e `mode` nasce `'drag'`, então soltar sem ter movido ligava o `livre` do D-55. Medido na caixa de 773 px: um clique sem mover dava 15,47% dos pixels mudando e o marcador 161,6 px fora do centro; agora dá 0,14% e Δ 0,0 px. Arrasto de verdade segue livre em 12,42% |
+| **Medição de audiência (RF-09 / D-05)** | `@vercel/analytics` ligado no `App` (`3e060fc`). **Zero cookie conferido em três camadas**, porque o RNF-10 promete "aba Application → Cookies vazia" e isso não quebra build nem lint: (1) o pacote npm não toca em `document.cookie`, `localStorage`, `sessionStorage` nem `indexedDB` — o único "cookie" do pacote está no *entrypoint* de servidor, que **repassa** o header da requisição recebida e não cria nada, e esse entrypoint não é importado aqui; (2) o script que a Vercel serve em `/_vercel/insights/script.js`, lido do próprio arquivo publicado (3.106 bytes): **nenhuma** API de cookie ou de armazenamento, e a resposta **sem `Set-Cookie`**; (3) o bundle construído: nenhum `document.cookie`, e o único `localStorage` que sobra é o do botão de tema. **O achado:** existe **um** caminho de cookie e ele é **opt-in** — o comando `va('enableCookie')` dispara um GET cuja resposta cria o cookie. Ele mora só no script remoto e **não existe dentro do pacote**, então nenhuma atualização de dependência o liga sozinha: alguém tem de escrever a chamada. Ficou comentado no `App.tsx` como o único jeito de derrubar o RNF-10 daqui. Custo: **986 bytes gzip** no chunk inicial, de 73.185 para 74.171. **Pendência que não é código:** enquanto o Web Analytics não for ligado no painel, `/_vercel/insights/script.js` responde **404** — conferido em produção — e a medição final do RNF-10 na aba Application só pode ser feita depois disso |
+| **Cabeça do pin contra a ilha** | Entregue (`5431c38`) — `PONTA_RAIO` de 0.03 para **0.015**, e só o número: haste, pé, anel de duas faixas e a oclusão por profundidade ficaram como estavam. Foram os continentes sólidos do D-58a que tornaram a ilha mensurável, e a medida acusou o desproporcional: Irlanda ~20×22 px, cabeça ~29 px. Agora **~14,5 px**, 72% do lado estreito da ilha. **Não precisou de nova medição de tela, e o motivo importa:** o centro da cabeça fica em `HASTE_ALTURA` ao longo da normal **independente do raio**, e câmera, posição e escala não mudam — o diâmetro projetado é **linear** em `PONTA_RAIO`, então a correção é uma razão pura; ilha e cabeça saem da mesma sessão e da mesma unidade, então a comparação não depende de qual unidade era. Conferência pela geometria da cena (fov 34, câmera em 9.4, RADIUS 1.6, escala de 1 a 1.42): a cabeça a 0.03 dá 15,8 px CSS no zoom cheio, que vezes o teto de dpr 1,75 do `Canvas` dá 27,7 — os ~29 px medidos, ou seja o modelo reproduz a medição antiga antes de escalar a nova. Visibilidade preservada nos dois temas: a cor não mudou e o pin já era escuro nos dois de propósito (D-44, frente 2), a 7,70:1 sobre o continente. **Apontado, não corrigido:** o **pé da haste** (`circleGeometry` de raio 0.018) projeta ~16,6 px nas mesmas unidades — agora maior que a própria cabeça e perto dos 20 px da ilha. Se a pegada ainda incomodar, o próximo ajuste é esse raio |
 | **Globo invertido** | D-56 entregue — oceano roxo e continentes claros com 3,47:1 entre si, malha custando 0,42 de contraste, anel de radar em duas faixas para cruzar as duas superfícies. Textura recolorida na paleta: 11.372 bytes, os mesmos |
 | **Globo: giro livre depois do arrasto** | D-55 entregue — soltar suspende o assentamento; medido 6,6% de pixels mudando por 800 ms depois de 8 s sem rolagem, contra 0,18% depois de uma rolagem |
 | **Globo: volta completa e zona de arrasto** | D-54 entregue — teto de ±60° removido com assentamento congruente no eixo X (sem ele o percurso chegava a 6π para trás), gesto só **começa** perto do planeta, e o `cursor-grab` que era inerte passou a funcionar |
@@ -178,8 +181,10 @@ faltavam do modo escuro — 3 (`5f3836f`), 5 (`f06e08a`) e 2 (`51d6964`).
 próprio D-44 previa — parar depois da frente 7, com as cenas 3D ainda
 calibradas para claro — **não precisou ser usado**.
 
-O que resta para publicar não é código de produto: `@vercel/analytics`
-(Passo 9), domínio, HTTPS e Lighthouse (Passo 10). Ver a seção 9.
+O que resta para publicar não é código de produto, e agora é menos: o
+`@vercel/analytics` saiu em `3e060fc` e o que sobra dele é **ligar Web
+Analytics no painel da Vercel** — um botão. Restam esse botão, o domínio,
+o HTTPS e o Lighthouse (Passo 10). Ver a seção 9.
 
 **⚠ Dependência entre frentes:** ✅ **resolvida**. O `apply()` do tint só roda
 em evento de scroll, e o botão da frente 7 força o reapply por evento próprio
@@ -187,11 +192,14 @@ em evento de scroll, e o botão da frente 7 força o reapply por evento próprio
 foi medido que ele não acorda o globo: depois de duas trocas de tema, 0,07%
 dos pixels mudam em 800 ms. O scroll sintético teria quebrado isso.
 
-**Aberto para o olho do Raul, não é código:** o pin continua maior que a
-Irlanda. Agora com número: na largura de 1440 px a ilha ocupa cerca de
-20×22 px e a cabeça do pin tem ~29 px de diâmetro, então ela cobre a ilha em
-vez de pousar sobre ela. É reduzir `PONTA_RAIO` e `HASTE_ALTURA` no
-`Marker.tsx` — número, não estrutura.
+**O pin maior que a Irlanda:** ✅ **resolvido** em `5431c38`. `PONTA_RAIO`
+caiu de 0.03 para 0.015 e a cabeça foi de ~29 px para **~14,5 px**, contra
+uma ilha de 20×22 px — ela pousa sobre a Irlanda em vez de cobri-la. Só o
+número mudou: `HASTE_ALTURA` ficou onde estava, e haste, pé, anel e
+oclusão não foram tocados. **Fica um ponto para o seu olho:** o **pé da
+haste** projeta ~16,6 px nas mesmas unidades, ou seja agora ele é maior
+que a cabeça e continua perto dos 20 px da ilha. Se a pegada ainda
+incomodar na tela, o próximo ajuste é esse raio.
 
 **Também para o seu olho:** o arquivo continua se chamando `world-dots.png` e
 não tem mais ponto nenhum dentro. O caminho está escrito nesta seção e no
@@ -216,21 +224,27 @@ testado à mão pelo Raul em 04/09 e **funciona**; falta só o teste com **dedo*
 no celular, que é o caso onde o gesto ainda pode roubar a rolagem da página. O
 julgamento estético do conjunto também segue com ele.
 
-**Onde a próxima sessão pega o trabalho.** Sessão de 05/09 encerrada com cinco
-commits, todos no ar. Produção em `1413e18`.
+**Onde a próxima sessão pega o trabalho.** Sessão de 06/09 encerrada. Os seis
+commits do modo escuro e do globo **foram publicados**, e a produção saiu de
+`f724e23` para `7797d5c`.
 
-| Commit | O quê |
-|---|---|
-| `0e52223` | Memoji centrado no eixo do conteúdo (D-43) |
-| `a2ed8b7` | Pin de Dublin com haste, `Marker` em arquivo próprio (M-23, D-25) |
-| `f2e42ab` | Espaço real no `WordReveal` — `h1` e a frase do Statement |
-| `2c96e11` | Espaço no `<br />` da Location — `"Dublin, Ireland"` |
-| `1413e18` | Setas decorativas com `aria-hidden`, 4 lugares (D-46) |
+| Commit | O quê | No ar? |
+|---|---|---|
+| `6c13caf` → `7797d5c` | os seis do modo escuro e do globo (D-59, D-58a, frentes 3, 5 e 2, mais o estado) | ✅ sim |
+| `3e060fc` | `@vercel/analytics` ligado, zero cookie conferido (RF-09, D-05) | ❌ local |
+| `5431c38` | cabeça do pin de ~29 px para ~14,5 px (D-25) | ❌ local |
+| este commit de docs | esta seção, o changelog, D-05 e D-25 | ❌ local |
+
+⚠ **Três commits não estão publicados.** O pedido desta sessão mandava publicar
+os seis primeiros e **só commitar** o resto, então o `git push` dos três últimos
+é uma decisão do Raul, não um esquecimento. Como a `main` publica sozinha
+(RNF-08), esse push é que leva o analytics e o pin novo ao ar.
 
 Sem dívida de documentação: PRD, `CLAUDE.md` e esta seção refletem o estado
-real. **O próximo item é análise pura** — ler o `WORKFLOW.md` e o
-`ARCHITECTURE.md` e apontar o que está falso, sem alterar arquivo. A sessão
-começa lendo, não reconstruindo contexto.
+real. **Não há item de código de produto na fila.** O que resta depende de
+terceiros e de painel: revisão do inglês (bloqueante), domínio e HTTPS, ligar o
+Web Analytics e rodar o Lighthouse. A sessão começa lendo, não reconstruindo
+contexto.
 
 **Limitação de ferramenta:** o conector da Vercel devolve lista vazia em
 `list_projects` no time AVVIA, apesar de o projeto existir e publicar. É
@@ -243,7 +257,7 @@ sai pela API do GitHub, que registra os deployments criados pela Vercel.
 |---|---|---|
 | **Revisão do inglês** por pessoa fluente (RNF-09) | o Raul encontrar o revisor | **lançamento — é o único bloqueante** |
 | **Domínio** `raulrodrigues.dev` + HTTPS | registro pelo Raul | §10 e a URL do `og:image` |
-| `@vercel/analytics` (RF-09) | conta na Vercel — já existe | checklist §10 |
+| **Ligar Web Analytics no painel** da Vercel (RF-09) | o Raul — o código já está feito (`3e060fc`); hoje o script responde 404 | checklist §10 e a medição final do RNF-10 |
 | Lighthouse na URL de produção (RNF-01) | site no ar — já está | §10 |
 | Teste do arrasto com **dedo** no celular (D-29) | o Raul, num aparelho real | — |
 | 4º card de projeto: B2B com geolocalização (D-21) | número de impacto que só o Raul tem | — |
@@ -680,7 +694,7 @@ o plano acaba. O que sobrou é curto e não é código.
 |---|---|---|
 | **em aberto** | Revisão do inglês por pessoa fluente (RNF-09) | o Raul achar o revisor — **é o único item bloqueante do lançamento** |
 | **em aberto** | Registrar o domínio + HTTPS | o Raul. Quanto antes, melhor: o Google leva semanas para indexar domínio novo |
-| **em aberto** | `@vercel/analytics` (RF-09) | conta já existe |
+| **em aberto** | **Ligar Web Analytics no painel** (RF-09) | o código já está no repositório (`3e060fc`); falta o botão no painel |
 | **em aberto** | Lighthouse na URL de produção (RNF-01) | site já está no ar |
 | **10/10** | Meta de publicação divulgável | os quatro acima |
 | **26/10** | Embarque para Dublin | — |
@@ -779,7 +793,7 @@ Toda mudança de rumo vive aqui, com data e motivo. É a memória do projeto.
 | **D-02** | 03/09 | Site clássico com toques 3D, não mundo navegável | Mundo 3D é meses de trabalho e conflita com o prazo de 26/10 | Ativa |
 | **D-03** | 03/09 | React + R3F em vez de Three.js puro | Ecossistema pronto para 90% do que o site precisa; menos código manual quebrando | Ativa |
 | **D-04** | 03/09 | Tema claro com roxo, tipografia Sansation | Escolha do Raul. Contraste conferido: preto 20,3:1 e roxo forte 8,6:1 sobre o fundo | Ativa |
-| **D-05** | 03/09 | Vercel Analytics entra na v1 | A seção 8 promete métricas de rolagem e clique; sem medição, aquelas metas eram ficção. O Vercel Analytics não usa cookies, então não exige banner na UE | Ativa |
+| **D-05** | 03/09 | Vercel Analytics entra na v1 | A seção 8 promete métricas de rolagem e clique; sem medição, aquelas metas eram ficção. O Vercel Analytics não usa cookies, então não exige banner na UE. **ENTREGUE em `3e060fc`**, e a promessa de "não usa cookies" deixou de ser confiança e virou medição, em três camadas: o **pacote npm** não toca em `document.cookie` nem em armazenamento do navegador; o **script remoto** `/_vercel/insights/script.js`, lido do arquivo publicado, não tem nenhuma API de cookie e sua resposta não traz `Set-Cookie`; e o **bundle construído** não tem `document.cookie`. **Mas a promessa tem uma condição, e ela não estava escrita aqui:** o script aceita o comando `va('enableCookie')`, que dispara um GET cuja resposta **cria** um cookie. É opt-in, mora só no script remoto e **não existe dentro do pacote npm** — então nenhuma atualização de dependência o liga sozinha, alguém tem de escrever a chamada. Está comentado no `App.tsx` como o único jeito de derrubar o RNF-10 daqui. **Falta ligar o Web Analytics no painel da Vercel:** sem isso o script responde 404 em produção (conferido) e a medição final do RNF-10 na aba Application não tem o que medir | Ativa |
 | **D-06** | 03/09 | Sem PT/EN na v1 | O público-alvo é Dublin. A alternância dobrava o trabalho de conteúdo sem aumentar a conversão | Ativa |
 | **D-07** | 03/09 | Seção Serviços cortada | Os cards de projeto já respondem "dá para contratar?". Uma seção a menos é uma semana a menos | Ativa |
 | **D-08** | 03/09 | Hero com notebook 3D em `.glb` | Referência do eric-cole.framer.website | **Revertida por D-10** |
@@ -799,7 +813,7 @@ Toda mudança de rumo vive aqui, com data e motivo. É a memória do projeto.
 | **D-22** | 03/09 | Hero em layout de cantos: nome em cima à esquerda, função em cima à direita, cena no centro. Marca do header virou um ícone de laptop | Texto centralizado verticalmente parece indeciso; ancorado nos cantos ele cria uma moldura e libera o miolo para a cena. O ícone é SVG e não emoji: emoji muda de desenho a cada sistema e não aceita a cor da paleta | Ativa |
 | **D-23** | 03/09 | Container passa de 1024 px para 1280 px de largura máxima | Em telas de 1440 px ou mais, sobrava margem lateral demais e o conteúdo ficava encolhido no centro. O respiro lateral cresce junto (`lg:px-12`) para o texto não encostar na borda | **Ampliada pelo D-31** |
 | **D-24** | 03/09 | Globo passa a ser arrastável com o mouse, com o usuário tendo prioridade sobre o scroll | Interação direta vale mais que animação assistida — mas os dois disputavam o mesmo eixo de rotação. Regra: o arrasto assume o controle, e após ~3 s sem interação o globo volta a apontar Dublin e devolve o comando ao scroll. No toque, só gesto horizontal é capturado, para o dedo nunca prender a rolagem da página. **Prazo revisado para 1,5 s pelo D-28**, que unificou repouso de scroll e de arrasto num carimbo só | Ativa |
-| **D-25** | 03/09 | Marcador de Dublin vira pin com haste, no lugar do círculo rente à superfície | Um círculo colado na esfera some no meio dos continentes e não lê como localização. A haste resolve, e a oclusão pela esfera opaca esconde o pin sozinha quando Dublin gira para trás — mesma técnica que tirou a cara de PNG do Memoji (D-18) | Ativa |
+| **D-25** | 03/09 | Marcador de Dublin vira pin com haste, no lugar do círculo rente à superfície | Um círculo colado na esfera some no meio dos continentes e não lê como localização. A haste resolve, e a oclusão pela esfera opaca esconde o pin sozinha quando Dublin gira para trás — mesma técnica que tirou a cara de PNG do Memoji (D-18). **Adendo de 06/09 — a cabeça encolheu pela metade (`5431c38`):** `PONTA_RAIO` de 0.03 para 0.015. O pin resolveu o problema de 03/09, mas criou outro que só ficou visível depois do D-58a: com continentes sólidos deu para **medir a ilha**, e a Irlanda tem ~20×22 px contra uma cabeça de ~29 px — o marcador era maior que o país que ele marca. Agora **~14,5 px**. **A correção não precisou de nova medição de tela**, e a razão é geométrica: o centro da cabeça fica em `HASTE_ALTURA` ao longo da normal **independente do raio**, e câmera, posição e escala não mudam — logo o diâmetro projetado é **linear** em `PONTA_RAIO` e basta uma razão. O modelo foi validado antes de ser usado: pela geometria da cena a cabeça a 0.03 dá 15,8 px CSS no zoom cheio, e vezes o teto de dpr 1,75 do `Canvas` dá 27,7 — os ~29 px que já estavam medidos. **`HASTE_ALTURA` não mudou:** encurtar a haste junto devolveria o defeito que este D-25 consertou, que é o marcador rente à superfície sumindo no continente. **Apontado e não corrigido:** o pé da haste (`circleGeometry` de raio 0.018) projeta ~16,6 px, agora **maior que a cabeça** e perto dos 20 px da ilha | Ativa |
 | **D-25a** | 04/09 | Nota de execução do M-23: o pin lê como **ponto** na pose de repouso | Consequência geométrica, não defeito: a haste sai perpendicular à superfície e o D-28 assenta Dublin **de frente para a câmera**, que é exatamente o ângulo onde a haste fica encurtada a zero. Girando o globo ela aparece inteira, com cabeça e sombra própria. **A oclusão foi confirmada por arrasto real** (eventos de mouse do CDP, 960 px ≈ 275°): a 180° a haste sai de trás da silhueta com a base cortada pela esfera — se o teste de profundidade estivesse falhando, o disco e o anel apareceriam por cima da face do globo. O pin **não some por completo** quando Dublin passa para trás, e isso também é geometria: por causa da inclinação em X que o D-28 aplica, o caminho de Dublin passa perto do topo, e um pin radial na borda projeta para fora da silhueta — como um pin de verdade num globo de verdade. Se um dia se quiser que ele leia como pin também em repouso, o caminho é inclinar a haste alguns graus fora da normal ou assentar Dublin ligeiramente fora do centro — os dois mexem no D-25 ou no D-28, e nenhum é conserto de bug | Ativa |
 | **D-26** | 03/09 | `prefers-reduced-motion` hoje desliga as cenas 3D inteiras, não só o movimento | A preferência pede menos MOVIMENTO, não menos conteúdo. Proposta em avaliação: montar as cenas congeladas — sem parallax, sem rotação contínua, sem reação ao scroll — em vez de removê-las. Afeta `useCanRender3D`, que governa as duas cenas (hero e globo), por isso não entra no mesmo lote das mudanças locais D-23/D-24/D-25 | Aberta |
 | **D-27** | 03/09 | O movimento ocioso do globo muda de **tipo** com a proximidade, não só de intensidade: giro ao longe, oscilação de perto | Girar no eixo Y e manter Dublin de frente são objetivos incompatíveis, e nenhum piso de intensidade concilia os dois — medido: 0,06 rad/s × 0,334 de força restante dá 1,15°/s, uma volta a cada 5 minutos, abaixo do limiar de percepção. Uma fração de uma velocidade imperceptível continua imperceptível. A troca por oscilação (`sin`, ±2,6°) resolve mantendo Dublin centralizada, e segue o mesmo princípio da respiração lenta do Memoji no hero: o objeto nunca parece congelado sem sair do lugar. A velocidade base do giro sobe de 0,06 para 0,12 rad/s. Altera o M-8 | **Substituída por D-28** |
