@@ -6,7 +6,23 @@ import type { Paleta } from './paleta'
 /** Haste fina e curta: marcador, não bandeira (D-25). */
 const HASTE_RAIO = 0.006
 const HASTE_ALTURA = 0.22
-const PONTA_RAIO = 0.03
+/**
+ * A cabeça pousa sobre a Irlanda, não a cobre.
+ *
+ * Com os continentes sólidos do D-58a deu para medir a ilha: ~20×22 px, e a
+ * cabeça a 0.03 dava ~29 px — maior que o país que ela aponta. Metade do raio
+ * dá ~14,5 px, 72% do lado estreito da ilha.
+ *
+ * O número é uma razão pura, e por isso a conta fecha sem remedir: o centro da
+ * cabeça fica em HASTE_ALTURA ao longo da normal, **independente do raio**, e a
+ * câmera e a escala não mudam — então o diâmetro projetado é linear em
+ * PONTA_RAIO. Ilha e cabeça foram medidas na mesma sessão e na mesma unidade,
+ * então a comparação não depende de qual unidade era.
+ *
+ * Piso: a cabeça tem de continuar lendo como cabeça. A 0.015 ela ainda é 2,5×
+ * o raio da haste; encostar em HASTE_RAIO transformaria o pin num palito.
+ */
+const PONTA_RAIO = 0.015
 
 /**
  * O marcador de Dublin (M-23 / D-25).
