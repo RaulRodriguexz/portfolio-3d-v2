@@ -115,7 +115,15 @@ export const PALETAS: Record<Tema, Paleta> = {
     continentes: '#8c62ac',
     /* o halo roxo do pré-D-56, agora que o oceano não serve mais de cor dele */
     atmosfera: '#8c62ac',
-    atmosferaOpacidade: 0.11,
+    /*
+     * D-65 (d) — 0,11 para 0,06. No tema claro esta camada NÃO clareia, ela
+     * ESCURECE, e essa é a parte contraintuitiva: `AdditiveBlending` soma cor,
+     * mas o canal alfa também acumula, e o navegador compõe o canvas sobre a
+     * página com esse alfa. Sobre uma página quase branca, somar 6% de roxo e
+     * cobrir 11% do fundo dá saldo negativo. Medido: a faixa ficava 0,117 de
+     * luminância ABAIXO do fundo — um halo que escurece em vez de brilhar.
+     */
+    atmosferaOpacidade: 0.06,
     /*
      * Aqui o continente é roxo, então quem pisa nele tem de ser **claro** — é a
      * mesma regra do tema escuro chegando ao resultado oposto, porque a
@@ -204,8 +212,13 @@ export const PALETAS: Record<Tema, Paleta> = {
     /* segue valendo o roxo do oceano: aqui a cor não muda, só deixou de ser
        lida de `oceano` para o claro poder inverter sem levar o halo junto */
     atmosfera: '#754ba3',
-    /* `AdditiveBlending` sobre fundo escuro: a atmosfera cai, não sobe. */
-    atmosferaOpacidade: 0.07,
+    /*
+     * `AdditiveBlending` sobre fundo escuro: a atmosfera cai, não sobe.
+     * D-65 (d) — 0,07 para 0,05, acompanhando o raio menor. Aqui ela de fato
+     * clareia (medido: +0,0031 de luminância sobre o fundo), então o aro era
+     * muito menos visível que no claro — mas é o mesmo objeto e o mesmo degrau.
+     */
+    atmosferaOpacidade: 0.05,
     /*
      * ⚠ **O comentário que estava aqui dizia que "o pin continua ESCURO nos
      * dois temas", e ele estava meio certo — que é pior que errado inteiro.**

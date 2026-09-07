@@ -211,11 +211,26 @@ export function Globe({ progress, drag }: Props) {
 
       <Marker position={dublin} paleta={paleta} />
 
-      {/* 3 — atmosfera. A cor vem de token próprio desde o D-60: lida de
-          `oceano`, ela viraria um halo branco somado sobre página branca no
-          tema claro invertido, ou seja sumiria */}
+      {/*
+        3 — atmosfera. A cor vem de token próprio desde o D-60: lida de
+        `oceano`, ela viraria um halo branco somado sobre página branca no tema
+        claro invertido, ou seja sumiria.
+
+        D-65 (d) — o raio caiu de 1,14 para **1,035**, e o motivo é que 1,14
+        desenhava um ARO. `meshBasicMaterial` não tem queda com o ângulo de
+        visão: a casca `BackSide` não acende na silhueta, ela pinta um DISCO
+        CHAPADO de borda dura. Como o planeta é opaco e escreve profundidade,
+        o que sobra visível é o anel entre 1,0 e 1,14 — uma faixa de ~43 px de
+        luminância constante terminando num degrau, que é exatamente a
+        definição de um contorno concêntrico. Medido no perfil radial: o
+        patamar existia só com esta camada ligada, ia de 1,03 a 1,16 do raio
+        do planeta e sumia em 1,19.
+
+        A 1,035 a faixa encolhe para ~11 px e encosta na silhueta: vira o
+        brilho da borda, que é o que dá volume à bola — o oposto de remover.
+      */}
       <mesh>
-        <sphereGeometry args={[RADIUS * 1.14, 48, 48]} />
+        <sphereGeometry args={[RADIUS * 1.035, 48, 48]} />
         <meshBasicMaterial
           color={paleta.atmosfera}
           transparent
