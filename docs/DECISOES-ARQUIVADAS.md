@@ -390,3 +390,77 @@ passos. A medição é carga real em largura de celular.
 
 ---
 
+
+---
+
+## Lighthouse e a prova de rede do RNF-02 (07/09) — tabelas completas
+
+Saíram da seção 0 em 07/09, depois de os dois requisitos passarem. São prova
+cumprida, não trabalho pendente: o painel guarda o número, o arquivo guarda a
+medição.
+
+### 📊 Lighthouse em `raulrodrigues.dev` (RNF-01) — 07/09, depois da D-63
+
+**Fecha o Passo 10 e a fila de código. As oito notas passam, e as oito
+melhoraram ou ficaram iguais desde que a D-62 começou.**
+
+| | Performance | Acessibilidade | Best Practices | SEO |
+|---|---|---|---|---|
+| **Desktop** | **99** ✅ (95 → 98 → 99) | **100** ✅ | **100** ✅ | **100** ✅ |
+| **Mobile** | **94** ✅ (68 → 82 → 94) | **100** ✅ | **100** ✅ | **100** ✅ |
+
+Mobile: FCP **2,1 s** · LCP **2,6 s** · TBT **40 ms** · CLS 0.
+Desktop: FCP **0,6 s** · LCP **0,7 s** · TBT **40 ms** · CLS 0.
+
+A meta do RNF-01 era 80 no mobile. Chegou a **94**, e o caminho tem duas
+metades bem diferentes: a **D-62 (a)** tirou o bloqueio de renderização de
+terceiro e valeu 14 pontos; a **D-63** tirou 237,5 KB do fio e valeu outros 12.
+
+### ✅ RNF-02 cumprido, pelo critério que o reprovava
+
+**A prova, carga real a 412 px em produção — `three` e `r3f` não aparecem:**
+
+| | KB | |
+|---|---|---|
+| `/` (documento) | 3,1 | |
+| `/fonts/sansation-400.woff2` | 6,8 | D-62 (a) |
+| `/fonts/sansation-700.woff2` | 7,1 | D-62 (a) |
+| `/assets/index-*.js` | **20,2** | era 75,1 |
+| `/assets/react-*.js` | 59,0 | chunk novo da D-63 |
+| `/assets/rolldown-runtime-*.js` | 0,8 | |
+| `/assets/index-*.css` | 8,1 | |
+| `/images/memoji.webp` | 30,2 | o LCP do celular |
+| `/_vercel/insights/*` | 1,9 | RF-09 |
+| `/favicon.svg` | 0,5 | |
+| **total** | **138,1** | era 372 |
+
+| | 07/09, antes da D-63 | agora |
+|---|---|---|
+| `three` + `r3f` na rede | **237,5 KB** | **0 KB** ✅ |
+| peso total | 372 KiB | **138 KiB** |
+| JS não usado | 202 KiB | **28 KiB** |
+
+O outro lado do RNF-02 — teto de 150 KB gzip no bundle inicial — também passa,
+com folga: **80 KB** somando entrada, `react` e runtime.
+
+**Regressão obrigatória, e ela era o risco real da D-63:** mexer em fronteira de
+chunk podia quebrar o carregamento tardio. Não quebrou. A 1350 px o
+`HeroScene`, o `GlobeScene`, o `paleta` e a textura do globo **continuam sendo
+buscados**, ou seja as duas cenas montam.
+
+**O método foi calibrado antes de valer como prova** — que é o que faltava no
+RNF-02 antigo. A corrida de 07/09, no mesmo Chrome headless, já baixava
+`HeroScene` e `GlobeScene` no desktop e **nenhum dos dois** no mobile. Então
+ausência no desktop significaria regressão de verdade, e não limitação do
+headless. Sem essa calibração, "não apareceu" não distinguiria conserto de
+cena quebrada.
+
+**O que NÃO foi reverificado, e é honesto dizer:** o arrasto e o assentamento do
+globo não foram medidos de novo nesta sessão — não há como dirigir a página pelo
+Lighthouse. O argumento é outro, e é verificável: o commit da D-63 **tocou um
+arquivo só, o `vite.config.ts`**, então `useGlobeDrag.ts` e `Globe.tsx` estão
+byte a byte como na medição do D-59 e do adendo do D-55. O que mudou foi em que
+pacote o código viaja, não o código.
+
+**Onde a próxima sessão pega o trabalho — 07/09, fim do dia.**
+
