@@ -193,13 +193,13 @@ export function Globe({ progress, drag }: Props) {
         quase branco, `color` (que multiplica) alcança qualquer valor nos dois
         temas com UMA textura só, sem segundo PNG.
       */}
-            <mesh>
+      <mesh>
         <sphereGeometry args={[RADIUS * 0.995, 48, 48]} />
         <meshBasicMaterial color={paleta.oceano} />
       </mesh>
 
       {/* 2 — continentes, agora claros */}
-            <mesh>
+      <mesh>
         <sphereGeometry args={[RADIUS, 64, 64]} />
         <meshBasicMaterial
           map={texture}
@@ -214,7 +214,7 @@ export function Globe({ progress, drag }: Props) {
       {/* 3 — atmosfera. A cor vem de token próprio desde o D-60: lida de
           `oceano`, ela viraria um halo branco somado sobre página branca no
           tema claro invertido, ou seja sumiria */}
-            <mesh>
+      <mesh>
         <sphereGeometry args={[RADIUS * 1.14, 48, 48]} />
         <meshBasicMaterial
           color={paleta.atmosfera}
