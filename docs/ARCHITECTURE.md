@@ -20,11 +20,17 @@ portfolio-3d-v2/
 │
 ├── docs/                      ← PLANEJAMENTO. Não vai para o site.
 │   ├── PRD.md                    o que o site é e o que não é
+│   ├── DECISOES-ARQUIVADAS.md    o MOTIVO das decisões D-01 a D-53 e o
+│   │                             changelog antigo, tirados do PRD em 07/09
+│   │                             para ele voltar a caber numa sessão. É
+│   │                             CONGELADO: nada se edita aqui, só se lê
 │   ├── ARCHITECTURE.md           este arquivo
 │   ├── WORKFLOW.md               MÉTODO: as regras e os prompts auxiliares.
 │   │                             Os dez passos saíram na D-47 — a fila mora
 │   │                             na seção 0 do PRD, e só lá
-│   ├── CONTENT.md                rascunho dos TEXTOS antes de virarem código
+│   ├── CONTENT.md                os textos como foram APROVADOS em 03/09.
+│   │                             ⚠ o site mudou depois (D-52, D-53): a
+│   │                             verdade do texto é `src/data/`, não este
 │   └── BACKLOG.md                onde as ideias novas esperam a v2
 │
 ├── references/                ← REFERÊNCIAS visuais. Fora do build.
@@ -32,8 +38,22 @@ portfolio-3d-v2/
 │                                 esboços. Serve para você mostrar ao Claude
 │                                 "quero algo assim".
 │
+├── index.html                 ← Não é só a casca. Carrega, nesta ordem: o
+│                                 script anti-flash do tema (frente 6 do D-44),
+│                                 que roda ANTES da folha de estilo; o preload
+│                                 das duas faces da fonte; o `canonical`; e o
+│                                 JSON-LD. Mexer na ordem aqui é mexer em
+│                                 comportamento medido
+│
+├── vite.config.ts             ← Os grupos de chunk. O grupo `react` vem ANTES
+│                                 dos grupos `three` e `r3f`, e essa ordem é o
+│                                 RNF-02 (ver regra 2 abaixo)
+│
 ├── public/                    ← ARQUIVOS ESTÁTICOS servidos como estão.
-│   ├── fonts/                    fontes self-hosted (quando sair do Google)
+│   ├── fonts/                    Sansation 400 e 700 em .woff2, self-hospedadas
+│   │                             desde a D-62 (a), com o OFL.txt ao lado. Saiu
+│   │                             do Google Fonts porque a folha bloqueava a
+│   │                             pintura por 825 ms — 14 pontos de Lighthouse
 │   ├── models/                   modelos 3D .glb (v2 — vazio por enquanto)
 │   ├── images/
 │   │   ├── projects/             capas dos projetos, 1200×630
@@ -106,6 +126,18 @@ Nada fora dessa pasta importa `three` diretamente — vale hoje, verificado por
 ser buscado. O resultado é o que importa: o Three.js fica num chunk próprio,
 baixado só depois de o conteúdo aparecer (RNF-02, RNF-03).
 
+**⚠ Chunk próprio não é o mesmo que não ser baixado, e o projeto aprendeu isso
+da pior forma.** Da D-19 até a D-63 o chunk existia, o `React.lazy` estava
+certo — e mesmo assim 237 KB de `three` e `r3f` desciam em todo celular, onde a
+cena nunca chega a montar. Duas causas em série: o `modulepreload` que o Vite
+escrevia no HTML (D-62 b) e, embaixo dele, o grupo `r3f` do `codeSplitting`
+tendo **engolido `react-dom` e `scheduler`**, o que fazia a entrada depender
+estaticamente do chunk 3D (D-63). Por isso o `vite.config.ts` declara hoje um
+grupo **`react` antes dos grupos 3D**, e mexer nessa ordem é mexer no RNF-02.
+E por isso o RNF-02 passou a ser medido por **carga real em largura de
+celular**, não pela saída do `npm run build`: tamanho de chunk não diz quem o
+baixa.
+
 **3. Seções não desenham espaçamento.**
 Toda seção usa `<Section>`, que já resolve âncora, respiro, título e animação de
 entrada. Se você precisa mexer no ritmo da página, mexe em um arquivo só.
@@ -115,10 +147,23 @@ Definidos em `src/index.css`, dentro de `@theme`. No Tailwind v4 o tema mora no
 CSS — **não existe `tailwind.config.js` neste projeto**. Nada de `#8c62ac` solto
 no meio de um `className`; use `text-primary-deep`, `border-line`, `bg-surface`.
 
-Os sete tokens, e só eles: `canvas` (fundo), `surface` (cards e header), `line`
-(bordas), `ink` (texto principal), `muted` (texto secundário), `primary` (roxo
-suave — decorativo, 3D, hover) e `primary-deep` (roxo forte — **todo texto
-colorido**, porque `primary` fica em 4,6:1 e reprova em corpo pequeno).
+Os **oito** tokens, e só eles: `canvas` (fundo), `surface` (cards e header),
+`line` (bordas), `ink` (texto principal), `muted` (texto secundário), `primary`
+(roxo suave — decorativo, 3D, hover), `primary-deep` (roxo forte — **todo texto
+colorido**, porque `primary` fica em 4,6:1 e reprova em corpo pequeno) e
+`on-primary` (o que se escreve **por cima** do `primary-deep`).
+
+O oitavo nasceu no modo escuro e é o tipo de coisa que só aparece medindo: no
+tema escuro o `primary-deep` é **claro**, então `text-white` sobre ele caía a
+2,1:1. Cada token tem par escuro em `:root[data-theme='dark']` — a matiz
+**303.724 não muda em nenhum dos dois**, é a identidade da marca; o que muda é
+luminosidade e saturação (D-44).
+
+**Cor de cena 3D não sai daqui.** Material de WebGL recebe valor e não enxerga
+`var(--color-*)`, então as cenas têm paleta própria em
+`components/three/paleta.ts`, por tema. Trocar de tema **troca a cor no
+material que já existe** — nunca remonta a cena, porque remontar zeraria o giro
+do globo (D-60).
 
 **5. O `<body>` não pode ter `background-color`.**
 Esta é a regra mais fácil de quebrar sem perceber, e por isso está escrita aqui

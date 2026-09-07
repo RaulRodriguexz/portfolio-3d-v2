@@ -14,7 +14,7 @@ PRD (seção 14).
 
 | Item | Decisão | Por que saiu |
 |---|---|---|
-| Alternância de idioma PT/EN | D-06 | O público é Dublin. Dobrava o trabalho de conteúdo sem aumentar conversão |
+| ~~Alternância de idioma PT/EN~~ | D-06, revertida pela **D-61** | Saiu em 03/09 porque o público é Dublin. **Voltou ao escopo em 07/09**, por pedido do Raul: o problema não era falta de português, era o português **errado** que o tradutor do navegador já produzia. Entra por último, depois da revisão do inglês e **depois do lançamento de 10/10** |
 | Seção Serviços | D-07 | Os cards de projeto já respondem "dá para contratar?" |
 | Notebook 3D em `.glb` no hero | D-10 | O Memoji como textura entrega o mesmo efeito por 100 KB em vez de 3 MB |
 
@@ -36,39 +36,42 @@ divertido é de construir.
 - Notebook 3D com os projetos rodando na tela
 - Cena 3D reagindo ao scroll
 - Blog técnico curto: 2 ou 3 posts sobre os agentes construídos
-- Alternância de idioma PT/EN
+- ~~Alternância de idioma PT/EN~~ — **promovida para a v1 em 07/09** (D-61), e
+  é o último item da fila
 - ~~Alternância de tema claro/escuro~~ — **promovido para a v1 em 05/09**, por
   pedido repetido do Raul. Ver D-44 no PRD: entra por último na fila, com o
   custo escrito, e é o primeiro item a ser cortado se o prazo apertar.
 
 **Baixo impacto / manutenção**
 
-- Fontes self-hospedadas em `public/fonts/`, saindo do Google Fonts
+- ~~Fontes self-hospedadas em `public/fonts/`, saindo do Google Fonts~~ — **feita em 07/09** (D-62 a), e não por capricho de manutenção: a folha do Google bloqueava a pintura por 825 ms e valia **14 pontos** de Lighthouse no celular
 - Formulário de contato com backend
 - Seção Serviços
 - Testes automatizados, se o site ganhar lógica de verdade
 
 ---
 
-## Boas práticas a aplicar no Passo 9
+## ~~Boas práticas a aplicar no Passo 9~~ — ✅ todas aplicadas
 
 - **JSON-LD `schema.org/Person`** no `<head>`: dá ao Google nome, cargo, cidade,
   e-mail e perfis externos. É o que faz o nome aparecer como entidade na busca.
 - `robots.txt` e `sitemap.xml` estáticos.
 - `font-synthesis-weight: none` no CSS: se um peso faltar, o texto fica mais
   leve em vez de deformado. Cinto de segurança com a Sansation, que só tem
-  300/400/700.
+  300/400/700 — e, desde a D-62 (a), o site **só embarca 400 e 700**, porque a
+  varredura não achou nenhum itálico nem uso real do 300. Ou seja, o cinto vale
+  mais agora do que valia quando esta linha foi escrita.
+
+*Passo 9 fechado em 07/09: JSON-LD, `robots.txt` e `sitemap.xml` no ar, e o
+`@vercel/analytics` ligado. Fica aqui como registro do que foi aplicado.*
 
 ---
 
 ## Ideias novas
 
-- 2026-09-04 — **links e botões magnéticos**: ao chegar a ~60 px do cursor, o
-  elemento se inclina levemente na direção dele e volta ao sair. ~15 linhas, só
-  `transform`, sem biblioteca. Motivo: é a interação que faz a pessoa mexer o
-  mouse de propósito para ver de novo. **Não** é cursor customizado, que segue
-  proibido na seção 6 do PRD. Adiada em 04/09 junto com a de baixo, para o lote
-  de mágica da v1 ficar em duas ideias em vez de quatro.
+- ~~2026-09-04 — **links e botões magnéticos**~~ — ✅ **entregue como M-27 em
+  05/09**, e medido: 0 px longe, 4 px a meio raio, 8 px no teto, 0 px ao sair;
+  no toque o ímã nem chega a ser instalado. Saiu do backlog e está no PRD.
 - 2026-09-04 — **unificar a linguagem visual das duas cenas 3D**: as órbitas do
   hero passam a usar o mesmo motivo de pontos do globo, para a página ler como
   um lugar só em vez de dois enfeites separados. Custo zero em KB — é a mesma
@@ -77,3 +80,16 @@ divertido é de construir.
 <!-- Exemplo:
 - 2026-09-10 — cursor customizado no hero. Motivo: vi num site e achei bonito.
 -->
+
+---
+
+## Regra deste arquivo
+
+Uma ideia entregue **não some daqui em silêncio**: fica riscada, com a data e o
+ID de onde ela virou realidade. Backlog que só cresce vira lista de compras;
+backlog que registra a saída vira memória de para onde o projeto foi.
+
+E o inverso também vale, e aconteceu duas vezes: um item **cortado** pode
+voltar — o tema escuro (D-44) e o bilíngue (D-61) saíram e voltaram. Quando
+voltar, a linha do corte é atualizada em vez de apagada, para que o motivo
+antigo continue visível ao lado do novo.
