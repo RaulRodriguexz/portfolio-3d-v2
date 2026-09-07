@@ -47,6 +47,24 @@
     />
     <meta name="author" content="Raul Rodrigues" />
 
+    <!--
+      Endereço canônico. Conferido no ar em 07/09: não existia nenhum, e o
+      domínio acabou de mudar — que é exatamente quando a falta cobra caro, com
+      o `.vercel.app` antigo, o apex e o `www` podendo ser indexados como
+      páginas diferentes com o mesmo conteúdo.
+
+      Aponta para o **apex**, no mesmo endereço que `og:url`, o `sitemap.xml` e
+      o `robots.txt` já declaram: quatro sinais dizendo a mesma coisa.
+
+      ⚠ Hoje o apex responde **308 para `www.raulrodrigues.dev`** — a Vercel
+      pôs o `www` como domínio principal ao comprar. O canônico apontando para
+      um endereço que redireciona não é erro (o buscador segue o redirecionamento),
+      mas é sinal torto. O conserto é no painel, não aqui: trocar o domínio
+      principal para o apex faz os quatro sinais e o servidor concordarem.
+      Alternativa oposta, se o `www` for para ficar: mover os quatro para `www`.
+    -->
+    <link rel="canonical" href="https://raulrodrigues.dev/" />
+
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Raul Rodrigues — AI &amp; Automation Developer" />
     <meta
