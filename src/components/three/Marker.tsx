@@ -76,7 +76,12 @@ export function Marker({ position, paleta }: { position: Vector3; paleta: Paleta
       <group ref={anel} position={[0, 0, 0.001]}>
         <mesh ref={faixaEscura}>
           <ringGeometry args={[0.032, 0.038, 32]} />
-          <meshBasicMaterial color={paleta.pin} transparent opacity={0.5} toneMapped={false} />
+          <meshBasicMaterial
+            color={paleta.anelEscuro}
+            transparent
+            opacity={0.5}
+            toneMapped={false}
+          />
         </mesh>
         <mesh ref={faixaClara} position={[0, 0, 0.0002]}>
           <ringGeometry args={[0.038, 0.044, 32]} />
@@ -84,23 +89,35 @@ export function Marker({ position, paleta }: { position: Vector3; paleta: Paleta
         </mesh>
       </group>
 
-      {/* pé da haste, para ela não parecer flutuando */}
+      {/*
+        Pé da haste, para ela não parecer flutuando. É a única peça do pin que
+        fica **rente à superfície**, então é a única que segue o continente
+        (D-60): escura sobre a Irlanda branca do tema escuro, clara sobre a
+        Irlanda roxa do tema claro.
+      */}
       <mesh position={[0, 0, 0.002]}>
         <circleGeometry args={[0.018, 20]} />
-        <meshBasicMaterial color={paleta.pin} toneMapped={false} />
+        <meshBasicMaterial color={paleta.pinNaSuperficie} toneMapped={false} />
       </mesh>
 
-      {/* haste: o cilindro nasce deitado no eixo Y, então gira 90° para subir
-          pelo +Z local, que é a normal da esfera neste ponto */}
+      {/*
+        Haste: o cilindro nasce deitado no eixo Y, então gira 90° para subir
+        pelo +Z local, que é a normal da esfera neste ponto.
+
+        Ela e a cabeça **saem da superfície**, e por isso não são vistas contra
+        a terra em momento nenhum: o que fica atrás delas é o oceano ou o fundo
+        da página. Daí a segunda polaridade do D-60.
+      */}
       <mesh position={[0, 0, HASTE_ALTURA / 2]} rotation={[Math.PI / 2, 0, 0]}>
         <cylinderGeometry args={[HASTE_RAIO, HASTE_RAIO, HASTE_ALTURA, 8]} />
-        <meshBasicMaterial color={paleta.pin} toneMapped={false} />
+        <meshBasicMaterial color={paleta.pinAcimaDaSuperficie} toneMapped={false} />
       </mesh>
 
-      {/* a cabeça do pin */}
+      {/* a cabeça do pin — branca no escuro, roxa no claro, sempre o oposto do
+          oceano que fica atrás dela */}
       <mesh position={[0, 0, HASTE_ALTURA]}>
         <sphereGeometry args={[PONTA_RAIO, 16, 16]} />
-        <meshBasicMaterial color={paleta.pin} toneMapped={false} />
+        <meshBasicMaterial color={paleta.pinAcimaDaSuperficie} toneMapped={false} />
       </mesh>
     </group>
   )

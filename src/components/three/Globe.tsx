@@ -226,11 +226,13 @@ export function Globe({ progress, drag }: Props) {
 
       <Marker position={dublin} paleta={paleta} />
 
-      {/* 3 — atmosfera */}
+      {/* 3 — atmosfera. A cor vem de token próprio desde o D-60: lida de
+          `oceano`, ela viraria um halo branco somado sobre página branca no
+          tema claro invertido, ou seja sumiria */}
       <mesh>
         <sphereGeometry args={[RADIUS * 1.14, 48, 48]} />
         <meshBasicMaterial
-          color={paleta.oceano}
+          color={paleta.atmosfera}
           transparent
           opacity={paleta.atmosferaOpacidade}
           side={BackSide}

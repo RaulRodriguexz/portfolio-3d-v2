@@ -41,10 +41,46 @@ export type Paleta = {
   /** Globo — a malha de triângulos por cima da esfera (D-56). */
   malha: string
   malhaOpacidade: number
+  /**
+   * Globo — a cor da casca de atmosfera, em `AdditiveBlending`.
+   *
+   * Tem token próprio porque **não pode seguir o oceano**. Até o D-60 ela lia
+   * `oceano` e isso passava despercebido: os dois temas tinham oceano roxo,
+   * então o halo saía roxo por acidente. Com o claro invertido o oceano ficou
+   * quase branco, e um halo branco somado sobre uma página quase branca
+   * satura e **desaparece**. Antes do D-56 ela já era desacoplada assim.
+   */
+  atmosfera: string
   /** Globo — a casca de atmosfera, em `AdditiveBlending`. */
   atmosferaOpacidade: number
-  /** Globo — o pin de Dublin e a faixa escura do anel de radar (D-25, D-56). */
-  pin: string
+  /**
+   * Globo — as peças do pin que ficam **rentes à superfície**: o pé da haste
+   * (D-25). Segue o oposto do **continente**, que é o que elas pisam.
+   */
+  pinNaSuperficie: string
+  /**
+   * Globo — as peças do pin que **sobem pela normal**: a haste e a cabeça
+   * (D-25). Elas nunca são vistas contra a terra, e sim contra o **oceano** e o
+   * fundo da página, então seguem o oposto do oceano.
+   *
+   * **A separação é a parte contraintuitiva do D-60**, e por isso ela existe:
+   * uma cor só para o pin inteiro sempre erra uma das duas situações. Pin todo
+   * escuro perde a cabeça no oceano roxo do tema escuro — foi o que o Raul viu.
+   * Pin todo branco resolve a cabeça e perde o pé sobre a Irlanda branca. A peça
+   * escolhe a cor pela **superfície que cruza**, não pelo tema.
+   */
+  pinAcimaDaSuperficie: string
+  /**
+   * Globo — a faixa **escura** do anel de radar (D-56).
+   *
+   * O anel não segue as regras acima, e não pode seguir: o pulso cresce 2,2× e
+   * **atravessa a costa**, então cada faixa passa pelas duas superfícies dentro
+   * do mesmo ciclo. O que o mantém legível é o par ser sempre **uma escura e
+   * uma clara**, nos dois temas — assim uma das duas contrasta onde quer que o
+   * pulso esteja. Amarrar a faixa escura à cor do pé deixaria as **duas** claras
+   * no tema claro, e o anel sumiria inteiro sobre o oceano.
+   */
+  anelEscuro: string
   /** Globo — a faixa clara do anel de radar. */
   anelClaro: string
 }
@@ -59,12 +95,42 @@ export const PALETAS: Record<Tema, Paleta> = {
     poeiraOpacidade: 0.6,
     halo: ['rgba(140, 98, 172, 0.30)', 'rgba(140, 98, 172, 0.12)', 'rgba(140, 98, 172, 0)'],
     sombra: ['rgba(110, 17, 176, 0.42)', 'rgba(110, 17, 176, 0.16)', 'rgba(110, 17, 176, 0)'],
-    oceano: '#8c62ac',
-    continentes: '#ffffff',
+    /*
+     * D-60 — **a inversão por tema, que até aqui nunca tinha sido feita.** O
+     * D-56 virou o globo do avesso e a frente 2 do D-44 deu ao escuro um oceano
+     * roxo um pouco mais escuro que o do claro: os dois temas ficaram com
+     * oceano roxo, e o escuro virou o claro com menos luz em vez do inverso
+     * dele. O tema claro volta a ser o oposto: **oceano quase branco,
+     * continentes roxos**.
+     *
+     * O par é exatamente o que existia antes do D-56 — `#fbfafd` e `#8c62ac`
+     * —, e isso é de propósito: não é número novo, é o estado que o Raul já
+     * tinha visto e aprovado, que é justamente o que esta decisão pede de volta.
+     * Medido: continente contra oceano dá **4,53:1**, o mais perto que dá dos
+     * 4,94:1 do escuro — os dois temas ficam simétricos, que era o alvo.
+     *
+     * **Zero KB novos:** a textura é a mesma e o material a multiplica, então
+     * `continentes` é só o multiplicador. Partindo de uma textura clara,
+     * multiplicar por roxo devolve continentes roxos e multiplicar por branco
+     * devolve continentes brancos — com o mesmo PNG.
+     */
+    oceano: '#fbfafd',
+    continentes: '#8c62ac',
     malha: '#c9a8e2',
     malhaOpacidade: 0.12,
+    /* o halo roxo do pré-D-56, agora que o oceano não serve mais de cor dele */
+    atmosfera: '#8c62ac',
     atmosferaOpacidade: 0.11,
-    pin: '#6e11b0',
+    /*
+     * Aqui o continente é roxo, então quem pisa nele tem de ser **claro** — é a
+     * mesma regra do tema escuro chegando ao resultado oposto, porque a
+     * superfície inverteu. Um pé roxo-escuro sobre a Irlanda roxa dá 1,88:1 e
+     * repete o defeito que o próprio D-25 consertou. Assim dá **4,21:1**.
+     */
+    pinNaSuperficie: '#f4f1f8',
+    /* contra oceano e página quase brancos: 8,52:1 e 8,58:1 */
+    pinAcimaDaSuperficie: '#6e11b0',
+    anelEscuro: '#6e11b0',
     anelClaro: '#f4f1f8',
   },
   escuro: {
@@ -142,15 +208,29 @@ export const PALETAS: Record<Tema, Paleta> = {
     continentes: '#e6e0ee',
     malha: '#d9c2f2',
     malhaOpacidade: 0.1,
+    /* segue valendo o roxo do oceano: aqui a cor não muda, só deixou de ser
+       lida de `oceano` para o claro poder inverter sem levar o halo junto */
+    atmosfera: '#754ba3',
     /* `AdditiveBlending` sobre fundo escuro: a atmosfera cai, não sobe. */
     atmosferaOpacidade: 0.07,
     /*
-     * O pin continua ESCURO nos dois temas, e isso é deliberado: ele pousa
-     * sobre o continente, que é claro nos dois temas. Segui-lo pelo token o
-     * tornaria claro no escuro — claro sobre claro — e o marcador sumiria
-     * justamente em cima da única coisa da cena que carrega informação.
+     * ⚠ **O comentário que estava aqui dizia que "o pin continua ESCURO nos
+     * dois temas", e ele estava meio certo — que é pior que errado inteiro.**
+     *
+     * O raciocínio era: o pin pousa sobre o continente, que é claro, logo tem
+     * de ser escuro. Isso vale para o **pé**, que de fato pisa na terra. Não
+     * vale para a **haste** e a **cabeça**: elas sobem pela normal e são vistas
+     * contra o **oceano** e contra o fundo da página, nunca contra a terra. Com
+     * uma cor só, a cabeça roxa caía sobre o oceano roxo — roxo sobre roxo, que
+     * foi exatamente o que o Raul viu na tela.
+     *
+     * O D-60 já tinha escrito a regra certa; ela só nunca chegou ao código,
+     * porque a decisão não estava no PRD quando a frente 2 foi executada.
      */
-    pin: '#5a0d91',
+    pinNaSuperficie: '#5a0d91',
+    /* branca contra o oceano roxo (6,38:1) e contra a página (18,48:1) */
+    pinAcimaDaSuperficie: '#ffffff',
+    anelEscuro: '#5a0d91',
     anelClaro: '#f4f1f8',
   },
 }
