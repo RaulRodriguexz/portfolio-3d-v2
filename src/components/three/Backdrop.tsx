@@ -1,8 +1,9 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { AdditiveBlending, CanvasTexture, SRGBColorSpace, type Mesh, type Points } from 'three'
+import { CanvasTexture, SRGBColorSpace, type Mesh } from 'three'
 import { useTema } from '../../hooks/useTema'
 import { PALETAS, type Paleta } from './paleta'
+import { Dust } from './Dust'
 
 /**
  * M-5 do PRD 5.2.1 — o que orbita o Memoji.
@@ -108,46 +109,6 @@ function Halo({ paleta }: { paleta: Paleta }) {
       <planeGeometry args={[5.4, 5.4]} />
       <meshBasicMaterial map={texture} transparent depthWrite={false} toneMapped={false} />
     </mesh>
-  )
-}
-
-function Dust({ paleta, count = 380, radius = 3.2 }: { paleta: Paleta; count?: number; radius?: number }) {
-  const ref = useRef<Points>(null)
-
-  const positions = useMemo(() => {
-    const array = new Float32Array(count * 3)
-    for (let i = 0; i < count; i++) {
-      const theta = Math.random() * Math.PI * 2
-      const phi = Math.acos(2 * Math.random() - 1)
-      const r = radius * (0.65 + Math.random() * 0.35)
-      array[i * 3] = r * Math.sin(phi) * Math.cos(theta)
-      array[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta) * 0.8
-      array[i * 3 + 2] = r * Math.cos(phi) * 0.7
-    }
-    return array
-  }, [count, radius])
-
-  useFrame((_, delta) => {
-    if (!ref.current) return
-    ref.current.rotation.y += delta * 0.04
-    ref.current.rotation.x += delta * 0.012
-  })
-
-  return (
-    <points ref={ref}>
-      <bufferGeometry>
-        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
-      </bufferGeometry>
-      <pointsMaterial
-        size={0.03}
-        color={paleta.poeira}
-        transparent
-        opacity={paleta.poeiraOpacidade}
-        sizeAttenuation
-        depthWrite={false}
-        blending={AdditiveBlending}
-      />
-    </points>
   )
 }
 
