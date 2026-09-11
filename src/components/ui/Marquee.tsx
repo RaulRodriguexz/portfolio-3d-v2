@@ -31,7 +31,8 @@ export function Marquee({ items, duration = 42 }: Props) {
             key={`${item}-${i}`}
             className="font-mono text-sm uppercase tracking-[0.16em] text-muted/70"
           >
-            {item}
+            {/* D-75 — separador no texto, pelo mesmo motivo das Tag */}
+            {item}{' '}
           </span>
         ))}
       </div>

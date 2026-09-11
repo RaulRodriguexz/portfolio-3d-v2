@@ -55,7 +55,7 @@ export function Section({ id, eyebrow, title, meta, children }: Props) {
               <div>{children}</div>
               <ul className="space-y-2 font-mono text-xs uppercase tracking-[0.16em] text-muted lg:pt-1 lg:text-right">
                 {meta.map((linha) => (
-                  <li key={linha}>{linha}</li>
+                  <li key={linha}>{linha}{' '}</li>
                 ))}
               </ul>
             </div>

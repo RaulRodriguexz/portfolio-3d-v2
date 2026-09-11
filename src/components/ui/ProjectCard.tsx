@@ -61,19 +61,19 @@ export function ProjectCard({ project }: { project: Project }) {
       <dl className="max-w-[30rem] space-y-3 text-sm leading-relaxed">
         <div>
           <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted/70">
-            Problem
+            Problem{' '}
           </dt>
           <dd className="mt-1 text-ink/85">{project.problem}</dd>
         </div>
         <div>
           <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted/70">
-            Built
+            Built{' '}
           </dt>
           <dd className="mt-1 text-ink/85">{project.solution}</dd>
         </div>
         <div>
           <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted/70">
-            Impact
+            Impact{' '}
           </dt>
           <dd className="mt-1 font-bold text-primary-deep">{project.impact}</dd>
         </div>
