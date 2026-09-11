@@ -1,6 +1,7 @@
 import { Analytics } from '@vercel/analytics/react'
 import { useAmbientTint } from './hooks/useAmbientTint'
 import { useSmoothScroll } from './hooks/useSmoothScroll'
+import { useTelaLarga } from './hooks/useTelaLarga'
 import { Intro } from './components/layout/Intro'
 import { Header } from './components/layout/Header'
 import { Footer } from './components/layout/Footer'
@@ -21,6 +22,7 @@ import { Contact } from './sections/Contact'
 export default function App() {
   useAmbientTint()
   useSmoothScroll()
+  const telaLarga = useTelaLarga()
 
   return (
     <>
@@ -32,7 +34,34 @@ export default function App() {
       </a>
 
       <Intro />
-      <Thread />
+
+      {/*
+        D-69 — o fio roxo não existe abaixo de 640 px.
+
+        Ele foi construído a partir da geometria medida dos rótulos das seções
+        (D-37 / M-25) para costurar uma coluna LARGA, serpenteando na margem que
+        sobra ao lado do texto. Num viewport de 360 px essa margem não existe, a
+        curva se achata contra a coluna, e o que era um traço passando por trás
+        do conteúdo vira um risco vertical atravessando o texto. O mesmo desenho,
+        em outra largura, deixa de ser o mesmo desenho.
+
+        **Não montar, não esconder por CSS.** `display: none` deixaria de pé o
+        `ResizeObserver`, o `rAF` do scroll e o cálculo do caminho a partir da
+        geometria: trabalho contínuo no aparelho mais fraco para desenhar o que
+        ninguém vê. É a lição do D-62 e do D-63 — o custo não é o que aparece, é
+        o que roda.
+
+        O ponto de luz do M-28 sai junto, e não por simetria: ele lê a ponta do
+        próprio `<path>` com `getPointAtLength`, então sem fio ele não tem de
+        onde ler e viraria um ponto solto flutuando.
+
+        O grão (D-36) FICA no celular — é `body::before`, CSS puro, textura e
+        não movimento, e não disputa espaço com o texto. O
+        `prefers-reduced-motion` continua desligando o fio em qualquer largura;
+        esta regra é adicional àquela, não a substitui.
+      */}
+      {telaLarga && <Thread />}
+
       <Header />
       <main>
         <Hero />
