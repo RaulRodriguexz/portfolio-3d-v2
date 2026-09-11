@@ -28,6 +28,22 @@ world-dots.png - continentes do globo 3D (D-19, D-56, D-58a). 2048x1024, PNG
                    de 15,6 KB para 17,6 KB, porque o deflate ja casa a linha
                    inteira com a de cima e o filtro destroi esse casamento.
                    Estrategia Z_FILTERED no deflate.
+               (3) a MESMA regra par-impar inverteu a paridade em 43 linhas, e
+                   isso so foi achado na D-73, em 11/09. Quando a varredura
+                   passa exatamente por um vertice, a contagem de cruzamentos
+                   erra por um e terra e oceano TROCAM dali em diante. As
+                   linhas 110-141 (70,6 a 65,1 N) estavam invertidas por
+                   inteiro: Siberia e Groenlandia liam como oceano e o Mar da
+                   Noruega lia como terra. No globo isso vira um PARALELO
+                   completo, ou seja um arco atravessando o planeta.
+                   Reparado assim: 110-141 invertidas de volta (geografia
+                   exata), 105-109 e 603-608 copiadas das linhas limpas
+                   vizinhas, porque ali a inversao e parcial e cresce ao longo
+                   da longitude. Nao regerado — o gerador nao esta no
+                   repositorio, so o metodo, aqui.
+                   Sobra UM defeito conhecido: as linhas 0-35 tem ~2 px de
+                   terra numa coluna so, que no polo vira um espigao radial
+                   fino. Medido, documentado e NAO consertado.
                Conferencia obrigatoria ao regerar (D-58): o pin de Dublin tem
                de cair sobre a Irlanda. Se cair no mar, a projecao esta errada
                e nem build, nem lint, nem teste acusam.
