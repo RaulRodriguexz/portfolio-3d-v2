@@ -204,7 +204,7 @@ quando ela zerar, o site publica.
 | 1 | **Revisão do inglês por pessoa fluente** (RNF-09) | uma pessoa, não o Raul | dias | 🔴 **único bloqueante** |
 | ✅ | ~~Apex como domínio principal na Vercel~~ | — | — | **feito em 07/09** — apex em Produção, `www` com 307 para ele, casando com `canonical`, `og:url`, `sitemap` e `robots` |
 | ❌ | ~~D-67 — globo no celular~~ | — | — | **descartada pelo Raul em 07/09**; o motivo e o caminho, se voltar, estão na decisão |
-| 0.9 | **D-68 — favicon novo**, faísca B3, desenhado e escolhido em 07/09. Só falta trocar o arquivo | Claude Code | minutos | a fazer |
+| ✅ | ~~D-68 — favicon novo, faísca B3~~ | — | — | **publicado em 11/09** (`e16a85d`) — o arquivo estava trocado no disco desde 07/09 e segurado fora da `main` de propósito, por ser mudança de identidade; o Raul autorizou e foi ao ar. 490 bytes, sem fundo, com `prefers-color-scheme` dentro do próprio SVG |
 | ✅ | ~~D-69 — o fio roxo sai do celular~~ | — | — | **entregue em código em 11/09** — não montado abaixo de 640 px, e o limiar unificado no `LARGURA_MINIMA`. A conferência em navegador (360 px, 1440 px, Lighthouse) entra na passada do Raul, itens 4 a 6 |
 | ✅ | ~~Arrastar o globo no desktop: soltar e ver se volta a Dublin~~ | — | — | **confirmado em 07/09** — volta em 5 a 6 s, e medido a 0,0 px do centro |
 | 4 | Arrastar o globo **com o dedo**, celular real | Raul | 1 min | a fazer |
