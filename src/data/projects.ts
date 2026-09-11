@@ -55,7 +55,7 @@ export const projects: Project[] = [
     solution:
       'Built from a written product spec: React, React Three Fiber and Tailwind, with the 3D scene code-split so the content renders before the WebGL bundle loads.',
     impact:
-      '70 KB of JavaScript before the 3D loads — and fully usable with WebGL switched off.',
+      '138 KB over the wire on a phone: the 3D bundle never downloads there. Fully usable with WebGL switched off.',
     stack: ['React', 'TypeScript', 'React Three Fiber', 'Tailwind'],
     repo: 'https://github.com/RaulRodriguexz/portfolio-3d-v2',
   },
