@@ -27,11 +27,11 @@ export const projects: Project[] = [
     id: 'cover-letter-assistant',
     title: 'Cover Letter Assistant',
     problem:
-      'Job seekers rewrite the same cover letter dozens of times and stop tailoring it per company — which is exactly what makes an application land.',
+      'Job seekers rewrite the same cover letter dozens of times and stop tailoring it to each company — which is exactly what makes an application land.',
     solution:
       'A live tool: a static front end talking to a Cloudflare Worker that prompts the OpenAI API. No server to maintain, no API key exposed in the browser.',
     impact:
-      'Turns a 30-minute writing task into under a minute, at effectively zero hosting cost.',
+      'Cuts a 30-minute writing task to under a minute, at effectively zero hosting cost.',
     stack: ['JavaScript', 'OpenAI API', 'Cloudflare Workers'],
     demo: 'https://raulrodriguexz.github.io/cover-letter-api',
     featured: true,

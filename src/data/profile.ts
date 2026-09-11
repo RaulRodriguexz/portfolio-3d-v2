@@ -20,13 +20,13 @@ export const profile = {
    * não foi reescrito: só a divisão, e o travessão virou ponto final.
    */
   subheadline: [
-    'A self-taught AI and automation developer. I work where things are ambiguous.',
-    'Turning messy problems into clear plans, then into systems that connect apps, models and APIs so **information moves on its own**. Running in production for companies in marketing, legal, transport and dental since 2025.',
+    'A self-taught AI and automation developer. I do my best work where the problem isn’t defined yet.',
+    'Turning messy problems into clear plans, then into systems that connect apps, models and APIs so **information moves on its own**. In production for companies in marketing, law, logistics and dentistry since 2025.',
   ],
 
   location: 'Brazil → Dublin, Ireland · October 2026',
 
-  availability: 'Open to AI / automation roles in Dublin and to freelance projects',
+  availability: 'Open to AI / automation roles in Dublin and freelance projects',
 
   /**
    * D-52 (a) — a melhor frase do site, que estava enterrada no meio do
@@ -38,9 +38,9 @@ export const profile = {
   /** Seção About — uma frase por item. */
   about: [
     'I got into technology as a kid, the day a computer showed up at home. Python first, then Java, C++ and C# — and eventually the AI tools that turned curiosity into work.',
-    'Since 2025 I have worked directly with company owners, and the same pattern keeps showing up. Information gets lost between people, payments are **handled by hand**, and the website does not connect to anything.',
-    'My job is to work where things are ambiguous: turn a messy problem into a clear plan, **and only then build**. Usually the answer is an automation, an AI assistant, or a system that finally has everything in one place.',
-    'In **October 2026** I move to Dublin to study at SEDA College and keep building inside the European tech ecosystem.',
+    'Since 2025 I’ve worked directly with company owners, and the same pattern keeps showing up. Information gets lost between people, payments are **handled by hand**, and their website doesn’t connect to anything.',
+    'My job starts where the problem isn’t defined yet: turn a mess into a clear plan, **and only then build**. Usually the answer is an automation, an AI assistant, or a system that finally has everything in one place.',
+    'In **October 2026** I move to Dublin to study at SEDA College and keep building from inside the European tech scene.',
   ],
 
   /**
@@ -71,7 +71,7 @@ export const profile = {
 
   /** Chamada final da seção de contato. */
   contactPitch:
-    'If your team is **losing hours every week** to something a machine should be doing, tell me about it. I’m open to roles in Dublin and to freelance work, and I read everything that arrives.',
+    'If your team is **losing hours every week** to something a machine should be doing, tell me about it. I’m open to roles in Dublin and to freelance work, and I reply to every message.',
 
   links: {
     email: 'raulrodrigues.mldev@gmail.com',
