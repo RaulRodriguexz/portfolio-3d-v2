@@ -21,6 +21,32 @@ B2B em contato dentro de 90 segundos — não impressionar tecnicamente.
 3. `docs/CONTENT.md` — o texto do site, em rascunho, antes de virar dado.
 4. `docs/BACKLOG.md` — onde toda ideia nova espera a v2.
 
+## Diretório de trabalho — confira antes de qualquer coisa
+
+**O diretório é sempre `portfolio-3d-v2`.** Se o `pwd` terminar em `Recomeço`,
+**pare e avise** — e não leia documento nenhum dali.
+
+O motivo não é arrumação: a pasta acima guardava **cópias obsoletas dos
+documentos**. Até 11/09 havia ali um `PRD.md` de 24 KB (02/09), um
+`WORKFLOW.md` de 18,6 KB — a versão de 520 linhas que a D-47 substituiu por
+112 —, mais `CONTENT.md` e `RESOURCES.md`. Pedir "leia o PRD.md" naquela pasta
+devolvia **um documento coerente, bem escrito e nove dias errado**: descrevia um
+site sem modo escuro, sem domínio, com uma fila de dez passos que já tinham sido
+todos executados. O PRD de verdade tem 176 KB e vive em `portfolio-3d-v2\docs\`.
+
+**Esta pasta já mordeu duas vezes, e a segunda é a perigosa.** A primeira foi o
+`npm run dev` respondendo `Missing script: "dev"` — errado, mas **gritando**: o
+comando falha, ninguém segue em frente. A segunda é **muda** — não há erro, não
+há aviso, o build continua verde, e o documento que decide o que se faz em
+seguida está nove dias atrasado. É a mesma família do `background-color` no
+`<body>` (regra 5 da arquitetura) e dos 237 KB do RNF-02: **falha que não
+grita**. Falha barulhenta custa minutos; falha muda custa a sessão inteira, e
+você só descobre depois de entregar a coisa errada.
+
+Os quatro foram movidos para `Recomeço\_arquivo-antigo\` na **D-71** — movidos,
+não apagados, porque apagar é decisão do Raul. **Se reaparecerem soltos na raiz,
+é regressão.**
+
 ## Stack (travada — não trocar sem registrar no log do PRD)
 
 - Vite 8 · React 19 · TypeScript

@@ -69,6 +69,20 @@ divertido é de construir.
 
 ## Ideias novas
 
+- 2026-09-11 — **arquitetura de agentes (QA funcional, revisor crítico, modelo por
+  papel)**, sugerida pelo vaccari. Motivo para adiar, não para descartar: agentes
+  pagam em desenvolvimento contínuo em muitos arquivos, e **a fila de código deste
+  projeto está vazia** — o que falta é conteúdo, uma pessoa revisando inglês e
+  publicar. Montar agora custa token num prazo (10/10) cujo item bloqueante é
+  humano. **Observação que vale guardar:** a separação já existe informalmente e
+  é o motivo de a semana de 05–07/09 ter funcionado — o Cowork escreve o PRD e
+  decide, o Claude Code mede e codifica, e os melhores achados vieram da fricção
+  entre os dois (a hipótese do mecanismo da atmosfera foi minha e estava errada;
+  a medição dele corrigiu). Ou seja: **revisor crítico e QA funcional já estão
+  rodando**, só não têm nome. Fazer de verdade **depois de publicar**, nos
+  projetos de IA, quando houver repositório vivo e já se souber quais papéis
+  fazem falta.
+
 - ~~2026-09-04 — **links e botões magnéticos**~~ — ✅ **entregue como M-27 em
   05/09**, e medido: 0 px longe, 4 px a meio raio, 8 px no teto, 0 px ao sair;
   no toque o ímã nem chega a ser instalado. Saiu do backlog e está no PRD.
