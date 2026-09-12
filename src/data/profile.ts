@@ -21,7 +21,7 @@ export const profile = {
    */
   subheadline: [
     'Self-taught, working where AI meets the business side. I do my best work where the problem isn’t defined yet.',
-    'Turning messy problems into clear plans, then into systems that connect apps, models and APIs so **information moves on its own**. In production for companies in marketing, law, logistics and dentistry since 2025.',
+    'Turning messy problems into clear plans, then into systems that connect apps, models and APIs so **information moves on its own**. In production for companies in law, dentistry, digital marketing and retail since 2025.',
   ],
 
   location: 'Brazil → Dublin, Ireland · October 2026',
@@ -49,7 +49,7 @@ export const profile = {
    */
   sectionMeta: {
     /** About — contexto de experiência: onde ele já esteve. */
-    about: ['Since 2025', 'Marketing · Legal · Transport · Dental', 'Self-taught'],
+    about: ['Since 2025', 'Law · Dentistry · Digital marketing · Retail', 'Self-taught'],
     /** Contact — o que a pessoa pode fazer agora. */
     contact: ['Dublin, IE', 'Open to roles', 'Freelance too'],
   },
