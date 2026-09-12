@@ -33,7 +33,14 @@ export function Footer() {
               <span className="text-primary-deep">.</span>
             </p>
             <p className="mt-2 max-w-[30ch] text-sm font-normal leading-relaxed text-muted">
-              {profile.role} · {profile.availability}
+              {/*
+                D-79 (a) — `availabilityShort`, não `availability`: a grande
+                começa com "Open to AI Solutions and Growth Engineer roles" e,
+                colada no `role` aqui, escrevia "AI Solutions" duas vezes na
+                mesma linha. A frase curta vive no `profile.ts`, junto da
+                outra — o rodapé escolhe qual usar, nunca recorta.
+              */}
+              {profile.role} · {profile.availabilityShort}
             </p>
           </div>
 

@@ -29,6 +29,22 @@ export const profile = {
   availability: 'Open to AI Solutions and Growth Engineer roles in Dublin, and freelance projects',
 
   /**
+   * D-79 (a) — versão curta, só para o rodapé, e ela existe por um motivo
+   * específico: o rodapé escreve `role · availability` na mesma linha, e com
+   * a `availability` inteira saía **"AI Solutions" duas vezes** — defeito que
+   * não existe em nenhuma das duas strings, só na junção delas.
+   *
+   * **Não é o rodapé que recorta a string grande**, de propósito: recorte no
+   * componente seria apresentação decidindo conteúdo (contra a RF-03), e quem
+   * mudasse a `availability` depois não teria como saber que o rodapé dependia
+   * do formato dela. Duas frases, as duas aqui, as duas visíveis.
+   *
+   * O **hero continua com a `availability` inteira** — é lá que o
+   * "Growth Engineer" precisa aparecer.
+   */
+  availabilityShort: 'Open to roles in Dublin, and freelance projects',
+
+  /**
    * D-52 (a) — a melhor frase do site, que estava enterrada no meio do
    * parágrafo 2, vira a abertura da seção. **Uma citação só na página inteira**:
    * duas viram painel e o efeito se anula, como o D-34 já fixou para o número.
