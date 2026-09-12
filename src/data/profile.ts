@@ -65,7 +65,15 @@ export const profile = {
    */
   sectionMeta: {
     /** About — contexto de experiência: onde ele já esteve. */
-    about: ['Since 2025', 'Law · Dentistry · Digital marketing · Retail', 'Self-taught'],
+    /**
+     * D-79 (b) — `Marketing`, e não `Digital marketing`: com o termo por
+     * extenso o rótulo media 392 px contra ~342 px úteis numa tela de 390 e
+     * dobrava para duas linhas. **A precisão não se perde, muda de lugar** —
+     * a prosa ao lado continua dizendo `digital marketing` por extenso.
+     * Esta coluna existe para ser lida de relance (D-32); linha que dobra
+     * deixa de ser relance.
+     */
+    about: ['Since 2025', 'Law · Dentistry · Marketing · Retail', 'Self-taught'],
     /** Contact — o que a pessoa pode fazer agora. */
     contact: ['Dublin, IE', 'Open to roles', 'Freelance too'],
   },
