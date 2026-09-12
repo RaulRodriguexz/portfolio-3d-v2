@@ -9,7 +9,7 @@ export const profile = {
   name: 'Raul Rodrigues',
 
   /** Linha curta de função, logo abaixo do nome no hero. */
-  role: 'AI & Automation Developer',
+  role: 'AI Solutions Engineer',
 
   /** A frase mais importante do site (PRD, decisão D-12). */
   headline: 'I build systems that take repetitive work off people’s calendars.',
@@ -20,13 +20,13 @@ export const profile = {
    * não foi reescrito: só a divisão, e o travessão virou ponto final.
    */
   subheadline: [
-    'A self-taught AI and automation developer. I do my best work where the problem isn’t defined yet.',
+    'Self-taught, working where AI meets the business side. I do my best work where the problem isn’t defined yet.',
     'Turning messy problems into clear plans, then into systems that connect apps, models and APIs so **information moves on its own**. In production for companies in marketing, law, logistics and dentistry since 2025.',
   ],
 
   location: 'Brazil → Dublin, Ireland · October 2026',
 
-  availability: 'Open to AI / automation roles in Dublin and freelance projects',
+  availability: 'Open to AI Solutions and Growth Engineer roles in Dublin, and freelance projects',
 
   /**
    * D-52 (a) — a melhor frase do site, que estava enterrada no meio do
