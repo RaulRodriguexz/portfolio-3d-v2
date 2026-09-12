@@ -3,11 +3,24 @@
  * três projetos na v1 — um em destaque, dois compactos.
  *
  * **D-21 (12/09): são QUATRO.** O quarto é o único trabalho pago do site;
- * os três primeiros são projetos pessoais. Isto rompe a conta do D-14:
- * a grade dos compactos tem duas colunas e agora são três compactos,
- * então **um card fica sozinho na última linha**. Medido e relatado ao
- * Raul; a escolha entre reorganizar a grade e promover um segundo card
- * a destaque é dele, e até lá a grade fica como está.
+ * os três primeiros são projetos pessoais.
+ *
+ * **D-81 (12/09) revisa o D-14: são DOIS em destaque e dois compactos.**
+ * Com um destaque só, sobravam três compactos numa grade de duas colunas
+ * e **um ficava sozinho na última linha** — e era o card pago. Com dois,
+ * as linhas fecham: destaque, destaque, compacto + compacto. O órfão some
+ * **por construção, não por ordem** — reordenar só trocava quem sobrava.
+ *
+ * O motivo do segundo destaque **não é geometria**: depois da D-78 o site
+ * se apresenta como AI Solutions Engineer, então em destaque ficam os dois
+ * trabalhos que provam que ele resolve problema de alguém — um público e
+ * clicável, um pago. Titanic e este site são credibilidade técnica.
+ *
+ * **A ORDEM do array importa e faz parte da decisão.** Só ligar as duas
+ * flags já mata o órfão, mas deixa as linhas em destaque / compacto +
+ * compacto / destaque — e o trabalho pago continuaria sendo a última coisa
+ * da seção. Com os dois destaques na frente sai o que a D-81 escreveu:
+ * **destaque, destaque, compacto + compacto**.
  *
  * Regra: se você não consegue escrever `impact`, o projeto não entra no site.
  */
@@ -44,6 +57,28 @@ export const projects: Project[] = [
     featured: true,
   },
   {
+    /**
+     * D-21 — o único card de trabalho PAGO do site, e por isso o mais
+     * importante dos quatro: os outros três são projetos pessoais, e um
+     * portfólio de AI Solutions Engineer sem prova de cliente mostra estudo,
+     * não entrega.
+     *
+     * **Sem `repo` e sem `demo`, de propósito:** é código de cliente e não é
+     * público. É o único card sem link, e o `ProjectCard` já omite o bloco
+     * inteiro quando não há nenhum dos dois — não sobra rótulo vazio.
+     */
+    id: 'ai-automation-smbs',
+    title: 'AI automation for four companies',
+    problem:
+      'Leads were sitting unanswered for up to two weeks. By the time anyone replied the enquiry had gone cold — the delay was costing the sale, not just the hours.',
+    solution:
+      'AI automation across the channels the leads actually arrive on — email, WhatsApp Business, a chatbot and the spreadsheets the team already lived in — so an enquiry gets picked up, sorted and routed without anyone watching an inbox.',
+    impact:
+      'Leads that used to wait up to two weeks are now picked up and routed automatically.',
+    stack: ['Python', 'n8n', 'OpenAI API', 'WhatsApp Business'],
+    featured: true,
+  },
+  {
     id: 'titanic-ml',
     title: 'Titanic ML',
     problem:
@@ -65,26 +100,5 @@ export const projects: Project[] = [
       '138 KB over the wire on a phone: the 3D bundle never downloads there. Fully usable with WebGL switched off.',
     stack: ['React', 'TypeScript', 'React Three Fiber', 'Tailwind'],
     repo: 'https://github.com/RaulRodriguexz/portfolio-3d-v2',
-  },
-  {
-    /**
-     * D-21 — o único card de trabalho PAGO do site, e por isso o mais
-     * importante dos quatro: os outros três são projetos pessoais, e um
-     * portfólio de AI Solutions Engineer sem prova de cliente mostra estudo,
-     * não entrega.
-     *
-     * **Sem `repo` e sem `demo`, de propósito:** é código de cliente e não é
-     * público. É o único card sem link, e o `ProjectCard` já omite o bloco
-     * inteiro quando não há nenhum dos dois — não sobra rótulo vazio.
-     */
-    id: 'ai-automation-smbs',
-    title: 'AI automation for four companies',
-    problem:
-      'Leads were sitting unanswered for up to two weeks. By the time anyone replied the enquiry had gone cold — the delay was costing the sale, not just the hours.',
-    solution:
-      'AI automation across the channels the leads actually arrive on — email, WhatsApp Business, a chatbot and the spreadsheets the team already lived in — so an enquiry gets picked up, sorted and routed without anyone watching an inbox.',
-    impact:
-      'Leads that used to wait up to two weeks are now picked up and routed automatically.',
-    stack: ['Python', 'n8n', 'OpenAI API', 'WhatsApp Business'],
   },
 ]
