@@ -31,14 +31,10 @@ export function Stack() {
         ))}
       </div>
 
-      {stackGroups.length > 0 && (
-        <>
-          <div className="mt-14 border-y border-line/60">
-            <Marquee items={stackGroups.flatMap((g) => g.items)} />
-          </div>
-          <p className="mt-6 font-mono text-xs text-muted/80">{alsoStudied}</p>
-        </>
-      )}
+      <div className="mt-14 border-y border-line/60">
+        <Marquee items={stackGroups.flatMap((g) => g.items)} />
+      </div>
+      <p className="mt-6 font-mono text-xs text-muted/80">{alsoStudied}</p>
     </Section>
   )
 }

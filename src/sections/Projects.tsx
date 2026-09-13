@@ -5,8 +5,9 @@ import { projects } from '../data/projects'
 /**
  * Seção 3 do PRD — a seção que converte.
  *
- * PASSO 5 — criar o componente <ProjectCard /> em src/components/ui/ e
- * renderizar a lista aqui num grid de 2 colunas no desktop.
+ * A grade é de duas colunas, e os cards com `featured` ocupam as duas
+ * (`md:col-span-2`, no próprio ProjectCard). São **dois** destaques desde a
+ * D-81: com um só, sobravam três compactos e um ficava órfão na última linha.
  */
 export function Projects() {
   return (
