@@ -83,6 +83,15 @@ divertido é de construir.
   projetos de IA, quando houver repositório vivo e já se souber quais papéis
   fazem falta.
 
+  **13/09 — o `docs/AGENTES.md` foi recolhido para cá.** O documento descrevia
+  os três agentes como se estivessem instalados (*"os três vivem em
+  `.claude/agents/`"*), e **a pasta nunca foi criada** — só existe o
+  `CLAUDE.md` ali. O Raul não chegou a colar o conteúdo dos arquivos. Um
+  documento em `docs/` que descreve infraestrutura inexistente é a mesma falha
+  muda do README "esqueleto": bem escrito, coerente e falso. **O desenho não
+  se perde** — está inteiro em `9788a5b:docs/AGENTES.md` (2.434 bytes), e
+  `git show` o traz de volta quando os agentes forem instalados de verdade.
+
 - ~~2026-09-04 — **links e botões magnéticos**~~ — ✅ **entregue como M-27 em
   05/09**, e medido: 0 px longe, 4 px a meio raio, 8 px no teto, 0 px ao sair;
   no toque o ímã nem chega a ser instalado. Saiu do backlog e está no PRD.
