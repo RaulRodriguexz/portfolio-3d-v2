@@ -8,7 +8,6 @@ memoji.png   - Memoji do Raul, fundo transparente, 694x781, ~100 KB.
                fallback estatico quando nao ha WebGL.
 memoji.webp  - mesma imagem, 30 KB. Use no <img> do fallback.
 og.png       - 1200x630, preview em redes sociais (Passo 9).
-projects/    - capas dos projetos.
 world-dots.png - continentes do globo 3D (D-19, D-56, D-58a). 2048x1024, PNG
                indexado de 1 bit, 15,6 KB. Indice 0 transparente (oceano, que
                e a cor do material) e indice 1 = rgb(240,238,245), o

@@ -52,9 +52,7 @@ portfolio-3d-v2/
 │   │                             desde a D-62 (a), com o OFL.txt ao lado. Saiu
 │   │                             do Google Fonts porque a folha bloqueava a
 │   │                             pintura por 825 ms — 14 pontos de Lighthouse
-│   ├── models/                   modelos 3D .glb (v2 — vazio por enquanto)
 │   ├── images/
-│   │   ├── projects/             capas dos projetos, 1200×630
 │   │   ├── memoji.png            o Memoji, textura da cena do hero
 │   │   ├── memoji.webp           o mesmo, para o fallback sem WebGL
 │   │   └── world-dots.png        continentes do globo, 15,6 KB (D-19, D-56,
@@ -202,7 +200,6 @@ viewport em vez de altura de documento.
 | Um texto do site | `src/data/` |
 | Um rascunho de texto ainda cru | `docs/CONTENT.md` |
 | Uma imagem que aparece no site | `public/images/` |
-| Um modelo 3D | `public/models/` |
 | Uma fonte baixada | `public/fonts/` |
 | Um efeito, geometria ou shader | `src/components/three/` |
 | Um botão, tag, card — algo usado mais de uma vez ou parametrizado por dado | `src/components/ui/` |

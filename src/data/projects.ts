@@ -37,8 +37,6 @@ export type Project = {
   stack: string[]
   repo?: string
   demo?: string
-  /** Capa 1200×630 em public/images/projects/ */
-  cover?: string
   featured?: boolean
 }
 
