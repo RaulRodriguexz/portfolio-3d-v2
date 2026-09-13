@@ -33,11 +33,6 @@ portfolio-3d-v2/
 │   │                             verdade do texto é `src/data/`, não este
 │   └── BACKLOG.md                onde as ideias novas esperam a v2
 │
-├── references/                ← REFERÊNCIAS visuais. Fora do build.
-│                                 Prints de sites que você gosta, paletas,
-│                                 esboços. Serve para você mostrar ao Claude
-│                                 "quero algo assim".
-│
 ├── index.html                 ← Não é só a casca. A ordem REAL do `<head>`,
 │                                 medida em 07/09, é: script anti-flash do tema
 │                                 (l. 20, frente 6 do D-44) → `<title>` (43) →
@@ -206,7 +201,6 @@ viewport em vez de altura de documento.
 |---|---|
 | Um texto do site | `src/data/` |
 | Um rascunho de texto ainda cru | `docs/CONTENT.md` |
-| Um print de inspiração | `references/` |
 | Uma imagem que aparece no site | `public/images/` |
 | Um modelo 3D | `public/models/` |
 | Uma fonte baixada | `public/fonts/` |
