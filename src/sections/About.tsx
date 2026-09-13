@@ -1,6 +1,5 @@
 import { Section } from '../components/layout/Section'
 import { useReveal } from '../hooks/useReveal'
-import { EmptyState } from '../components/ui/EmptyState'
 import { profile } from '../data/profile'
 import { Emphasis } from '../components/ui/Emphasis'
 
@@ -24,15 +23,11 @@ export function About() {
         </span>
       </p>
 
-      {profile.about.length === 0 ? (
-        <EmptyState step="Passo 2" file="src/data/profile.ts → about" />
-      ) : (
-        <div className="max-w-[36rem] space-y-5 text-base leading-relaxed text-muted">
-          {profile.about.map((paragraph, i) => (
-            <Paragraph key={paragraph.slice(0, 24)} text={paragraph} index={i} />
-          ))}
-        </div>
-      )}
+      <div className="max-w-[36rem] space-y-5 text-base leading-relaxed text-muted">
+        {profile.about.map((paragraph, i) => (
+          <Paragraph key={paragraph.slice(0, 24)} text={paragraph} index={i} />
+        ))}
+      </div>
     </Section>
   )
 }
